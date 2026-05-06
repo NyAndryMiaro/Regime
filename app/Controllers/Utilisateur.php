@@ -33,12 +33,7 @@ class Utilisateur extends BaseController
 
     public function showLogin()
     {
-        $model = new UtilisateurModel();
-        $user = $model->orderBy('id_Utilisateur', 'ASC')->first();
-
-        return view('login', [
-            'user' => $user,
-        ]);
+        return view('login');
     }
 
     public function showSignUp()
