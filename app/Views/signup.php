@@ -35,9 +35,9 @@
                 </div>
                 <div class="form-group">
                     <label for="genre">Genre</label>
-                    <div>
+                    <div style="display: flex; gap: 16px; align-items: center;">
                         <input type="radio" id="male" name="genre" value="M" required <?= (isset($old['genre']) && $old['genre'] === 'M') ? 'checked' : '' ?>>
-                        <label for="male">Male</label>
+                        <label for="male" style="margin-right: 8px;">Male</label>
                         <input type="radio" id="femelle" name="genre" value="F" <?= (isset($old['genre']) && $old['genre'] === 'F') ? 'checked' : '' ?>>
                         <label for="femelle">Femelle</label>
                     </div>

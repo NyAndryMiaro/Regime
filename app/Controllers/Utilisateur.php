@@ -33,12 +33,7 @@ class Utilisateur extends BaseController
 
     public function showLogin()
     {
-        $model = new UtilisateurModel();
-        $user = $model->orderBy('id_Utilisateur', 'ASC')->first();
-
-        return view('login', [
-            'user' => $user,
-        ]);
+        return view('login');
     }
 
     public function showSignUp(){
@@ -59,8 +54,6 @@ class Utilisateur extends BaseController
         }
         if (!$data['password'] || strlen($data['password']) < 8) {
             $errors['password'] = "Le mot de passe doit avoir au moins 8 caractères.";
-        } elseif (!preg_match('/[^a-zA-Z0-9]/', $data['password'])) {
-            $errors['password'] = "Le mot de passe doit contenir au moins un caractère spécial.";
         }
         if (!$data['email'] || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = "Email obligatoire ou invalide.";
