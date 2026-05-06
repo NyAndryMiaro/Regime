@@ -1,3 +1,4 @@
+-- Active: 1772519182592@@127.0.0.1@3306@Regime
 CREATE OR REPLACE DATABASE Regime;
 USE Regime;
 
@@ -18,7 +19,7 @@ INSERT INTO Utilisateur(nom, email, genre, motdepasse, taille, poids, estAdmin) 
 
 CREATE OR REPLACE TABLE Objectif(
     id_Objectif int primary key auto_increment,
-    libelle varchar(20)
+    libelle varchar(50)
 );
 
 INSERT INTO Objectif (libelle) VALUES 
