@@ -76,13 +76,32 @@ class Utilisateur extends BaseController
             ]);
         }
 
-        return view('signup-sante', [
+        return view('signupSante', [
             'infos' => $data,
         ]);
 
     }
 
     public function register(){
+        $sante=[
+            'taille' => $this->request->getPost('taille'),
+            'poids' => $this->request->getPost('poids'),
+        ];
         $infos= $this->request->getPost();
+        $utilisateurmodel = new UtilisateurModel();
+        $utilisateurmodel->save([
+            'nom' => $infos['nom'],
+            'genre' => $infos['genre'],
+            'email' => $infos['email'],
+            'motdepasse' => $infos['password'],
+            'taille' => $sante['taille'],
+            'poids' => $sante['poids'],
+        ]);
+
+        return view('login', [
+            'user' => null,
+            'error' => 'Inscription réussie, veuillez vous connecter.'
+        ]);
+        
     }
 }
