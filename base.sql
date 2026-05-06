@@ -33,3 +33,22 @@ CREATE OR REPLACE TABLE UtilisateurObjectif(
     id_Objectif int references Objectif (id_Objectif)
 );
 
+CREATE OR REPLACE TABLE Regime(
+    id_Regime int primary key auto_increment,
+    id_objectif int references Objectif (id_Objectif),
+    libelle varchar(90),
+    variation_poids double,
+    prix_unitaire double,
+    duree time,
+    pourcentage_viande double,
+    pourcentage_poisson double,
+    pourcentage_legume double
+);
+
+CREATE OR REPLACE TABLE Activites(
+    id_Activite int primary key auto_increment,
+    id_Objectif int references Objectif (id_Objectif),
+    libelle varchar(50),
+    duree time,
+    variation_poids double
+);
