@@ -23,3 +23,4 @@ $routes->post('/modifiernote/(:segment)/(:num)', 'NoteController::updateSemester
 $routes->get('/supprimernote/(:segment)', 'NoteController::getNotesByEtudiantAndSemestre/$1/1');
 $routes->post('/supprimernote/(:segment)/(:num)', 'NoteController::removeSemester/$1/$2');
 
+$routes->get('/register-sante', 'Utilisateur::showRegister');

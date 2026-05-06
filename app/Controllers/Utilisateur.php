@@ -38,4 +38,14 @@ class Utilisateur extends BaseController
         ]);
         
     }
+
+    public function showRegister() {
+        $model = new UtilisateurModel();
+        $user = $model->orderBy('id_user', 'ASC')->first();
+
+        return view('registerSante', [
+            'user' => $user,
+        ]);
+    }
+
 }
