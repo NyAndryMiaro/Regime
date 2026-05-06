@@ -33,7 +33,7 @@
                 <button type="submit" class="btn btn--primary">Se connecter</button>
             </form>
               
-            <a href="/showSignUp">Creer un nouveau compte</a>
+            <a href="/showSignUp1">Creer un nouveau compte</a>
         </section>
     </div>
 </body>

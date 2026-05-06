@@ -38,4 +38,8 @@ class Utilisateur extends BaseController
         ]);
         
     }
+
+    public function showSignUp() {
+        return view('signup');
+    }
 }
