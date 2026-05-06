@@ -14,7 +14,7 @@ class Utilisateur extends BaseController
 
         $user = $model->where('email', $email)->first();
 
-        if (!$user || $user['motdepasse'] != $password) {
+        if (!$user || $password != $user['motdepasse']) {
             return view('login', [
                 'user' => null,
                 'error' => 'Email ou mot de passe incorrect'
@@ -80,25 +80,27 @@ class Utilisateur extends BaseController
     }
 
     public function register(){
-        $sante=[
-            'taille' => $this->request->getPost('taille'),
-            'poids' => $this->request->getPost('poids'),
-        ];
         $infos= $this->request->getPost();
-        $utilisateurmodel = new UtilisateurModel();
-        $utilisateurmodel->save([
+        $sante=[
             'nom' => $infos['nom'],
             'genre' => $infos['genre'],
             'email' => $infos['email'],
             'motdepasse' => $infos['password'],
-            'taille' => $sante['taille'],
-            'poids' => $sante['poids'],
-        ]);
+            'taille' => $this->request->getPost('taille'),
+            'poids' => $this->request->getPost('poids'),
+            'estAdmin' => 0
+        ];
 
-        return view('login', [
-            'user' => null,
-            'error' => 'Inscription réussie, veuillez vous connecter.'
-        ]);
+        $utilisateurmodel = new UtilisateurModel();
+        
+        if (!$utilisateurmodel->insert($sante)) {
+            return view('signup', [
+                'errors' => $utilisateurmodel->errors(),
+                'old' => $infos
+            ]);
+        } else{
+            return redirect()->to('/');
+        }
         
     }
 }

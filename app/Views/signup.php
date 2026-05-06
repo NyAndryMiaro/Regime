@@ -10,7 +10,7 @@
     <div class="page-shell stack">
         <section class="hero">
             <h1>Inscription</h1>
-            <p>Créez un compte pour accéder à la gestion de la bibliothèque.</p>
+            <p>Créez un compte pour accéder à la gestion de régime.</p>
         </section>
 
 
