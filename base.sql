@@ -8,7 +8,8 @@ CREATE OR REPLACE TABLE Utilisateur(
     genre varchar(1),
     motdepasse varchar(20),
     taille double,
-    poids double
+    poids double,
+    estAdmin boolean
 );
 
 CREATE OR REPLACE TABLE Objectif(
