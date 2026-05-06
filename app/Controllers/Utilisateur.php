@@ -28,6 +28,9 @@ class Utilisateur extends BaseController
         ]);
         
         // return redirect()->to('/list');
+        if($user['estAdmin'] == TRUE){
+        return view('loggedAdmin');
+        }
         return view('logged');
     }
 

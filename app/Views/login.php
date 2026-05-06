@@ -10,7 +10,7 @@
     <div class="page-shell stack">
         <section class="hero">
             <h1>Connexion</h1>
-            <p>Connectez-vous pour acceder a la gestion de la bibliotheque.</p>
+            <p>Connectez-vous pour choisir un regime alimentaire et des objetcifs.</p>
         </section>
 
         <?php if (isset($error)): ?>
