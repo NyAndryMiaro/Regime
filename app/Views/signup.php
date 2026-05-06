@@ -49,7 +49,7 @@
                 </div>
                 <button type="submit" class="btn btn--primary">Suivant</button>
             </form>
-            <a href="/login">Déjà un compte ? Se connecter</a>
+            <a href="/">Déjà un compte ? Se connecter</a>
         </section>
     </div>
     <script>
