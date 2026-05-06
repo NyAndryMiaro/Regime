@@ -14,7 +14,7 @@ class Utilisateur extends BaseController
 
         $user = $model->where('email', $email)->first();
 
-        if (!$user || $user['password_user'] != $password) {
+        if (!$user || $user['motdepasse'] != $password) {
             return view('login', [
                 'user' => null,
                 'error' => 'Email ou mot de passe incorrect'
@@ -22,18 +22,19 @@ class Utilisateur extends BaseController
         }
         // Stocker uniquement les données non sensibles en session
         session()->set('user', [
-            'id' => $user['id_user'],
-            'nom' => $user['nom_user'],
+            'id' => $user['id_Utilisateur'],
+            'nom' => $user['nom'],
             'email' => $user['email'],
         ]);
-
-        return redirect()->to('/list');
+        
+        // return redirect()->to('/list');
+        return view('logged');
     }
 
     public function showLogin()
     {
         $model = new UtilisateurModel();
-        $user = $model->orderBy('id_user', 'ASC')->first();
+        $user = $model->orderBy('id_Utilisateur', 'ASC')->first();
 
         return view('login', [
             'user' => $user,
@@ -85,4 +86,14 @@ class Utilisateur extends BaseController
             'infos' => $data,
         ]);
     }
+
+    public function showRegister() {
+        $model = new UtilisateurModel();
+        $user = $model->orderBy('id_user', 'ASC')->first();
+
+        return view('registerSante', [
+            'user' => $user,
+        ]);
+    }
+
 }

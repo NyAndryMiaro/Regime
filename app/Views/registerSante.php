@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <title>Regime - Inscription</title>
     <link rel="stylesheet" href="/assets/css/app.css">
 </head>
 <body>
     <div class="page-shell stack">
         <section class="hero">
-            <h1>Connexion</h1>
-            <p>Connectez-vous pour acceder a la gestion de la bibliotheque.</p>
+            <h1>Inscription</h1>
+            <p>Entrez vos données pour savoir votre régime</p>
         </section>
 
         <?php if (isset($error)): ?>
@@ -23,17 +23,16 @@
             <form action="/login" method="post" class="form stack">
                 <?= csrf_field() ?>
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value="admin@gmail.com" required>
+                    <label for="taille"> Taille (cm) </label>
+                    <input type="number" id="taille" name="taille" value="100" min="100" max="250" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" value="wwwwwwww" required>
+                    <label for="poids"> Poids (kg) </label>
+                    <input type="number" id="poids" name="poids" value="60" min="40" max="160" required>
                 </div>
-                <button type="submit" class="btn btn--primary">Se connecter</button>
+                <button type="submit" class="btn btn--primary">Validez les données</button>
             </form>
               
-            <a href="/showSignUp1">Creer un nouveau compte</a>
         </section>
     </div>
 </body>
