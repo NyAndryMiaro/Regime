@@ -8,6 +8,6 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Utilisateur::showLogin');
 $routes->get('/showSignUp1', 'Utilisateur::showSignup');
 $routes->post('/showSignUp2', 'Utilisateur::showSignup2');
-
+$routes->post('/register', 'Utilisateur::register');
 
 $routes->post('/login', 'Utilisateur::login');

@@ -20,8 +20,13 @@
         <?php endif; ?>
 
         <section class="card card--pad">
-            <form action="/login" method="post" class="form stack">
+            <form action="/register" method="post" class="form stack">
                 <?= csrf_field() ?>
+                <input type="hidden" name="nom" value="<?= esc($infos['nom']) ?>">
+                <input type="hidden" name="genre" value="<?= esc($infos['genre']) ?>">
+                <input type="hidden" name="email" value="<?= esc($infos['email']) ?>">
+                <input type="hidden" name="password" value="<?= esc($infos['password']) ?>">
+                
                 <div class="form-group">
                     <label for="taille"> Taille (cm) </label>
                     <input type="number" id="taille" name="taille" value="100" min="100" max="250" required>
