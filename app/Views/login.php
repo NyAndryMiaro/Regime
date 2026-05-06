@@ -1,79 +1,40 @@
 <!DOCTYPE html>
-<html lang="fr">
-
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SysInfo — Connexion</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="/assets/css/app.css">
 </head>
-
 <body>
+    <div class="page-shell stack">
+        <section class="hero">
+            <h1>Connexion</h1>
+            <p>Connectez-vous pour acceder a la gestion de la bibliotheque.</p>
+        </section>
 
-  <div class="login-page">
-    <div class="login-card">
+        <?php if (isset($error)): ?>
+            <section class="error-section">
+                <p><?= esc($error) ?></p>
+            </section>
+        <?php endif; ?>
 
-      <div class="login-logo">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" width="22" height="22">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
-        </div>
-        <div>
-          <h1>SysInfo</h1>
-          <span>Système d'Information</span>
-        </div>
-      </div>
+        <section class="card card--pad">
+            <form action="/login" method="post" class="form stack">
+                <?= csrf_field() ?>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="admin@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" value="admin" required>
+                </div>
+                <button type="submit" class="btn btn--primary">Se connecter</button>
+            </form>
 
-      <h2>Connexion</h2>
-      <p class="subtitle">Connectez-vous à votre espace de travail</p>
-
-      <form action="/login" method="post">
-        <div class="field-group">
-          <label>Adresse e-mail</label>
-          <div class="input-wrap">
-            <div class="icon">
-              <svg viewBox="0 0 24 24">
-                <rect width="20" height="16" x="2" y="4" rx="2" />
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-              </svg>
-            </div>
-            <input type="email" name="email" placeholder="vous@exemple.com" value="<?= isset($user['email']) ? $user['email'] : '' ?>" />
-          </div>
-        </div>
-
-        <div class="field-group">
-          <label>Mot de passe</label>
-          <div class="input-wrap">
-            <div class="icon">
-              <svg viewBox="0 0 24 24">
-                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-            </div>
-            <input type="password" name="password" placeholder="••••••••" value="<?= isset($user['password_user']) ? $user['password_user'] : '' ?>" />
-          </div>
-        </div>
-
-        <div class="remember-row">
-          <label>
-            <input type="checkbox" checked />
-            Se souvenir de moi
-          </label>
-          <a href="#">Mot de passe oublié ?</a>
-        </div>
-
-        <input class="btn btn-primary btn-full" type="submit" value="Se connecter">
-
-      </form>
-
-      <div class="login-footer">
-        Pas encore de compte ? <a href="#">Contactez votre administrateur</a>
-      </div>
-
+            <a href="/showLogin">Creer un nouveau compte</a>
+        </section>
     </div>
-  </div>
-
 </body>
-
 </html>
