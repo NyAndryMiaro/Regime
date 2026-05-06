@@ -36,13 +36,11 @@ class Utilisateur extends BaseController
         return view('login');
     }
 
-    public function showSignUp()
-    {
+    public function showSignUp(){
         return view('signup');
     }
 
-    public function showSignUp2()
-    {
+    public function showSignUp2(){
         $data = [
             'nom' => $this->request->getPost('nom'),
             'genre' => $this->request->getPost('genre'),
@@ -78,15 +76,10 @@ class Utilisateur extends BaseController
         return view('signup-sante', [
             'infos' => $data,
         ]);
+
     }
 
-    public function showRegister() {
-        $model = new UtilisateurModel();
-        $user = $model->orderBy('id_user', 'ASC')->first();
-
-        return view('registerSante', [
-            'user' => $user,
-        ]);
+    public function register(){
+        $infos= $this->request->getPost();
     }
-
 }
