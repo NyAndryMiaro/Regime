@@ -12,6 +12,10 @@ CREATE OR REPLACE TABLE Utilisateur(
     estAdmin boolean
 );
 
+INSERT INTO Utilisateur(nom, email, genre, motdepasse, taille, poids, estAdmin) VALUES
+('Alice', 'Alice@gmail.com', 'F', 'aaaaaaaa', 150, 40, FALSE),
+('Admin', 'Admin@gmail.com', 'M', 'wwwwwwww', 190, 75,TRUE);
+
 CREATE OR REPLACE TABLE Objectif(
     id_Objectif int primary key auto_increment,
     libelle varchar(20)

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Models\UtilisateurModel;
 
 class Utilisateur extends BaseController
@@ -25,18 +26,36 @@ class Utilisateur extends BaseController
             'nom' => $user['nom_user'],
             'email' => $user['email'],
         ]);
-        
+
         return redirect()->to('/list');
     }
 
-    public function showLogin() {
+    public function showLogin()
+    {
         $model = new UtilisateurModel();
         $user = $model->orderBy('id_user', 'ASC')->first();
 
         return view('login', [
             'user' => $user,
         ]);
-        
+    }
+
+    public function showSignUp()
+    {
+        return view('signup');
+    }
+
+    public function showSignUp2()
+    {
+        $data = [
+            'nom' => $this->request->getPost('nom'),
+            'genre' => $this->request->getPost('genre'),
+            'email' => $this->request->getPost('email'),
+            'password' => $this->request->getPost('password'),
+        ];
+        return view('signup-sante', [
+            'infos' => $data,
+        ]);
     }
 
     public function showRegister() {
