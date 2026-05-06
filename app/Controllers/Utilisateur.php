@@ -40,31 +40,25 @@ class Utilisateur extends BaseController
         ]);
     }
 
-    public function showSignUp()
-    {
+    public function showSignUp(){
         return view('signup');
     }
 
-    public function showSignUp2()
-    {
+    public function showSignUp2(){
         $data = [
             'nom' => $this->request->getPost('nom'),
             'genre' => $this->request->getPost('genre'),
             'email' => $this->request->getPost('email'),
             'password' => $this->request->getPost('password'),
         ];
-        return view('signup-sante', [
+
+        return view('signupSante', [
             'infos' => $data,
         ]);
+
     }
 
-    public function showRegister() {
-        $model = new UtilisateurModel();
-        $user = $model->orderBy('id_user', 'ASC')->first();
-
-        return view('registerSante', [
-            'user' => $user,
-        ]);
+    public function register(){
+        $infos= $this->request->getPost();
     }
-
 }

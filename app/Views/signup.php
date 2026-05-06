@@ -21,7 +21,7 @@
         <?php endif; ?>
 
         <section class="card card--pad">
-            <form id="signup" action="/signUp2" method="post" class="form stack">
+            <form id="signup" action="/showSignUp2" method="post" class="form stack">
                 <?= csrf_field() ?>
                 <div class="form-group">
                     <label for="nom">Nom</label>
