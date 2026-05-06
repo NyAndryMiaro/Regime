@@ -53,6 +53,34 @@ class Utilisateur extends BaseController
             'email' => $this->request->getPost('email'),
             'password' => $this->request->getPost('password'),
         ];
+
+        $errors = [];
+        if (!$data['nom'] || strlen(trim($data['nom'])) < 3) {
+            $errors['nom'] = "Votre nom doit avoir au moins 3 caractères.";
+        }
+        if (!$data['password'] || strlen($data['password']) < 8) {
+            $errors['password'] = "Le mot de passe doit avoir au moins 8 caractères.";
+        } elseif (!preg_match('/[^a-zA-Z0-9]/', $data['password'])) {
+            $errors['password'] = "Le mot de passe doit contenir au moins un caractère spécial.";
+        }
+        if (!$data['email'] || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = "Email obligatoire ou invalide.";
+        }
+        if (!$data['genre'] || ($data['genre'] !== 'M' && $data['genre'] !== 'F')) {
+            $errors['genre'] = "Genre obligatoire.";
+        }
+
+        if (!empty($errors)) {
+            return view('signup', [
+                'errors' => $errors,
+                'old' => [
+                    'nom' => $data['nom'],
+                    'genre' => $data['genre'],
+                    'email' => $data['email'],
+                ]
+            ]);
+        }
+
         return view('signup-sante', [
             'infos' => $data,
         ]);

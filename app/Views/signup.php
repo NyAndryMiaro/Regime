@@ -13,32 +13,39 @@
             <p>Créez un compte pour accéder à la gestion de la bibliothèque.</p>
         </section>
 
+
         <?php if (isset(
-            $error)): ?>
+            $errors) && is_array($errors) && count($errors) > 0): ?>
             <section class="error-section">
-                <p><?= esc($error) ?></p>
+                <ul style="color: red;">
+                    <?php foreach ($errors as $err): ?>
+                        <li><?= esc($err) ?></li>
+                    <?php endforeach; ?>
+                </ul>
             </section>
         <?php endif; ?>
 
         <section class="card card--pad">
+
             <form id="signup" action="/signUp2" method="post" class="form stack">
                 <?= csrf_field() ?>
                 <div class="form-group">
                     <label for="nom">Nom</label>
-                    <input type="text" id="nom" name="nom" placeholder="RABARY" required>
+                    <input type="text" id="nom" name="nom" placeholder="RABARY" required value="<?= isset(
+                        $old['nom']) ? esc($old['nom']) : '' ?>">
                 </div>
                 <div class="form-group">
                     <label for="genre">Genre</label>
                     <div>
-                        <input type="radio" id="male" name="genre" value="M" required>
+                        <input type="radio" id="male" name="genre" value="M" required <?= (isset($old['genre']) && $old['genre'] === 'M') ? 'checked' : '' ?>>
                         <label for="male">Male</label>
-                        <input type="radio" id="femelle" name="genre" value="F">
+                        <input type="radio" id="femelle" name="genre" value="F" <?= (isset($old['genre']) && $old['genre'] === 'F') ? 'checked' : '' ?>>
                         <label for="femelle">Femelle</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="example@mg" required>
+                    <input type="email" id="email" name="email" placeholder="example@mg" required value="<?= isset($old['email']) ? esc($old['email']) : '' ?>">
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
