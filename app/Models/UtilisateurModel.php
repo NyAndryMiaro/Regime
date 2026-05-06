@@ -6,6 +6,6 @@ use CodeIgniter\Model;
 class UtilisateurModel extends Model
 {
     protected $table = 'Utilisateur';
-    protected $allowedFields = ['id_user', 'nom_user', 'password_user', 'email'];
+    protected $allowedFields = ['id_Utilisateur', 'nom', 'email', 'genre', 'motdepasse', 'taille', 'poids'];
 
 }
