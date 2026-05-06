@@ -14,7 +14,7 @@ class Utilisateur extends BaseController
 
         $user = $model->where('email', $email)->first();
 
-        if (!$user || $user['password_user'] != $password) {
+        if (!$user || $user['motdepasse'] != $password) {
             return view('login', [
                 'user' => null,
                 'error' => 'Email ou mot de passe incorrect'
@@ -22,18 +22,19 @@ class Utilisateur extends BaseController
         }
         // Stocker uniquement les données non sensibles en session
         session()->set('user', [
-            'id' => $user['id_user'],
-            'nom' => $user['nom_user'],
+            'id' => $user['id_Utilisateur'],
+            'nom' => $user['nom'],
             'email' => $user['email'],
         ]);
-
-        return redirect()->to('/list');
+        
+        // return redirect()->to('/list');
+        return view('logged');
     }
 
     public function showLogin()
     {
         $model = new UtilisateurModel();
-        $user = $model->orderBy('id_user', 'ASC')->first();
+        $user = $model->orderBy('id_Utilisateur', 'ASC')->first();
 
         return view('login', [
             'user' => $user,
@@ -52,7 +53,34 @@ class Utilisateur extends BaseController
             'password' => $this->request->getPost('password'),
         ];
 
-        return view('signupSante', [
+        $errors = [];
+        if (!$data['nom'] || strlen(trim($data['nom'])) < 3) {
+            $errors['nom'] = "Votre nom doit avoir au moins 3 caractères.";
+        }
+        if (!$data['password'] || strlen($data['password']) < 8) {
+            $errors['password'] = "Le mot de passe doit avoir au moins 8 caractères.";
+        } elseif (!preg_match('/[^a-zA-Z0-9]/', $data['password'])) {
+            $errors['password'] = "Le mot de passe doit contenir au moins un caractère spécial.";
+        }
+        if (!$data['email'] || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = "Email obligatoire ou invalide.";
+        }
+        if (!$data['genre'] || ($data['genre'] !== 'M' && $data['genre'] !== 'F')) {
+            $errors['genre'] = "Genre obligatoire.";
+        }
+
+        if (!empty($errors)) {
+            return view('signup', [
+                'errors' => $errors,
+                'old' => [
+                    'nom' => $data['nom'],
+                    'genre' => $data['genre'],
+                    'email' => $data['email'],
+                ]
+            ]);
+        }
+
+        return view('signup-sante', [
             'infos' => $data,
         ]);
 
