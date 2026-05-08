@@ -32,10 +32,10 @@ class Utilisateur extends BaseController
         // Rediriger selon le type d'utilisateur
         if($user['estAdmin'] == 1){
             $users = $model->findAll();
-            return view('accueilAdmin', ['users' => $users]);
+            return view('/backoffice/accueil-admin', ['users' => $users]);
         }
         
-        return view('accueil', ['user' => $user]);
+        return view('/frontoffice/accueil', ['user' => $user]);
     }
 
     public function showLogin()
@@ -142,6 +142,6 @@ class Utilisateur extends BaseController
         $model = new UtilisateurModel();
         $users = $model->findAll();
         
-        return view('accueilAdmin', ['users' => $users]);
+        return view('accueil', ['users' => $users]);
     }
 }
