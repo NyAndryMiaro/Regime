@@ -1,0 +1,147 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+  color: #1f2937;
+}
+
+.navbar {
+  background: white;
+  border-bottom: 3px solid #10b981;
+  padding: 1rem 2rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.header-section {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #10b981;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  border-left: none;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.regimes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.regime-card {
+  padding: 1rem;
+  border-radius: 8px;
+  color: #fff;
+  text-align: center;
+}
+
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.chart-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #10b981;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #f0fdf4;
+  padding: 0.8rem;
+  text-align: left;
+  color: #059669;
+}
+
+td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.btn {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #10b981;
+  color: #fff;
+  border: none;
+}
+
+.btn-logout {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* small utilities */
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .charts-container {
+    grid-template-columns: 1fr;
+  }
+}/*# sourceMappingURL=dashboard.css.map */

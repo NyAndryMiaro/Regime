@@ -36,5 +36,6 @@
             <a href="/showSignUp1">Creer un nouveau compte</a>
         </section>
     </div>
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>

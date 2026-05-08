@@ -58,19 +58,6 @@
             <a href="/">Déjà un compte ? Se connecter</a>
         </section>
     </div>
-    <script>
-        function password_action() {
-            let pass = document.getElementById("mdp");
-            let bouton = document.getElementById("bouton");
-            let etat = pass.type;
-            if (etat === "text") {
-                pass.type = "password";
-                bouton.textContent = "Afficher";
-            } else {
-                pass.type = "text";
-                bouton.textContent = "Masquer";
-            }
-        }
-    </script>
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>

@@ -20,18 +20,22 @@ class Utilisateur extends BaseController
                 'error' => 'Email ou mot de passe incorrect'
             ]);
         }
+        
         // Stocker uniquement les données non sensibles en session
         session()->set('user', [
             'id' => $user['id_Utilisateur'],
             'nom' => $user['nom'],
             'email' => $user['email'],
+            'estAdmin' => $user['estAdmin']
         ]);
         
-        // return redirect()->to('/list');
-        if($user['estAdmin'] == TRUE){
-        return view('loggedAdmin');
+        // Rediriger selon le type d'utilisateur
+        if($user['estAdmin'] == 1){
+            $users = $model->findAll();
+            return view('accueilAdmin', ['users' => $users]);
         }
-        return view('logged');
+        
+        return view('accueil', ['user' => $user]);
     }
 
     public function showLogin()
@@ -105,5 +109,39 @@ class Utilisateur extends BaseController
             return redirect()->to('/');
         }
         
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to('/login');
+    }
+
+    public function accueil()
+    {
+        // Afficher la page d'accueil utilisateur
+        $user = session()->get('user');
+        if (!$user) {
+            return redirect()->to('/login');
+        }
+        
+        $model = new UtilisateurModel();
+        $userData = $model->find($user['id']);
+        
+        return view('accueil', ['user' => $userData]);
+    }
+
+    public function accueilAdmin()
+    {
+        // Afficher la page d'accueil admin
+        $user = session()->get('user');
+        if (!$user || !$user['estAdmin']) {
+            return redirect()->to('/login');
+        }
+        
+        $model = new UtilisateurModel();
+        $users = $model->findAll();
+        
+        return view('accueilAdmin', ['users' => $users]);
     }
 }
