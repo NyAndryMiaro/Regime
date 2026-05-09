@@ -13,7 +13,7 @@
     <?php include("navbar-user.html"); ?>
 
     <div class="container">
-        <!-- Header Section -->
+        <!-- Objectif -->
         <?php if (empty($objectif)) { ?>
             <div class="objectif-section" id="Objctif">
                 <h2>Commencez par choisir un objectif</h2>
@@ -35,6 +35,7 @@
             </div>
         <?php } ?>
 
+        <!-- Header Section -->
         <div class="header-section" id="accueil">
             <h1>👋 Bienvenue sur votre Tableau de Bord</h1>
             <p>Suivez votre progression vers vos objectifs nutritionnels</p>

@@ -22,29 +22,29 @@ class Utilisateur extends BaseController
                 'error' => 'Email ou mot de passe incorrect'
             ]);
         }
-        
+
         session()->set('user', [
             'id' => $user['id_Utilisateur'],
             'nom' => $user['nom'],
             'email' => $user['email'],
             'estAdmin' => $user['estAdmin']
         ]);
-        
-        if($user['estAdmin'] == 1){
+
+        if ($user['estAdmin'] == 1) {
             $users = $model->findAll();
             return view('/backoffice/accueil-admin', ['users' => $users]);
         }
-        
-        $verifier= $this->ObjectifUtilisateur($user['id_Utilisateur']);
 
-        $objectif= new ObjectifModel();
-        $obj= $objectif->findAll();
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id_Utilisateur']) -> first();
 
-        
-        if($verifier != null){
-            $but= $objectif -> find($verifier['id_Objectif']);
+        $objectif = new ObjectifModel();
+        $obj = $objectif->findAll();
+
+        if ($verifier != null) {
+            $but = $objectif->find($verifier['id_Objectif']);
             return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj, 'objectif' => $but]);
-        } else{
+        } else {
             return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj]);
         }
     }
@@ -54,11 +54,13 @@ class Utilisateur extends BaseController
         return view('login');
     }
 
-    public function showSignUp(){
+    public function showSignUp()
+    {
         return view('signup');
     }
 
-    public function showSignUp2(){
+    public function showSignUp2()
+    {
         $data = [
             'nom' => $this->request->getPost('nom'),
             'genre' => $this->request->getPost('genre'),
@@ -94,12 +96,12 @@ class Utilisateur extends BaseController
         return view('signupSante', [
             'infos' => $data,
         ]);
-
     }
 
-    public function register(){
-        $infos= $this->request->getPost();
-        $sante=[
+    public function register()
+    {
+        $infos = $this->request->getPost();
+        $sante = [
             'nom' => $infos['nom'],
             'genre' => $infos['genre'],
             'email' => $infos['email'],
@@ -110,13 +112,13 @@ class Utilisateur extends BaseController
         ];
 
         $utilisateurmodel = new UtilisateurModel();
-        
+
         if (!$utilisateurmodel->insert($sante)) {
             return view('signup', [
                 'errors' => $utilisateurmodel->errors(),
                 'old' => $infos
             ]);
-        } else{
+        } else {
             return redirect()->to('/');
         }
     }
@@ -133,21 +135,22 @@ class Utilisateur extends BaseController
         if (!$user) {
             return redirect()->to('/login');
         }
-        
+
         $model = new UtilisateurModel();
         $userData = $model->find($user['id']);
-        
-        $objectif= new ObjectifModel();
-        $obj= $objectif->findAll();
-        
-        $verifier= $this->ObjectifUtilisateur($user['id']);
-        if($verifier != null){
-            $but= $objectif -> find($verifier['id_Objectif']);
-            return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj, 'objectif' => $but]);
-        } else{
-            return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj]);
-        }
 
+        $objectif = new ObjectifModel();
+        $obj = $objectif->findAll();
+
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id']) -> first();
+
+        if ($verifier != null) {
+            $but = $objectif->find($verifier['id_Objectif']);
+            return view('frontoffice/accueil', ['user' => $userData, 'objectifs' => $obj, 'objectif' => $but]);
+        } else {
+            return view('frontoffice/accueil', ['user' => $userData, 'objectifs' => $obj]);
+        }
     }
 
     public function accueilAdmin()
@@ -156,42 +159,46 @@ class Utilisateur extends BaseController
         if (!$user || !$user['estAdmin']) {
             return redirect()->to('/login');
         }
-        
+
         $model = new UtilisateurModel();
         $users = $model->findAll();
-        
+
         return view('backoffice/accueil', ['users' => $users]);
     }
 
-    public function choixObjectif(){
+    public function choixObjectif()
+    {
         $user = session()->get('user');
-        
-        $verifier= $this->ObjectifUtilisateur($user['id']);
 
-        $infos= [
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id']) -> first();
+
+        $infos = [
             'id_Utilisateur' => $user['id'],
             'id_Objectif' => $this->request->getPost('objectif')
         ];
 
-        $utiliObj= new UtilisateurObjectifModel();
+        $utiliObj = new UtilisateurObjectifModel();
 
         $model = new UtilisateurModel();
         $userData = $model->find($user['id']);
-        
-        $objectif= new ObjectifModel();
-        $obj= $objectif->findAll();
 
-        $utiliObj->insert($infos);
-        $but= $objectif -> find($verifier['id_Objectif']);
-
-        return view('frontoffice/accueil', ['user' => $userData, 'objectifs' => $obj, 'objectif' => $but]);
-    }
-
-    public function ObjectifUtilisateur($user){
+        $objectif = new ObjectifModel();
+        $obj = $objectif->findAll();
 
         $utiliObj = new UtilisateurObjectifModel();
-        $obj = $utiliObj -> find($user);
-    
-        return $obj;
+        $verifier = $utiliObj->find($user['id']);
+
+        $objectif = new ObjectifModel();
+        $obj = $objectif->findAll();
+
+        if ($verifier != null) {
+            $but = $objectif->find($verifier['id_Objectif']);
+            return view('frontoffice/accueil', ['user' => $userData, 'objectifs' => $obj, 'objectif' => $but]);
+        } else {
+            $utiliObj->insert($infos);
+            return redirect() -> to('/accueil');
+        }
     }
+
 }
