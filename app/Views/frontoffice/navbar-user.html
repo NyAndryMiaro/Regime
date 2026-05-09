@@ -1,0 +1,12 @@
+    <nav class="navbar">
+        <div class="navbar-brand">💚 Ré-Gym</div>
+        <div class="navbar-menu">
+            <a href="#accueil">Accueil</a>
+            <a href="#repas">Mes Repas</a>
+            <a href="#regimes">Régimes</a>
+            <span class="user-welcome">Bienvenue, <?= session()->get('user')['nom'] ?? 'Utilisateur' ?></span>
+            <form action="/logout" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-logout btn-sm">Déconnexion</button>
+            </form>
+        </div>
+    </nav>

@@ -10,3 +10,4 @@ class ObjectifModel extends Model
     protected $primaryKey = 'id_Objectif';
     protected $allowedFields = ['id_Objectif', 'libelle'];
 }
+

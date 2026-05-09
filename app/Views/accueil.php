@@ -10,33 +10,36 @@
 
 <body>
     <!-- Navigation -->
-    <?php include("navbar-user.html"); ?>
+    <nav class="navbar">
+        <div class="navbar-brand">💚 Ré-Gym</div>
+        <div class="navbar-menu">
+            <a href="#accueil">Accueil</a>
+            <a href="#repas">Mes Repas</a>
+            <a href="#regimes">Régimes</a>
+            <span class="user-welcome">Bienvenue, <?= session()->get('user')['nom'] ?? 'Utilisateur' ?></span>
+            <form action="/logout" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-sm">Déconnexion</button>
+            </form>
+        </div>
+    </nav>
 
     <div class="container">
-        <!-- Objectif -->
-        <?php if (empty($objectif)) { ?>
-            <div class="objectif-section" id="accueil">
-                <h2>Commencez par choisir un objectif</h2>
-
-                <form action="/objectif" method="post" id="choixObj">
-                    <?php if (!empty($objectifs)) {
-                        foreach ($objectifs as $obj) { ?>
-                            <p> <?= $obj["libelle"] ?> <input type="radio" name="objectif" value="<?= $obj["id_Objectif"] ?>"></p>
-                    <?php }
-                    } ?>
-                    <button type="submit"> Valider </button>
-                </form>
-
-            </div>
-
-        <?php } else{ ?>
-            <div class="objectif-section" id="accueil">
-                <p> Votre objectif : <?= esc($objectif['libelle']) ?> </p>
-            </div>
-        <?php } ?>
-
         <!-- Header Section -->
-        <div class="header-section">
+        <div class="objectif-section" id="Objctif">
+            <h2>Commencez par choisir un objectif</h2>
+
+            <form action="/objectif" method="post" id="choixObj">
+                <?php if (!empty($objectif)) {
+                    foreach ($objectif as $obj) { ?>
+                        <p> <?= $obj["libelle"] ?> <input type="radio" name="objectif" value="<?= $obj["id_Objectif"] ?>"></p>
+                <?php }
+                } ?>
+                <button type="submit"> Valider </button>
+            </form>
+
+        </div>
+
+        <div class="header-section" id="accueil">
             <h1>👋 Bienvenue sur votre Tableau de Bord</h1>
             <p>Suivez votre progression vers vos objectifs nutritionnels</p>
             <div class="user-info">
@@ -84,7 +87,7 @@
         <div class="section-title" id="regimes">🎯 Régimes Recommandés</div>
         <div class="card">
             <div class="regimes-grid">
-                <div class="regime-card" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                <div class="regime-card">
                     <h4>🌊 Méditerranéen</h4>
                     <p>Fruits, légumes et huile d'olive pour votre santé</p>
                     <div class="regime-calories">~1800 kcal/jour</div>

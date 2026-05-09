@@ -38,6 +38,14 @@ body {
   padding: 0 1rem;
 }
 
+.objectif-section {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .header-section {
   background: linear-gradient(135deg, #10b981, #059669);
   color: #fff;
