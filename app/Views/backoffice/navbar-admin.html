@@ -1,13 +1,13 @@
 <nav class="navbar">
-    <div class="navbar-brand">👑 MonRégime - Admin</div>
-    <div class="navbar-menu">
+    <div class="navbar__brand"><span class="user-welcome">
+            <?= session()->get('user')['nom'] ?? 'Admin' ?>
+        </span></div>
+    <div class="navbar__links">
         <a href="#dashboard">Tableau de Bord</a>
         <a href="#utilisateurs">Utilisateurs</a>
         <a href="#statistiques">Statistiques</a>
         <a href="/admin/activites">Activites sportives</a>
-        <span class="user-welcome">Admin:
-            <?= session()->get('user')['nom'] ?? 'Admin' ?>
-        </span>
+
         <a href="/logout">Deconnexion</a>
     </div>
 </nav>

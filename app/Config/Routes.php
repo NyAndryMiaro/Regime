@@ -15,9 +15,13 @@ $routes->get('/logout', 'Utilisateur::logout');
 $routes->get('/accueil', 'Utilisateur::accueil');
 $routes->get('/accueilAdmin', 'Utilisateur::accueilAdmin');
 
-
 //admin
 $routes->get('/admin/activites', 'Activites::listeActivites');
+$routes->get('/admin/activite-insert', 'Activites::showForm');
+$routes->post('/admin/activite-save', 'Activites::save');
+$routes->get('/admin/activite-delete/(:num)', 'Activites::remove/$1');
+$routes->get('/admin/activite-update/(:num)', 'Activites::showUpdateForm/$1');
+$routes->post('/admin/activite-modify', 'Activites::update');
 
 // $routes->group('admin', ['filter' => 'role'],
 //     function ($routes) {

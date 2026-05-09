@@ -49,6 +49,8 @@ CREATE OR REPLACE TABLE Activites(
     id_Activite int primary key auto_increment,
     id_Objectif int references Objectif (id_Objectif),
     libelle varchar(50),
-    duree time,
+    duree int,  -- en heure
     variation_poids double
 );
+
+
