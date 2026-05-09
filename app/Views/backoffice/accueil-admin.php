@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,20 +8,10 @@
     <link rel="stylesheet" href="/assets/css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="navbar-brand">👑 Ré-Gym - Admin</div>
-        <div class="navbar-menu">
-            <a href="#dashboard">Tableau de Bord</a>
-            <a href="#utilisateurs">Utilisateurs</a>
-            <a href="#statistiques">Statistiques</a>
-            <span class="user-welcome">Admin: <?= session()->get('user')['nom'] ?? 'Admin' ?></span>
-            <form action="/logout" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-logout btn-sm">Déconnexion</button>
-            </form>
-        </div>
-    </nav>
+    <?php include("navbar-admin.html"); ?>
 
     <div class="container">
         <!-- Header Section -->
@@ -57,7 +48,7 @@
             <div class="card stat-card">
                 <div class="stat-label">Poids Moyen</div>
                 <div class="stat-value">
-                    <?php 
+                    <?php
                     $poids = array_filter($users ?? [], fn($u) => $u['poids'] ?? 0);
                     echo $poids ? number_format(array_sum(array_column($poids, 'poids')) / count($poids), 1) : '0';
                     ?>
@@ -114,25 +105,25 @@
                     </thead>
                     <tbody>
                         <?php if (!empty($users)): ?>
-                            <?php foreach($users as $user): 
+                            <?php foreach ($users as $user):
                                 $imc = $user['poids'] / (($user['taille'] / 100) ** 2);
                                 $statut = $user['estAdmin'] ? 'Admin' : 'Utilisateur';
                                 $couleur = $user['estAdmin'] ? 'style="color: #f59e0b;"' : '';
                             ?>
-                            <tr>
-                                <td><?= $user['id_Utilisateur'] ?></td>
-                                <td><strong><?= esc($user['nom']) ?></strong></td>
-                                <td><?= esc($user['email']) ?></td>
-                                <td><?= $user['genre'] == 'M' ? '👨 Homme' : '👩 Femme' ?></td>
-                                <td><?= $user['taille'] ?></td>
-                                <td><?= $user['poids'] ?></td>
-                                <td><?= number_format($imc, 1) ?></td>
-                                <td><span <?= $couleur ?>><?= $statut ?></span></td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm">✏️</button>
-                                    <button class="btn btn-logout btn-sm">🗑️</button>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td><?= $user['id_Utilisateur'] ?></td>
+                                    <td><strong><?= esc($user['nom']) ?></strong></td>
+                                    <td><?= esc($user['email']) ?></td>
+                                    <td><?= $user['genre'] == 'M' ? '👨 Homme' : '👩 Femme' ?></td>
+                                    <td><?= $user['taille'] ?></td>
+                                    <td><?= $user['poids'] ?></td>
+                                    <td><?= number_format($imc, 1) ?></td>
+                                    <td><span <?= $couleur ?>><?= $statut ?></span></td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm">✏️</button>
+                                        <button class="btn btn-logout btn-sm">🗑️</button>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
@@ -200,7 +191,10 @@
         <p>&copy; 2024 MonRégime - Panneau d'administration</p>
     </footer>
 
-    <script>window.__users = <?= json_encode($users ?? []) ?>;</script>
+    <script>
+        window.__users = <?= json_encode($users ?? []) ?>;
+    </script>
     <script src="/assets/js/accueilAdmin.js"></script>
 </body>
+
 </html>
