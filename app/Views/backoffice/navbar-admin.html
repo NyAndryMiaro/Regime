@@ -1,5 +1,5 @@
 <nav class="navbar">
-    <div class="navbar-brand">👑 MonRégime - Admin</div>
+    <div class="navbar-brand">👑 Ré-Gym - Admin</div>
     <div class="navbar-menu">
         <a href="#dashboard">Tableau de Bord</a>
         <a href="#utilisateurs">Utilisateurs</a>
@@ -8,6 +8,8 @@
         <span class="user-welcome">Admin:
             <?= session()->get('user')['nom'] ?? 'Admin' ?>
         </span>
-        <a href="/logout">Deconnexion</a>
+        <form action="/logout" method="post" style="display: inline;">
+            <button type="submit" class="btn btn-logout btn-sm">Déconnexion</button>
+        </form>
     </div>
 </nav>

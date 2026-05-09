@@ -10,34 +10,30 @@
 
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="navbar-brand">💚 Ré-Gym</div>
-        <div class="navbar-menu">
-            <a href="#accueil">Accueil</a>
-            <a href="#repas">Mes Repas</a>
-            <a href="#regimes">Régimes</a>
-            <span class="user-welcome">Bienvenue, <?= session()->get('user')['nom'] ?? 'Utilisateur' ?></span>
-            <form action="/logout" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-sm">Déconnexion</button>
-            </form>
-        </div>
-    </nav>
+    <?php include("navbar-user.html"); ?>
 
     <div class="container">
         <!-- Header Section -->
-        <div class="objectif-section" id="Objctif">
-            <h2>Commencez par choisir un objectif</h2>
+        <?php if (empty($verifier)) { ?>
+            <div class="objectif-section" id="Objctif">
+                <h2>Commencez par choisir un objectif</h2>
 
-            <form action="/objectif" method="post" id="choixObj">
-                <?php if (!empty($objectif)) {
-                    foreach ($objectif as $obj) { ?>
-                        <p> <?= $obj["libelle"] ?> <input type="radio" name="objectif" value="<?= $obj["id_Objectif"] ?>"></p>
-                <?php }
-                } ?>
-                <button type="submit"> Valider </button>
-            </form>
+                <form action="/objectif" method="post" id="choixObj">
+                    <?php if (!empty($objectif)) {
+                        foreach ($objectif as $obj) { ?>
+                            <p> <?= $obj["libelle"] ?> <input type="radio" name="objectif" value="<?= $obj["id_Objectif"] ?>"></p>
+                    <?php }
+                    } ?>
+                    <button type="submit"> Valider </button>
+                </form>
 
-        </div>
+            </div>
+
+        <?php } else{ ?>
+            <div class="objectif-enable">
+                <a href="">Cliquez pour choisir un objectif</a>
+            </div>
+        <?php } ?>
 
         <div class="header-section" id="accueil">
             <h1>👋 Bienvenue sur votre Tableau de Bord</h1>
