@@ -6,7 +6,7 @@
             <a href="#regimes">Régimes</a>
             <span class="user-welcome">Bienvenue, <?= session()->get('user')['nom'] ?? 'Utilisateur' ?></span>
             <form action="/logout" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-sm">Déconnexion</button>
+                <button type="submit" class="btn btn-logout btn-sm">Déconnexion</button>
             </form>
         </div>
     </nav>
