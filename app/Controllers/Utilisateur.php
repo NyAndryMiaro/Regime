@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\UtilisateurModel;
+use App\Models\ObjectifModel;
+use App\Models\UtilisateurObjectifModel;
 
 class Utilisateur extends BaseController
 {
@@ -21,7 +23,6 @@ class Utilisateur extends BaseController
             ]);
         }
         
-        // Stocker uniquement les données non sensibles en session
         session()->set('user', [
             'id' => $user['id_Utilisateur'],
             'nom' => $user['nom'],
@@ -29,13 +30,15 @@ class Utilisateur extends BaseController
             'estAdmin' => $user['estAdmin']
         ]);
         
-        // Rediriger selon le type d'utilisateur
         if($user['estAdmin'] == 1){
             $users = $model->findAll();
             return view('accueilAdmin', ['users' => $users]);
         }
         
-        return view('accueil', ['user' => $user]);
+        $objectif= new ObjectifModel();
+        $obj= $objectif->findAll();
+
+        return view('accueil', ['user' => $user, 'objectif' => $obj]);
     }
 
     public function showLogin()
@@ -119,7 +122,6 @@ class Utilisateur extends BaseController
 
     public function accueil()
     {
-        // Afficher la page d'accueil utilisateur
         $user = session()->get('user');
         if (!$user) {
             return redirect()->to('/login');
@@ -128,12 +130,14 @@ class Utilisateur extends BaseController
         $model = new UtilisateurModel();
         $userData = $model->find($user['id']);
         
-        return view('accueil', ['user' => $userData]);
+        $objectif= new ObjectifModel();
+        $obj= $objectif->findAll();
+        
+        return view('accueil', ['user' => $userData, 'objectif' => $obj]);
     }
 
     public function accueilAdmin()
     {
-        // Afficher la page d'accueil admin
         $user = session()->get('user');
         if (!$user || !$user['estAdmin']) {
             return redirect()->to('/login');
@@ -143,5 +147,19 @@ class Utilisateur extends BaseController
         $users = $model->findAll();
         
         return view('accueilAdmin', ['users' => $users]);
+    }
+
+    public function choixObjectif(){
+        $user = session()->get('user');
+        
+        $infos= [
+            'id_Utilisateur' => $user['id'],
+            'id_Objectif' => $this->request->getPost('objectif')
+        ];
+
+        $utiliObj= new UtilisateurObjectifModel();
+        $utiliObj->insert($infos);
+
+        return redirect() -> to('/accueil');
     }
 }

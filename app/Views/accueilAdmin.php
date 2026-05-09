@@ -10,7 +10,7 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="navbar-brand">👑 MonRégime - Admin</div>
+        <div class="navbar-brand">👑 Ré-Gym - Admin</div>
         <div class="navbar-menu">
             <a href="#dashboard">Tableau de Bord</a>
             <a href="#utilisateurs">Utilisateurs</a>

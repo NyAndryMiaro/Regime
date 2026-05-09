@@ -1,28 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Régime - Tableau de Bord</title>
     <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="navbar-brand">💚 MonRégime</div>
+        <div class="navbar-brand">💚 Ré-Gym</div>
         <div class="navbar-menu">
             <a href="#accueil">Accueil</a>
             <a href="#repas">Mes Repas</a>
             <a href="#regimes">Régimes</a>
             <span class="user-welcome">Bienvenue, <?= session()->get('user')['nom'] ?? 'Utilisateur' ?></span>
             <form action="/logout" method="post" style="display: inline;">
-                <button type="submit" class="btn btn-logout btn-sm">Déconnexion</button>
+                <button type="submit" class="btn btn-sm">Déconnexion</button>
             </form>
         </div>
     </nav>
 
     <div class="container">
         <!-- Header Section -->
+        <div class="objectif-section" id="Objctif">
+            <h2>Commencez par choisir un objectif</h2>
+
+            <form action="/objectif" method="post" id="choixObj">
+                <?php if (!empty($objectif)) {
+                    foreach ($objectif as $obj) { ?>
+                        <p> <?= $obj["libelle"] ?> <input type="radio" name="objectif" value="<?= $obj["id_Objectif"] ?>"></p>
+                <?php }
+                } ?>
+                <button type="submit"> Valider </button>
+            </form>
+
+        </div>
+
         <div class="header-section" id="accueil">
             <h1>👋 Bienvenue sur votre Tableau de Bord</h1>
             <p>Suivez votre progression vers vos objectifs nutritionnels</p>
@@ -106,22 +122,46 @@
         <div class="charts-container">
             <div class="chart-card">
                 <h3>📊 Évolution du Poids (30j)</h3>
+                <p class="card-subtitle">Votre poids passe progressivement de 68 kg à 65 kg. Objectif: stabilisation autour de 64 kg.</p>
                 <canvas id="weightChart"></canvas>
+                <div class="mini-metrics">
+                    <span>Départ: 68 kg</span>
+                    <span>Actuel: 65 kg</span>
+                    <span>Objectif: 64 kg</span>
+                </div>
             </div>
 
             <div class="chart-card">
                 <h3>🥗 Répartition Nutritionnelle</h3>
+                <p class="card-subtitle">Votre journée idéale: 50% glucides, 30% protéines, 20% lipides.</p>
                 <canvas id="nutritionChart"></canvas>
+                <div class="mini-metrics">
+                    <span>Glucides: 50%</span>
+                    <span>Protéines: 30%</span>
+                    <span>Lipides: 20%</span>
+                </div>
             </div>
 
             <div class="chart-card">
                 <h3>📉 Calories Cette Semaine</h3>
+                <p class="card-subtitle">Vous êtes légèrement au-dessus de la cible les mardi, samedi et jeudi.</p>
                 <canvas id="caloriesChart"></canvas>
+                <div class="mini-metrics">
+                    <span>Cible: 2200 kcal</span>
+                    <span>Moyenne: 2229 kcal</span>
+                    <span>Max: 2400 kcal</span>
+                </div>
             </div>
 
             <div class="chart-card">
                 <h3>💧 Hydratation</h3>
+                <p class="card-subtitle">Votre hydratation reste proche de l'objectif de 2.5 L par jour.</p>
                 <canvas id="hydrationChart"></canvas>
+                <div class="mini-metrics">
+                    <span>Moyenne: 2.3 L</span>
+                    <span>Objectif: 2.5 L</span>
+                    <span>Meilleur jour: 2.6 L</span>
+                </div>
             </div>
         </div>
 
@@ -210,6 +250,20 @@
         <p>&copy; 2024 MonRégime - Votre guide de nutrition personnalisé</p>
     </footer>
 
+    <script>
+        window.__dashboardData = {
+            weightLabels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'],
+            weightValues: [68, 67.5, 67, 66.5, 66, 65.5, 65],
+            caloriesLabels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+            caloriesValues: [2150, 2300, 2100, 2250, 2200, 2400, 2100],
+            nutritionLabels: ['Glucides', 'Protéines', 'Lipides'],
+            nutritionValues: [50, 30, 20],
+            nutritionColors: ['#10b981', '#059669', '#d1fae5'],
+            hydrationLabels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+            hydrationValues: [2.2, 2.5, 2.1, 2.4, 2.6, 2.3, 2.1]
+        };
+    </script>
     <script src="/assets/js/dashboard.js"></script>
 </body>
+
 </html>

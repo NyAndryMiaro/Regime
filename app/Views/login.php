@@ -24,11 +24,11 @@
                 <?= csrf_field() ?>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value="admin@gmail.com" required>
+                    <input type="email" id="email" name="email" value="Alice@gmail.com" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" value="wwwwwwww" required>
+                    <input type="password" id="password" name="password" value="aaaaaaaa" required>
                 </div>
                 <button type="submit" class="btn btn--primary">Se connecter</button>
             </form>

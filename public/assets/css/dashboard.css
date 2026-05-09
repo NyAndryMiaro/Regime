@@ -330,6 +330,29 @@ table tbody tr:last-child td {
     font-size: 1.1rem;
 }
 
+.card-subtitle {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: -0.5rem 0 1rem 0;
+    line-height: 1.4;
+}
+
+.mini-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-top: 0.75rem;
+    color: #4b5563;
+    font-size: 0.85rem;
+}
+
+.mini-metrics span {
+    background: var(--extra-light-green);
+    border: 1px solid var(--light-green);
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+}
+
 /* ==================== ALERTS & RECOMMENDATIONS ==================== */
 .alert {
     padding: 1rem 1.5rem;

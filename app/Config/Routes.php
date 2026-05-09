@@ -7,12 +7,17 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Utilisateur::showLogin');
 $routes->get('/login', 'Utilisateur::showLogin');
+$routes->post('/login', 'Utilisateur::login');
+
 $routes->get('/showSignUp1', 'Utilisateur::showSignup');
 $routes->post('/showSignUp2', 'Utilisateur::showSignup2');
+
 $routes->post('/register', 'Utilisateur::register');
-$routes->post('/login', 'Utilisateur::login');
 $routes->post('/logout', 'Utilisateur::logout');
+
 $routes->get('/accueil', 'Utilisateur::accueil');
 $routes->get('/accueilAdmin', 'Utilisateur::accueilAdmin');
+
+$routes->post('/objectif', 'Utilisateur::choixObjectif');
 
 
