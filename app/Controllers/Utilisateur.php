@@ -35,10 +35,18 @@ class Utilisateur extends BaseController
             return view('/backoffice/accueil-admin', ['users' => $users]);
         }
         
+        $verifier= $this->ObjectifUtilisateur($user['id_Utilisateur']);
+
         $objectif= new ObjectifModel();
         $obj= $objectif->findAll();
 
-        return view('/frontoffice/accueil', ['user' => $user, 'objectif' => $obj]);
+        
+        if($verifier != null){
+            $but= $objectif -> find($verifier['id_Objectif']);
+            return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj, 'objectif' => $but]);
+        } else{
+            return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj]);
+        }
     }
 
     public function showLogin()
@@ -132,7 +140,14 @@ class Utilisateur extends BaseController
         $objectif= new ObjectifModel();
         $obj= $objectif->findAll();
         
-        return view('frontoffice/accueil', ['user' => $userData, 'objectif' => $obj]);
+        $verifier= $this->ObjectifUtilisateur($user['id']);
+        if($verifier != null){
+            $but= $objectif -> find($verifier['id_Objectif']);
+            return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj, 'objectif' => $but]);
+        } else{
+            return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj]);
+        }
+
     }
 
     public function accueilAdmin()
@@ -151,7 +166,7 @@ class Utilisateur extends BaseController
     public function choixObjectif(){
         $user = session()->get('user');
         
-        $verifier= $this->verifierObjectif($user['id']);
+        $verifier= $this->ObjectifUtilisateur($user['id']);
 
         $infos= [
             'id_Utilisateur' => $user['id'],
@@ -167,10 +182,12 @@ class Utilisateur extends BaseController
         $obj= $objectif->findAll();
 
         $utiliObj->insert($infos);
-        return view('frontoffice/accueil', ['user' => $userData, 'objectif' => $obj, 'verifier' => 1]);
+        $but= $objectif -> find($verifier['id_Objectif']);
+
+        return view('frontoffice/accueil', ['user' => $userData, 'objectifs' => $obj, 'objectif' => $but]);
     }
 
-    public function verifierObjectif($user){
+    public function ObjectifUtilisateur($user){
 
         $utiliObj = new UtilisateurObjectifModel();
         $obj = $utiliObj -> find($user);

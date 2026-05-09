@@ -14,13 +14,13 @@
 
     <div class="container">
         <!-- Header Section -->
-        <?php if (empty($verifier)) { ?>
+        <?php if (empty($objectif)) { ?>
             <div class="objectif-section" id="Objctif">
                 <h2>Commencez par choisir un objectif</h2>
 
                 <form action="/objectif" method="post" id="choixObj">
-                    <?php if (!empty($objectif)) {
-                        foreach ($objectif as $obj) { ?>
+                    <?php if (!empty($objectifs)) {
+                        foreach ($objectifs as $obj) { ?>
                             <p> <?= $obj["libelle"] ?> <input type="radio" name="objectif" value="<?= $obj["id_Objectif"] ?>"></p>
                     <?php }
                     } ?>
@@ -30,8 +30,8 @@
             </div>
 
         <?php } else{ ?>
-            <div class="objectif-enable">
-                <a href="">Cliquez pour choisir un objectif</a>
+            <div class="objectif-section">
+                <p> Votre objectif : <?= esc($objectif['libelle']) ?> </p>
             </div>
         <?php } ?>
 

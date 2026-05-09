@@ -196,7 +196,9 @@ document.addEventListener('DOMContentLoaded', function () {
   values.forEach((v, i) => { const x = padding + (i / (values.length - 1 || 1)) * (w - 2 * padding); const y = padding + (1 - (v / max)) * (h - 2 * padding); canvasCtx.fillStyle = '#f59e0b'; canvasCtx.beginPath(); canvasCtx.arc(x, y, 4, 0, Math.PI * 2); canvasCtx.fill(); });
     }
 
-    function effacerObjectif(){
-      const obj= document.getElementById("choixObj");
-
+    function afficherObjectif(){
+      const obj= document.getElementById("objectif-enable");
+      const objectif = obj.dataset.objectif; 
+    
+      console.log(objectif);
     }
