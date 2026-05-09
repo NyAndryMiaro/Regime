@@ -39,7 +39,7 @@ CREATE OR REPLACE TABLE Regime(
     libelle varchar(90),
     variation_poids double,
     prix_unitaire double,
-    duree time,
+    duree int,
     pourcentage_viande double,
     pourcentage_poisson double,
     pourcentage_legume double

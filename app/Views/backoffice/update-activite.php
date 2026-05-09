@@ -1,7 +1,25 @@
 <?php
+    // $duree = $activite['duree'];
+    $duree = 290;
     $mois = 0;
     $jours = 0;
     $heures = 0;
+
+    //exemple 290 heures
+    if ($duree > 24) {
+        $jours = $duree / 24; //69
+        $heures = $duree % 24; //6
+    }
+
+    if ($jours != 0 && $jours > 30) {
+        $mois = $jours / 30;
+        $jourfloat = $jours % 30;
+        $jours = floor($jourfloat);
+    }
+
+    var_dump($heures);
+    var_dump($jours);
+    var_dump($mois);
 ?>
 
 <!DOCTYPE html>
@@ -24,11 +42,21 @@
         </section>
 
         <section class="card card--pad">
+            <?php if (isset($errors) && is_array($errors) && count($errors) > 0): ?>
+                <section class="error-section">
+                    <ul style="color: red;">
+                        <?php foreach ($errors as $err): ?>
+                            <li><?= esc($err) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </section>
+            <?php endif; ?>
+
             <form action="/admin/activite-modify" method="post" class="form stack">
                 <?= csrf_field() ?>
                 <div class="form-group">
                     <label for="nom">Nom de l'activité :</label>
-                    <input type="text" id="nom" name="nom" value="<?= $activite["libelle"] ?>" required>
+                    <input type="text" id="nom" name="nom" value="<?= isset($old['nom']) ? esc($old['nom']) : $activite["libelle"] ?>" required>
                 </div>
 
                 <div class="form-group">
@@ -36,7 +64,7 @@
                     <select id="objectif" name="id_objectif" required>
                         <option value="">Sélectionnez un objectif</option>
                         <?php foreach ($objectifs as $objectif): ?>
-                            <option value="<?= $objectif['id_Objectif'] ?>" <?= ($objectif['id_Objectif'] == $activite['id_Objectif']) ? 'selected' : '' ?>><?= $objectif['libelle'] ?></option>
+                            <option value="<?= $objectif['id_Objectif'] ?>" <?= (isset($old['id_objectif']) ? $old['id_objectif'] : $activite['id_Objectif']) == $objectif['id_Objectif'] ? 'selected' : '' ?>><?= $objectif['libelle'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -44,15 +72,15 @@
                 <div class="form-group">
                     <label>Durée :</label>
                     <div style="display: flex; gap: 8px;">
-                        <input type="number" min="0" id="mois" name="mois" placeholder="Mois" value="<?= $mois ?>" style="width: 80px;">
-                        <input type="number" min="0" max="31" id="jours" name="jours" placeholder="Jours" value="<?= $jours ?>" style="width: 80px;">
-                        <input type="number" min="0" max="23" id="heures" name="heures" placeholder="Heures" value="<?= $heures ?>" style="width: 80px;">
+                        <input type="number" min="0" id="mois" name="mois" placeholder="Mois" value="<?= isset($old['mois']) ? esc($old['mois']) : $mois ?>" style="width: 80px;">
+                        <input type="number" min="0" max="31" id="jours" name="jours" placeholder="Jours" value="<?= isset($old['jours']) ? esc($old['jours']) : $jours ?>" style="width: 80px;">
+                        <input type="number" min="0" max="23" id="heures" name="heures" placeholder="Heures" value="<?= isset($old['heures']) ? esc($old['heures']) : $heures ?>" style="width: 80px;">
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="variation_poids">Variation du poids (kg) :</label>
-                    <input type="number" step="0.01" id="variation_poids" name="variation_poids" value="<?= $activite["variation_poids"] ?>" required>
+                    <input type="number" step="0.01" id="variation_poids" name="variation_poids" value="<?= isset($old['variation_poids']) ? esc($old['variation_poids']) : $activite["variation_poids"] ?>" required>
                 </div>
 
                 <input type="hidden" name="id_activite" value="<?= $activite['id_Activite'] ?>">

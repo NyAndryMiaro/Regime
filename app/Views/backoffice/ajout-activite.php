@@ -15,11 +15,21 @@
         </section>
 
         <section class="card card--pad">
+            <?php if (isset($errors) && is_array($errors) && count($errors) > 0): ?>
+                <section class="error-section">
+                    <ul style="color: red;">
+                        <?php foreach ($errors as $err): ?>
+                            <li><?= esc($err) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </section>
+            <?php endif; ?>
+
             <form action="/admin/activite-save" method="post" class="form stack">
                 <?= csrf_field() ?>
                 <div class="form-group">
                     <label for="nom">Nom de l'activité :</label>
-                    <input type="text" id="nom" name="nom" required>
+                    <input type="text" id="nom" name="nom" required value="<?= isset($old['nom']) ? esc($old['nom']) : '' ?>">
 
                 </div>
 
@@ -28,7 +38,7 @@
                     <select id="objectif" name="id_objectif" required>
                         <option value="">Sélectionnez un objectif</option>
                         <?php foreach ($objectifs as $objectif): ?>
-                            <option name="id_objectif" value="<?= $objectif['id_Objectif'] ?>"><?= $objectif['libelle'] ?></option>
+                            <option name="id_objectif" value="<?= $objectif['id_Objectif'] ?>" <?= (isset($old['id_objectif']) && $old['id_objectif'] == $objectif['id_Objectif']) ? 'selected' : '' ?>><?= $objectif['libelle'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -36,15 +46,15 @@
                 <div class="form-group">
                     <label>Durée :</label>
                     <div style="display: flex; gap: 8px;">
-                        <input type="number" min="0" id="mois" name="mois" placeholder="Mois" style="width: 80px;">
-                        <input type="number" min="0" max="31" id="jours" name="jours" placeholder="Jours" style="width: 80px;">
-                        <input type="number" min="0" max="23" id="heures" name="heures" placeholder="Heures" style="width: 80px;">
+                        <input type="number" min="0" id="mois" name="mois" placeholder="Mois" style="width: 80px;" value="<?= isset($old['mois']) ? esc($old['mois']) : '' ?>">
+                        <input type="number" min="0" max="31" id="jours" name="jours" placeholder="Jours" style="width: 80px;" value="<?= isset($old['jours']) ? esc($old['jours']) : '' ?>">
+                        <input type="number" min="0" max="23" id="heures" name="heures" placeholder="Heures" style="width: 80px;" value="<?= isset($old['heures']) ? esc($old['heures']) : '' ?>">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="variation_poids">Variation du poids (kg) :</label>
-                    <input type="number" step="0.01" id="variation_poids" name="variation_poids" required>
+                    <input type="number" step="0.01" id="variation_poids" name="variation_poids" required value="<?= isset($old['variation_poids']) ? esc($old['variation_poids']) : '' ?>">
                 </div>
 
                 <button type="submit" class="btn btn--primary">Ajouter</button>
