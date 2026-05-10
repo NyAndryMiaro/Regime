@@ -195,58 +195,6 @@
             </div>
         </div>
 
-        <!-- Tableau des Repas -->
-        <div class="section-title" id="repas">🍽️ Vos Repas d'Aujourd'hui</div>
-        <div class="table-container mb-4">
-            <table>
-                <thead>
-                    <tr>
-                        <th>⏰ Heure</th>
-                        <th>🍴 Repas</th>
-                        <th>🔥 Calories</th>
-                        <th>💪 Protéines</th>
-                        <th>🌾 Glucides</th>
-                        <th>🥑 Lipides</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>08:00</td>
-                        <td>Petit-déjeuner: Œufs + Pain complet</td>
-                        <td>320 kcal</td>
-                        <td>15g</td>
-                        <td>35g</td>
-                        <td>12g</td>
-                    </tr>
-                    <tr>
-                        <td>10:30</td>
-                        <td>Snack: Pomme + Amandes</td>
-                        <td>180 kcal</td>
-                        <td>6g</td>
-                        <td>22g</td>
-                        <td>8g</td>
-                    </tr>
-                    <tr>
-                        <td>12:30</td>
-                        <td>Déjeuner: Poulet grillé + Riz</td>
-                        <td>550 kcal</td>
-                        <td>35g</td>
-                        <td>65g</td>
-                        <td>8g</td>
-                    </tr>
-                    <tr>
-                        <td>15:00</td>
-                        <td>Goûter: Yaourt grec</td>
-                        <td>150 kcal</td>
-                        <td>20g</td>
-                        <td>8g</td>
-                        <td>4g</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2024 MonRégime - Votre guide de nutrition personnalisé</p>

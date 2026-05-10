@@ -18,6 +18,7 @@ $routes->get('/logout', 'Utilisateur::logout');
 $routes->get('/accueil', 'Utilisateur::accueil');
 $routes->get('/accueilAdmin', 'Utilisateur::accueilAdmin');
 
+$routes->get('/objectif', 'Utilisateur::objectif');
 $routes->post('/objectif', 'Utilisateur::choixObjectif');
 
 $routes->get('/monnaie', 'Utilisateur::porteMonnaie');

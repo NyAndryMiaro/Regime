@@ -168,6 +168,34 @@ class Utilisateur extends BaseController
         return view('backoffice/accueil', ['users' => $users]);
     }
 
+    public function objectif()
+    {
+        $user = session()->get('user');
+        if (!$user) {
+            return redirect()->to('/login');
+        }
+
+        $model = new UtilisateurModel();
+        $userData = $model->find($user['id']);
+
+        $objectifModel = new ObjectifModel();
+        $objectifs = $objectifModel->findAll();
+
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
+
+        $objectifActuel = null;
+        if ($verifier != null) {
+            $objectifActuel = $objectifModel->find($verifier['id_Objectif']);
+        }
+
+        return view('frontoffice/objectif', [
+            'user' => $userData,
+            'objectifs' => $objectifs,
+            'objectifActuel' => $objectifActuel
+        ]);
+    }
+
     public function choixObjectif()
     {
         $user = session()->get('user');
@@ -183,6 +211,8 @@ class Utilisateur extends BaseController
         }
 
         $utiliObj = new UtilisateurObjectifModel();
+        $objectifModel = new ObjectifModel();
+        $objectif = $objectifModel->find($objectifId);
 
         try {
             $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
@@ -201,7 +231,8 @@ class Utilisateur extends BaseController
             if ($this->request->isAJAX()) {
                 return $this->response->setJSON(['success' => true, 'message' => 'Objectif mis à jour']);
             } else {
-                return redirect()->to('/accueil');
+                $successMsg = 'Objectif modifié avec succès! Vous avez maintenant pour objectif: ' . esc($objectif['libelle']);
+                return redirect()->to('/objectif')->with('success', $successMsg);
             }
         } catch (\Exception $e) {
             if ($this->request->isAJAX()) {
