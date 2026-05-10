@@ -167,7 +167,7 @@ class Utilisateur extends BaseController
         $model = new UtilisateurModel();
         $users = $model->findAll();
 
-        return view('backoffice/accueil', ['users' => $users]);
+        return view('backoffice/accueil-admin', ['users' => $users]);
     }
 
     public function objectif()

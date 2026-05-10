@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activités - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/dashboard.css">
-    <style>
+    <link rel="stylesheet" href="/assets/css/style.css">
         .activites-container {
             max-width: 1200px;
             margin: 0 auto;

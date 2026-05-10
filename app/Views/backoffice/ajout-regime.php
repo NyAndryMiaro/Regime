@@ -1,78 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un régime</title>
-    <link rel="stylesheet" href="/assets/css/admin.css">
+    <title>Ajouter un régime - Ré-Gym Admin</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
     <div class="page-shell stack">
-         <?php include("navbar/navbar-admin.html");?>
+        <?php include("navbar/navbar-admin.html"); ?>
+        
         <section class="hero">
-            <h1>Ajouter un régime</h1>
-            <p>Remplissez le formulaire ci-dessous pour ajouter un nouveau régime.</p>
+            <h1>➕ Ajouter un régime</h1>
+            <p>Créez un nouveau régime alimentaire personnalisé.</p>
         </section>
 
-        <section class="card card--pad">
+        <section class="card card--pad" style="max-width: 700px;">
             <?php if (isset($errors) && is_array($errors) && count($errors) > 0): ?>
-                <section class="error-section">
-                    <ul style="color: red;">
-                        <?php foreach ($errors as $err): ?>
-                            <li><?= esc($err) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </section>
+                <div class="alert alert-danger">
+                    <div class="alert-icon">⚠️</div>
+                    <div class="alert-content">
+                        <strong>Erreurs détectées</strong>
+                        <ul style="margin: 0.5rem 0 0 1rem; padding-left: 1rem;">
+                            <?php foreach ($errors as $err): ?>
+                                <li><?= esc($err) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
             <?php endif; ?>
 
-            <form action="/admin/regime-save" method="post" class="form stack">
+            <form action="/admin/regime-save" method="post" class="form">
                 <?= csrf_field() ?>
+                
                 <div class="form-group">
-                    <label for="libelle">Nom du régime :</label>
-                    <input type="text" id="libelle" name="libelle" required value="<?= isset($old['libelle']) ? esc($old['libelle']) : '' ?>">
+                    <label for="libelle">Nom du régime</label>
+                    <input type="text" id="libelle" name="libelle" placeholder="Ex: Régime équilibré" required value="<?= isset($old['libelle']) ? esc($old['libelle']) : '' ?>">
                 </div>
 
                 <div class="form-group">
-                    <label for="objectif">Objectif :</label>
+                    <label for="objectif">Objectif</label>
                     <select id="objectif" name="id_objectif" required>
                         <option value="">Sélectionnez un objectif</option>
                         <?php foreach ($objectifs as $objectif): ?>
-                            <option value="<?= $objectif['id_Objectif'] ?>" <?= (isset($old['id_objectif']) && $old['id_objectif'] == $objectif['id_Objectif']) ? 'selected' : '' ?>><?= $objectif['libelle'] ?></option>
+                            <option value="<?= $objectif['id_Objectif'] ?>" <?= (isset($old['id_objectif']) && $old['id_objectif'] == $objectif['id_Objectif']) ? 'selected' : '' ?>>
+                                <?= $objectif['libelle'] ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="duree">Durée (heures) :</label>
-                    <input type="number" min="0" id="duree" name="duree" required value="<?= isset($old['duree']) ? esc($old['duree']) : '' ?>">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="duree">Durée (heures)</label>
+                        <input type="number" min="0" id="duree" name="duree" placeholder="Ex: 24" required value="<?= isset($old['duree']) ? esc($old['duree']) : '' ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="variation_poids">Variation poids (kg)</label>
+                        <input type="number" step="0.01" id="variation_poids" name="variation_poids" placeholder="Ex: -1.5" required value="<?= isset($old['variation_poids']) ? esc($old['variation_poids']) : '' ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prix_unitaire">Prix unitaire (€)</label>
+                        <input type="number" step="0.01" id="prix_unitaire" name="prix_unitaire" placeholder="Ex: 19.99" required value="<?= isset($old['prix_unitaire']) ? esc($old['prix_unitaire']) : '' ?>">
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="variation_poids">Variation du poids (kg) :</label>
-                    <input type="number" step="0.01" id="variation_poids" name="variation_poids" required value="<?= isset($old['variation_poids']) ? esc($old['variation_poids']) : '' ?>">
+                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--border);">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary);">🥗 Composition nutritionnelle</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pourcentage_viande">🥩 Viande (%)</label>
+                            <input type="number" min="0" max="100" id="pourcentage_viande" name="pourcentage_viande" placeholder="Ex: 35" required value="<?= isset($old['pourcentage_viande']) ? esc($old['pourcentage_viande']) : '' ?>">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pourcentage_poisson">🐟 Poisson (%)</label>
+                            <input type="number" min="0" max="100" id="pourcentage_poisson" name="pourcentage_poisson" placeholder="Ex: 30" required value="<?= isset($old['pourcentage_poisson']) ? esc($old['pourcentage_poisson']) : '' ?>">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pourcentage_legume">🥬 Légume (%)</label>
+                            <input type="number" min="0" max="100" id="pourcentage_legume" name="pourcentage_legume" placeholder="Ex: 35" required value="<?= isset($old['pourcentage_legume']) ? esc($old['pourcentage_legume']) : '' ?>">
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 0.75rem; padding: 1rem; background: rgba(15, 139, 102, 0.08); border-radius: var(--radius-md); font-size: 0.9rem; color: var(--text-secondary);">
+                        💡 <strong>Conseil:</strong> La somme des pourcentages doit être égale à 100%
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="prix_unitaire">Prix unitaire :</label>
-                    <input type="number" step="0.01" id="prix_unitaire" name="prix_unitaire" required value="<?= isset($old['prix_unitaire']) ? esc($old['prix_unitaire']) : '' ?>">
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn--primary" style="flex: 1;">✅ Ajouter le régime</button>
+                    <a href="/admin/regimes" class="btn btn--secondary" style="flex: 1; text-align: center;">❌ Annuler</a>
                 </div>
-
-                <div class="form-group">
-                    <label for="pourcentage_viande">Pourcentage de viande (%) :</label>
-                    <input type="number" min="0" max="100" id="pourcentage_viande" name="pourcentage_viande" required value="<?= isset($old['pourcentage_viande']) ? esc($old['pourcentage_viande']) : '' ?>">
-                </div>
-
-                <div class="form-group">
-                    <label for="pourcentage_poisson">Pourcentage de poisson (%) :</label>
-                    <input type="number" min="0" max="100" id="pourcentage_poisson" name="pourcentage_poisson" required value="<?= isset($old['pourcentage_poisson']) ? esc($old['pourcentage_poisson']) : '' ?>">
-                </div>
-
-                <div class="form-group">
-                    <label for="pourcentage_legume">Pourcentage de légume (%) :</label>
-                    <input type="number" min="0" max="100" id="pourcentage_legume" name="pourcentage_legume" required value="<?= isset($old['pourcentage_legume']) ? esc($old['pourcentage_legume']) : '' ?>">
-                </div>
-
-                <button type="submit" class="btn btn--primary">Ajouter</button>
             </form>
         </section>
     </div>

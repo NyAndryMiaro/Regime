@@ -1,13 +1,10 @@
 <nav class="navbar">
-    <div class="navbar__brand"><span class="user-welcome">
-            <?= session()->get('user')['nom'] ?? 'Admin' ?>
-        </span></div>
+    <div class="navbar-brand">🛡️ Ré-Gym Admin</div>
     <div class="navbar-menu">
-        <a href="#dashboard">Tableau de Bord</a>
-        <a href="#utilisateurs">Utilisateurs</a>
-        <a href="#statistiques">Statistiques</a>
-        <a href="/admin/activites">Activites sportives</a>
-        <a href="/admin/regimes">Regimes</a>
-            <a href="/logout" class="btn btn-logout btn-sm">Déconnexion</a>
+        <a href="/accueilAdmin">📊 Tableau de Bord</a>
+        <a href="/admin/activites">🏃 Activités</a>
+        <a href="/admin/regimes">🍽️ Régimes</a>
+        <span class="user-welcome">👤 <?= session()->get('user')['nom'] ?? 'Admin' ?></span>
+        <a href="/logout" class="btn-logout">🚪 Déconnexion</a>
     </div>
 </nav>
