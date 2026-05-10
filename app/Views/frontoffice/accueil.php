@@ -88,34 +88,11 @@
         <!-- Régimes Recommandés -->
         <div class="section-title" id="regimes">🎯 Régimes Recommandés</div>
         <div class="card">
-            <div class="regimes-grid">
-                <div class="regime-card" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
-                    <h4>🌊 Méditerranéen</h4>
-                    <p>Fruits, légumes et huile d'olive pour votre santé</p>
-                    <div class="regime-calories">~1800 kcal/jour</div>
-                    <button class="btn btn-primary btn-ghost btn-full">Découvrir</button>
-                </div>
-
-                <div class="regime-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                    <h4>⚖️ Équilibré</h4>
-                    <p>Tous les nutriments essentiels pour votre santé</p>
-                    <div class="regime-calories">~2200 kcal/jour</div>
-                    <button class="btn btn-primary btn-ghost btn-full">Découvrir</button>
-                </div>
-
-                <div class="regime-card" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
-                    <h4>💪 Protéiné</h4>
-                    <p>Pour le renforcement musculaire et perte de poids</p>
-                    <div class="regime-calories">~1900 kcal/jour</div>
-                    <button class="btn btn-primary btn-ghost btn-full">Découvrir</button>
-                </div>
-
-                <div class="regime-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
-                    <h4>🥬 Végétarien</h4>
-                    <p>Fruits, légumes et produits laitiers</p>
-                    <div class="regime-calories">~1950 kcal/jour</div>
-                    <button class="btn btn-primary btn-ghost btn-full">Découvrir</button>
-                </div>
+            <div style="text-align: center; padding: 2rem;">
+                <p style="color: #666; margin-bottom: 1.5rem; font-size: 1.1rem;">Découvrez nos régimes personnalisés adaptés à vos objectifs</p>
+                <a href="/regimes" class="btn btn-primary" style="display: inline-block; padding: 0.75rem 2rem; text-decoration: none; border-radius: 6px;">
+                    Voir tous les régimes →
+                </a>
             </div>
         </div>
 

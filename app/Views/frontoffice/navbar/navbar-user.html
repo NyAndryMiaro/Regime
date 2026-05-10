@@ -12,3 +12,14 @@
         <a href="/logout" class="btn btn-logout btn-sm">Déconnexion</a>
     </div>
 </nav>
+    <nav class="navbar">
+        <div class="navbar-brand">💚 Ré-Gym</div>
+        <div class="navbar-menu">
+            <a href="/accueil">Accueil</a>
+            <a href="/regimes">Régimes</a>
+            <a href="/objectif">Objectif</a>
+            <a href="/monnaie">Mon porte-monnaie</a>
+            <span class="user-welcome">Bienvenue, <?= session()->get('user')['nom'] ?? 'Utilisateur' ?></span>
+            <a href="/logout" class="btn btn-logout btn-sm">Déconnexion</a>
+        </div>
+    </nav>
