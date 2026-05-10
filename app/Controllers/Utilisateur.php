@@ -30,7 +30,8 @@ class Utilisateur extends BaseController
             'nom' => $user['nom'],
             'email' => $user['email'],
             'argent' => $user['argent'],
-            'estAdmin' => $user['estAdmin']
+            'estAdmin' => $user['estAdmin'],
+            'estGold' => $user['estGold']
         ]);
 
         if ($user['estAdmin'] == 1) {
@@ -284,6 +285,7 @@ class Utilisateur extends BaseController
             return redirect()->to('/monnaie')->with('error', "Le code n'est plus disponible");
         }
     }
+
 
     /**
      * Calcule le poids idéal basé sur la taille et un IMC cible

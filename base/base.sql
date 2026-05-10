@@ -11,12 +11,13 @@ CREATE OR REPLACE TABLE Utilisateur(
     taille double,
     poids double,
     argent double DEFAULT 0,
-    estAdmin boolean
+    estAdmin boolean,
+    estGold BOOLEAN
 );
 
-INSERT INTO Utilisateur(nom, email, genre, motdepasse, taille, poids, estAdmin) VALUES
-('Alice', 'Alice@gmail.com', 'F', 'aaaaaaaa', 150, 40, FALSE),
-('Admin', 'Admin@gmail.com', 'M', 'wwwwwwww', 190, 75,TRUE);
+INSERT INTO Utilisateur(nom, email, genre, motdepasse, taille, poids, estAdmin, estGold) VALUES
+('Alice', 'Alice@gmail.com', 'F', 'aaaaaaaa', 150, 40, FALSE, FALSE),
+('Admin', 'Admin@gmail.com', 'M', 'wwwwwwww', 190, 75,TRUE, FALSE);
 
 CREATE OR REPLACE TABLE Objectif(
     id_Objectif int primary key auto_increment,
@@ -60,3 +61,11 @@ CREATE OR REPLACE TABLE Codes(
     montant double,
     utilise boolean default 0
 );
+
+create or replace table Gold(
+    id_Gold int PRIMARY KEY AUTO_INCREMENT,
+    remise DECIMAL(5,2),
+    prix double
+);
+
+insert into Gold (remise, prix) values (0.15, 20000);
