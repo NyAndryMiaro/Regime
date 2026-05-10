@@ -24,6 +24,8 @@ $routes->post('/objectif', 'Utilisateur::choixObjectif');
 $routes->get('/monnaie', 'Utilisateur::porteMonnaie');
 $routes->post('/code', 'Utilisateur::entrerCode');
 
+$routes->get('/show-gold', 'Gold::showGold');
+$routes->get('/devenir-gold/(:num)', 'Gold::becomeGold/$1s');
 
 //admin
 $routes->get('/admin/activites', 'Activites::listeActivites');

@@ -1,11 +1,14 @@
-    <nav class="navbar">
-        <div class="navbar-brand">💚 Ré-Gym</div>
-        <div class="navbar-menu">
-            <a href="/accueil" class="is-active">Accueil</a>
-            <a href="/accueil#regimes">Régimes</a>
-            <a href="/objectif">Objectif</a>
-            <a href="/monnaie">Mon porte-monnaie</a>
-            <span class="user-welcome">Bienvenue, <?= session()->get('user')['nom'] ?? 'Utilisateur' ?></span>
-            <a href="/logout" class="btn btn-logout btn-sm">Déconnexion</a>
-        </div>
-    </nav>
+<nav class="navbar">
+    <div class="navbar-brand">💚 Ré-Gym</div>
+    <div class="navbar-menu">
+        <a href="/accueil" class="is-active">Accueil</a>
+        <a href="/accueil#regimes">Régimes</a>
+        <a href="/objectif">Objectif</a>
+        <a href="/monnaie">Mon porte-monnaie</a>
+        <a href="/show-gold">Passer en GOLD</a>
+        <span class="user-welcome">Bienvenue,
+            <?= session()->get('user')['nom'] ?? 'Utilisateur' ?>
+        </span>
+        <a href="/logout" class="btn btn-logout btn-sm">Déconnexion</a>
+    </div>
+</nav>
