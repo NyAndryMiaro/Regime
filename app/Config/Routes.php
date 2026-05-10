@@ -20,6 +20,10 @@ $routes->get('/accueilAdmin', 'Utilisateur::accueilAdmin');
 
 $routes->post('/objectif', 'Utilisateur::choixObjectif');
 
+$routes->get('/monnaie', 'Utilisateur::porteMonnaie');
+$routes->post('/code', 'Utilisateur::entrerCode');
+
+
 //admin
 $routes->get('/admin/activites', 'Activites::listeActivites');
 $routes->get('/admin/activite-insert', 'Activites::showForm');

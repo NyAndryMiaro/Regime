@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="page-shell stack">
-         <?php include("navbar-admin.html");?>
+         <?php include("navbar/navbar-admin.html");?>
         <section class="hero">
             <h1>Ajouter un régime</h1>
             <p>Remplissez le formulaire ci-dessous pour ajouter un nouveau régime.</p>

@@ -10,7 +10,7 @@
 
 <body>
     <div class="page-shell stack">
-        <?php include("navbar-admin.html");
+        <?php include("navbar/navbar-admin.html");
 
         if (empty($liste)) { ?>
             <p>Aucune regimes presente pour le moment</p>

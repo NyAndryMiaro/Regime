@@ -10,41 +10,46 @@
 
 <body>
     <!-- Navigation -->
-    <?php include("navbar-user.html"); ?>
-
-    <div class="container">
-        <!-- Objectif -->
-        <?php if (empty($objectif)) { ?>
-            <div class="objectif-section" id="accueil">
-                <h2>Commencez par choisir un objectif</h2>
-
-                <form action="/objectif" method="post" id="choixObj">
-                    <?php if (!empty($objectifs)) {
-                        foreach ($objectifs as $obj) { ?>
-                            <p> <?= $obj["libelle"] ?> <input type="radio" name="objectif" value="<?= $obj["id_Objectif"] ?>"></p>
-                    <?php }
-                    } ?>
-                    <button type="submit"> Valider </button>
-                </form>
-
-            </div>
-
-        <?php } else{ ?>
-            <div class="objectif-section" id="accueil">
-                <p> Votre objectif : <?= esc($objectif['libelle']) ?> </p>
-            </div>
-        <?php } ?>
+    <?php include("navbar/navbar-user.html"); ?>
 
         <!-- Header Section -->
-        <div class="header-section">
-            <h1>👋 Bienvenue sur votre Tableau de Bord</h1>
-            <p>Suivez votre progression vers vos objectifs nutritionnels</p>
+        <div class="header-section" id="accueil">
+            <div class="tableau">
+                <h1>👋 Bienvenue sur Ré-Gym</h1>
+                <p>Suivez votre progression vers vos <span class="objectif"> objectifs nutritionnels </span></p>
+            </div>
+
             <div class="user-info">
                 <p><strong>Vos informations:</strong></p>
                 <p>Taille: <?= $user['taille'] ?? '165' ?> cm | Poids: <?= $user['poids'] ?? '65' ?> kg</p>
                 <p>IMC: <?= number_format(($user['poids'] ?? 65) / (($user['taille'] ?? 165) ** 2 / 10000), 1) ?></p>
+
+                <!-- Objectif (grouped in header for immediate visibility) -->
+                <?php if (empty($objectif)) { ?>
+                    <div class="objectif-section objectif-header">
+                        <h2>Commencez par choisir un objectif</h2>
+
+                        <form action="/objectif" method="post" id="choixObj">
+                            <?php if (!empty($objectifs)) {
+                                foreach ($objectifs as $obj) { ?>
+                                    <p class="objectif-option"> <?= $obj["libelle"] ?> <input type="radio" name="objectif" value="<?= $obj["id_Objectif"] ?>" class="objectif-radio"></p>
+                            <?php }
+                            } ?>
+                            <button type="submit" class="btn btn-primary btn-full">Valider</button>
+                        </form>
+
+                    </div>
+
+                <?php } else{ ?>
+                    <div class="objectif-section objectif-header">
+                        <p class="objectif-selected"> Votre objectif : <?= esc($objectif['libelle']) ?> </p>
+                    </div>
+                <?php } ?>
             </div>
         </div>
+
+    <div class="container page-continue">
+        <!-- objectif moved into header for immediate visibility -->
 
         <!-- Statistiques Principales -->
         <div class="section-title">📊 Vos Statistiques</div>
@@ -56,7 +61,7 @@
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 65%"></div>
                 </div>
-                <p class="text-gray" style="font-size: 0.85rem;">1430 / 2200 kcal aujourd'hui</p>
+                <p class="text-gray small">1430 / 2200 kcal aujourd'hui</p>
             </div>
 
             <div class="card stat-card">
@@ -66,7 +71,7 @@
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 59%"></div>
                 </div>
-                <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 1rem;">+ Ajouter</button>
+                <button class="btn btn-primary btn-sm btn-full mt-2">+ Ajouter</button>
             </div>
 
             <div class="card stat-card">
@@ -76,7 +81,7 @@
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 84%"></div>
                 </div>
-                <button class="btn btn-primary btn-sm" style="width: 100%; margin-top: 1rem;">💧 Boire</button>
+                <button class="btn btn-primary btn-sm btn-full mt-2">💧 Boire</button>
             </div>
         </div>
 
@@ -88,28 +93,28 @@
                     <h4>🌊 Méditerranéen</h4>
                     <p>Fruits, légumes et huile d'olive pour votre santé</p>
                     <div class="regime-calories">~1800 kcal/jour</div>
-                    <button class="btn btn-primary btn-sm" style="width: 100%; background: rgba(255,255,255,0.2);">Découvrir</button>
+                    <button class="btn btn-primary btn-ghost btn-full">Découvrir</button>
                 </div>
 
                 <div class="regime-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
                     <h4>⚖️ Équilibré</h4>
                     <p>Tous les nutriments essentiels pour votre santé</p>
                     <div class="regime-calories">~2200 kcal/jour</div>
-                    <button class="btn btn-primary btn-sm" style="width: 100%; background: rgba(255,255,255,0.2);">Découvrir</button>
+                    <button class="btn btn-primary btn-ghost btn-full">Découvrir</button>
                 </div>
 
                 <div class="regime-card" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
                     <h4>💪 Protéiné</h4>
                     <p>Pour le renforcement musculaire et perte de poids</p>
                     <div class="regime-calories">~1900 kcal/jour</div>
-                    <button class="btn btn-primary btn-sm" style="width: 100%; background: rgba(255,255,255,0.2);">Découvrir</button>
+                    <button class="btn btn-primary btn-ghost btn-full">Découvrir</button>
                 </div>
 
                 <div class="regime-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
                     <h4>🥬 Végétarien</h4>
                     <p>Fruits, légumes et produits laitiers</p>
                     <div class="regime-calories">~1950 kcal/jour</div>
-                    <button class="btn btn-primary btn-sm" style="width: 100%; background: rgba(255,255,255,0.2);">Découvrir</button>
+                    <button class="btn btn-primary btn-ghost btn-full">Découvrir</button>
                 </div>
             </div>
         </div>
@@ -246,6 +251,14 @@
     <footer class="footer">
         <p>&copy; 2024 MonRégime - Votre guide de nutrition personnalisé</p>
     </footer>
+
+    <!-- Loader Overlay for AJAX -->
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader-container">
+            <img src="/assets/img/Loading_icon.gif" alt="Chargement..." class="loader-gif">
+            <p class="loader-text">Mise à jour en cours...</p>
+        </div>
+    </div>
 
     <script>
         window.__dashboardData = {

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\UtilisateurModel;
 use App\Models\ObjectifModel;
 use App\Models\UtilisateurObjectifModel;
+use App\Models\CodeModel;
 
 class Utilisateur extends BaseController
 {
@@ -27,6 +28,7 @@ class Utilisateur extends BaseController
             'id' => $user['id_Utilisateur'],
             'nom' => $user['nom'],
             'email' => $user['email'],
+            'argent' => $user['argent'],
             'estAdmin' => $user['estAdmin']
         ]);
 
@@ -36,7 +38,7 @@ class Utilisateur extends BaseController
         }
 
         $utiliObj = new UtilisateurObjectifModel();
-        $verifier = $utiliObj->where('id_Utilisateur', $user['id_Utilisateur']) -> first();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id_Utilisateur'])->first();
 
         $objectif = new ObjectifModel();
         $obj = $objectif->findAll();
@@ -143,7 +145,7 @@ class Utilisateur extends BaseController
         $obj = $objectif->findAll();
 
         $utiliObj = new UtilisateurObjectifModel();
-        $verifier = $utiliObj->where('id_Utilisateur', $user['id']) -> first();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
 
         if ($verifier != null) {
             $but = $objectif->find($verifier['id_Objectif']);
@@ -170,35 +172,84 @@ class Utilisateur extends BaseController
     {
         $user = session()->get('user');
 
-        $utiliObj = new UtilisateurObjectifModel();
-        $verifier = $utiliObj->where('id_Utilisateur', $user['id']) -> first();
+        if (!$user) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Non authentifié']);
+        }
 
-        $infos = [
-            'id_Utilisateur' => $user['id'],
-            'id_Objectif' => $this->request->getPost('objectif')
-        ];
+        $objectifId = $this->request->getPost('objectif');
 
-        $utiliObj = new UtilisateurObjectifModel();
-
-        $model = new UtilisateurModel();
-        $userData = $model->find($user['id']);
-
-        $objectif = new ObjectifModel();
-        $obj = $objectif->findAll();
+        if (!$objectifId) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Objectif manquant']);
+        }
 
         $utiliObj = new UtilisateurObjectifModel();
-        $verifier = $utiliObj->find($user['id']);
 
-        $objectif = new ObjectifModel();
-        $obj = $objectif->findAll();
+        try {
+            $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
 
-        if ($verifier != null) {
-            $but = $objectif->find($verifier['id_Objectif']);
-            return view('frontoffice/accueil', ['user' => $userData, 'objectifs' => $obj, 'objectif' => $but]);
-        } else {
-            $utiliObj->insert($infos);
-            return redirect() -> to('/accueil');
+            $infos = [
+                'id_Utilisateur' => $user['id'],
+                'id_Objectif' => $objectifId
+            ];
+
+            if ($verifier != null) {
+                $utiliObj->update($verifier['id_UtilisateurObjectif'], $infos);
+            } else {
+                $utiliObj->insert($infos);
+            }
+
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['success' => true, 'message' => 'Objectif mis à jour']);
+            } else {
+                return redirect()->to('/accueil');
+            }
+        } catch (\Exception $e) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['success' => false, 'message' => 'Erreur: ' . $e->getMessage()]);
+            }
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
+    public function porteMonnaie()
+    {
+        $user = session()->get('user');
+
+        $util = new UtilisateurModel();
+        $utilisateur = $util->find($user['id']);
+
+        return view('frontoffice/porte-monnaie', ['user' => $utilisateur]);
+    }
+
+    public function entrerCode()
+    {
+        $user = session()->get('user');
+
+        $util = new UtilisateurModel();
+        $utilisateur = $util->find($user['id']);
+
+        $code = $this->request->getPost('codeArgent');
+
+        $codemodel = new CodeModel();
+        $argent = $codemodel->where('code', $code)->first();
+
+        $data = [
+            'argent' => $user['argent'] + $argent['montant']
+        ];
+
+        $data2 = [
+            'utilise' => 1
+        ];
+
+
+        if ($argent['utilise'] == 0) {
+
+            $codemodel->update($argent['idCode'], $data2);
+            $util->update($user['id'], $data);
+
+            return redirect()->to('/monnaie')->with('success', "L'argent a été ajouté sur votre compte !");
+        } else {
+            return redirect()->to('/monnaie')->with('error', "Le code n'est plus disponible");
+        }
+    }
 }

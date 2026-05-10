@@ -7,6 +7,6 @@ class UtilisateurModel extends Model
 {
     protected $table = 'Utilisateur';
     protected $primaryKey = 'id_Utilisateur';
-    protected $allowedFields = ['id_Utilisateur', 'nom', 'email', 'genre', 'motdepasse', 'taille', 'poids', 'estAdmin'];
+    protected $allowedFields = ['id_Utilisateur', 'nom', 'email', 'genre', 'motdepasse', 'taille', 'poids', 'argent', 'estAdmin'];
 
 }

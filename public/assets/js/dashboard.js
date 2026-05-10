@@ -1,7 +1,115 @@
 // Minimal chart rendering without external libs
 document.addEventListener('DOMContentLoaded', function () {
   initCharts();
+  initObjectifAjax();
 });
+
+// AJAX for objectif choice
+function initObjectifAjax() {
+  const form = document.getElementById('choixObj');
+  if (!form) return;
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Get selected objectif value
+    const selectedRadio = document.querySelector('input[name="objectif"]:checked');
+    if (!selectedRadio) {
+      alert('Veuillez sélectionner un objectif');
+      return;
+    }
+
+    const objectifId = selectedRadio.value;
+    const loaderOverlay = document.getElementById('loaderOverlay');
+
+    // Show loader
+    if (loaderOverlay) {
+      loaderOverlay.classList.add('active');
+    }
+
+    // Create XMLHttpRequest
+    var xhr;
+    try {
+      xhr = new ActiveXObject('Msxml2.XMLHTTP');
+    } catch (e) {
+      try {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+      } catch (e2) {
+        try {
+          xhr = new XMLHttpRequest();
+        } catch (e3) {
+          xhr = false;
+        }
+      }
+    }
+
+    if (!xhr) {
+      alert('Impossible de créer XMLHttpRequest');
+      if (loaderOverlay) {
+        loaderOverlay.classList.remove('active');
+      }
+      return;
+    }
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4) {
+        console.log('Response Status:', xhr.status);
+        console.log('Response Text:', xhr.responseText);
+
+        if (xhr.status == 200) {
+          try {
+            var retour = JSON.parse(xhr.responseText);
+            console.log('Parsed Response:', retour);
+            
+            if (retour.success) {
+              console.log('Succès! Reloading page...');
+              // Keep loader visible for 4 seconds, then reload
+              setTimeout(function() {
+                if (loaderOverlay) {
+                  loaderOverlay.classList.remove('active');
+                }
+                window.location.reload();
+              }, 4000);
+            } else {
+              // Hide loader on error
+              if (loaderOverlay) {
+                loaderOverlay.classList.remove('active');
+              }
+              alert('Erreur: ' + (retour.message || 'Impossible de mettre à jour l\'objectif'));
+            }
+          } catch (parseError) {
+            if (loaderOverlay) {
+              loaderOverlay.classList.remove('active');
+            }
+            console.error('Parse Error:', parseError);
+            console.error('Response was:', xhr.responseText);
+            alert('Erreur lors du traitement de la réponse');
+          }
+        } else {
+          if (loaderOverlay) {
+            loaderOverlay.classList.remove('active');
+          }
+          console.error('HTTP Error:', xhr.status, xhr.statusText);
+          alert('Erreur serveur: ' + xhr.status + ' ' + xhr.statusText);
+        }
+      }
+    };
+
+    xhr.onerror = function() {
+      console.error('XHR Error occurred');
+      if (loaderOverlay) {
+        loaderOverlay.classList.remove('active');
+      }
+      alert('Erreur de connexion');
+    };
+
+    console.log('Sending AJAX request with objectif:', objectifId);
+    xhr.open('POST', '/objectif', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.send('objectif=' + encodeURIComponent(objectifId));
+  });
+}
 
     function initCharts() {
   const dashboardData = window.__dashboardData || {};

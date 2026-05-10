@@ -11,7 +11,7 @@
 
 <body>
     <!-- Navigation -->
-    <?php include("navbar-admin.html"); ?>
+    <?php include("navbar/navbar-admin.html"); ?>
 
     <div class="container">
         <!-- Header Section -->

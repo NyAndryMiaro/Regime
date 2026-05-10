@@ -10,7 +10,7 @@
 
 <body>
     <div class="page-shell stack">
-        <?php include("navbar-admin.html"); ?>
+        <?php include("navbar/navbar-admin.html"); ?>
 
         <section class="hero">
             <h1>Modifier le régime</h1>
