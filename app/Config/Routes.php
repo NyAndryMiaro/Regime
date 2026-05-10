@@ -21,6 +21,10 @@ $routes->get('/accueilAdmin', 'Utilisateur::accueilAdmin');
 $routes->get('/objectif', 'Utilisateur::objectif');
 $routes->post('/objectif', 'Utilisateur::choixObjectif');
 
+$routes->get('/regimes', 'Utilisateur::regimes');
+
+$routes->get('/poids-ideal', 'Utilisateur::poidsIdeal');
+
 $routes->get('/monnaie', 'Utilisateur::porteMonnaie');
 $routes->post('/code', 'Utilisateur::entrerCode');
 

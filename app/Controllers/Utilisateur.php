@@ -6,6 +6,7 @@ use App\Models\UtilisateurModel;
 use App\Models\ObjectifModel;
 use App\Models\UtilisateurObjectifModel;
 use App\Models\CodeModel;
+use App\Models\RegimeModel;
 
 class Utilisateur extends BaseController
 {
@@ -282,5 +283,169 @@ class Utilisateur extends BaseController
         } else {
             return redirect()->to('/monnaie')->with('error', "Le code n'est plus disponible");
         }
+    }
+
+    /**
+     * Calcule le poids idéal basé sur la taille et un IMC cible
+     * 
+     * @param float $taille Taille en centimètres
+     * @param float $imcCible IMC cible (par défaut 22, au milieu de la plage saine 18.5-25)
+     * @return array Tableau contenant ['poids_ideal' => float, 'imc_min' => float, 'imc_max' => float, 'poids_min' => float, 'poids_max' => float]
+     */
+    public function calculerPoidsIdeal($taille = null, $imcCible = 22)
+    {
+        if ($taille === null) {
+            return [
+                'error' => 'Taille requise',
+                'poids_ideal' => null
+            ];
+        }
+
+        // Convertir la taille de cm en mètres
+        $tailleEnMetres = $taille / 100;
+
+        // Calcul: Poids = IMC × (Taille en m)²
+        $poidsIdeal = round($imcCible * ($tailleEnMetres ** 2), 1);
+        
+        // Plage saine d'IMC (18.5 à 25)
+        $imcMin = 18.5;
+        $imcMax = 25;
+        
+        $poidsMin = round($imcMin * ($tailleEnMetres ** 2), 1);
+        $poidsMax = round($imcMax * ($tailleEnMetres ** 2), 1);
+
+        return [
+            'poids_ideal' => $poidsIdeal,
+            'poids_min' => $poidsMin,
+            'poids_max' => $poidsMax,
+            'imc_min' => $imcMin,
+            'imc_max' => $imcMax,
+            'taille' => $taille
+        ];
+    }
+
+    /**
+     * Retourne le poids idéal pour un utilisateur via AJAX ou paramètre
+     * Accessible via GET /poids-ideal?taille=170 ou /poids-ideal?id_user=1
+     */
+    public function poidsIdeal()
+    {
+        $taille = $this->request->getGet('taille');
+        $userId = $this->request->getGet('id_user');
+
+        // Si l'ID utilisateur est fourni, récupérer sa taille
+        if ($userId) {
+            $model = new UtilisateurModel();
+            $user = $model->find($userId);
+            if ($user) {
+                $taille = $user['taille'];
+            } else {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Utilisateur non trouvé'
+                ]);
+            }
+        }
+
+        if (!$taille) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Taille requise'
+            ]);
+        }
+
+        $resultat = $this->calculerPoidsIdeal((float)$taille);
+
+        return $this->response->setJSON([
+            'success' => true,
+            'data' => $resultat
+        ]);
+    }
+
+    public function regimes()
+    {
+        $user = session()->get('user');
+        if (!$user) {
+            return redirect()->to('/login');
+        }
+
+        $model = new UtilisateurModel();
+        $userData = $model->find($user['id']);
+
+        // Récupérer l'objectif actuel
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
+
+        $objectifActuel = null;
+        if ($verifier != null) {
+            $objectifModel = new ObjectifModel();
+            $objectifActuel = $objectifModel->find($verifier['id_Objectif']);
+        }
+
+        // Récupérer tous les régimes
+        $regimeModel = new RegimeModel();
+        $allRegimes = $regimeModel->findAll();
+
+        // Filtrer les régimes selon l'objectif
+        $regimesAffichables = [];
+        $infoObjectif = null;
+
+        if ($objectifActuel) {
+            $objectifId = $objectifActuel['id_Objectif'];
+
+            if ($objectifId == 1) {
+                // Objectif 1: Augmenter son poids
+                $regimesAffichables = array_filter($allRegimes, function ($regime) {
+                    return $regime['id_objectif'] == 1; // Prendre only les regimes augmentant le poids
+                });
+                $infoObjectif = 'Augmenter son poids';
+            } elseif ($objectifId == 2) {
+                // Objectif 2: Réduire son poids
+                $regimesAffichables = array_filter($allRegimes, function ($regime) {
+                    return $regime['id_objectif'] == 2; // Prendre only les regimes diminuant le poids
+                });
+                $infoObjectif = 'Réduire son poids';
+            } elseif ($objectifId == 3) {
+                // Objectif 3: Atteindre son IMC idéal
+                $poidsIdeal = $this->calculerPoidsIdeal($userData['taille']);
+                $poidsCible = $poidsIdeal['poids_ideal'];
+                $poidsActuel = $userData['poids'];
+                $ecart = $poidsActuel - $poidsCible;
+
+                if ($ecart > 0) {
+                    // Utilisateur doit perdre du poids - Objectif 2
+                    $regimesAffichables = array_filter($allRegimes, function ($regime) {
+                        return $regime['id_objectif'] == 2;
+                    });
+                    $infoObjectif = 'Atteindre votre IMC idéal (Perte de poids)';
+                } else {
+                    // Utilisateur doit prendre du poids - Objectif 1
+                    $regimesAffichables = array_filter($allRegimes, function ($regime) {
+                        return $regime['id_objectif'] == 1;
+                    });
+                    $infoObjectif = 'Atteindre votre IMC idéal (Augmentation de poids)';
+                }
+
+                return view('frontoffice/regimes', [
+                    'user' => $userData,
+                    'objectifActuel' => $objectifActuel,
+                    'regimes' => $regimesAffichables,
+                    'infoObjectif' => $infoObjectif,
+                    'poidsIdeal' => $poidsIdeal,
+                    'ecart' => abs($ecart)
+                ]);
+            }
+        }
+
+        $poidsIdeal = $this->calculerPoidsIdeal($userData['taille']);
+
+        return view('frontoffice/regimes', [
+            'user' => $userData,
+            'objectifActuel' => $objectifActuel,
+            'regimes' => $regimesAffichables,
+            'infoObjectif' => $infoObjectif,
+            'poidsIdeal' => $poidsIdeal,
+            'ecart' => 0
+        ]);
     }
 }

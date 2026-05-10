@@ -40,7 +40,7 @@ CREATE OR REPLACE TABLE Regime(
     libelle varchar(90),
     variation_poids double,
     prix_unitaire double,
-    duree int,
+    duree int, --en jours
     pourcentage_viande double,
     pourcentage_poisson double,
     pourcentage_legume double
@@ -50,7 +50,7 @@ CREATE OR REPLACE TABLE Activites(
     id_Activite int primary key auto_increment,
     id_Objectif int references Objectif (id_Objectif),
     libelle varchar(50),
-    duree int,  -- en heure
+    duree int,  -- en sceance
     variation_poids double
 );
 
