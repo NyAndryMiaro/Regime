@@ -282,6 +282,11 @@
         <div class="regimes-header">
             <h1>🎯 Régimes Personnalisés</h1>
             <p>Trouvez le régime parfait pour atteindre vos objectifs</p>
+            <a href="/plan" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;" 
+               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(102, 126, 234, 0.4)'"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                📋 Voir mon plan complet
+            </a>
         </div>
 
         <div class="user-metrics">

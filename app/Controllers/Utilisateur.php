@@ -558,4 +558,61 @@ class Utilisateur extends BaseController
 
         return $meilleureIndex;
     }
+
+    public function plan()
+    {
+        $user = session()->get('user');
+        if (!$user) {
+            return redirect()->to('/login');
+        }
+
+        $model = new UtilisateurModel();
+        $userData = $model->find($user['id']);
+
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
+
+        if (!$verifier) {
+            return redirect()->to('/objectif')->with('error', 'Veuillez d\'abord choisir un objectif');
+        }
+
+        $objectifModel = new ObjectifModel();
+        $objectif = $objectifModel->find($verifier['id_Objectif']);
+
+        $poidsIdeal = $this->calculerPoidsIdeal($userData['taille']);
+        $poidsCible = $poidsIdeal['poids_ideal'];
+        $poidsActuel = $userData['poids'];
+        $ecart = $poidsActuel - $poidsCible;
+
+        $regimeModel = new RegimeModel();
+        $activiteModel = new \App\Models\ActivitesModel();
+
+        if ($objectif['id_Objectif'] == 3) {
+            if ($ecart > 0) {
+                $regimesAffichables = $regimeModel->where('id_objectif', 2)->findAll();
+                $activitesAffichables = $activiteModel->where('id_Objectif', 2)->findAll();
+            } else {
+                $regimesAffichables = $regimeModel->where('id_objectif', 1)->findAll();
+                $activitesAffichables = $activiteModel->where('id_Objectif', 1)->findAll();
+            }
+        } else {
+            $regimesAffichables = $regimeModel->where('id_objectif', $objectif['id_Objectif'])->findAll();
+            $activitesAffichables = $activiteModel->where('id_Objectif', $objectif['id_Objectif'])->findAll();
+        }
+
+        $regimeRecommandeIndex = $this->trouverRegimeRecommande($regimesAffichables, $userData['poids'], $poidsCible);
+        $activiteRecommandeIndex = $this->trouverActiviteRecommande($activitesAffichables, $userData['poids'], $poidsCible);
+
+        $regime = $regimesAffichables[$regimeRecommandeIndex] ?? $regimesAffichables[0];
+        $activite = $activitesAffichables[$activiteRecommandeIndex] ?? $activitesAffichables[0];
+
+        return view('frontoffice/plan', [
+            'user' => $userData,
+            'objectif' => $objectif,
+            'regime' => $regime,
+            'activite' => $activite,
+            'poidsIdeal' => $poidsIdeal,
+            'ecart' => abs($ecart)
+        ]);
+    }
 }
