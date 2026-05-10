@@ -25,6 +25,8 @@ $routes->get('/regimes', 'Utilisateur::regimes');
 
 $routes->get('/activites', 'Utilisateur::activites');
 
+$routes->get('/plan', 'Utilisateur::plan');
+
 $routes->get('/poids-ideal', 'Utilisateur::poidsIdeal');
 
 $routes->get('/monnaie', 'Utilisateur::porteMonnaie');
