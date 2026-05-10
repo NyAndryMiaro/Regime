@@ -23,13 +23,14 @@ $routes->post('/objectif', 'Utilisateur::choixObjectif');
 
 $routes->get('/regimes', 'Utilisateur::regimes');
 
+$routes->get('/activites', 'Utilisateur::activites');
+
 $routes->get('/poids-ideal', 'Utilisateur::poidsIdeal');
 
 $routes->get('/monnaie', 'Utilisateur::porteMonnaie');
 $routes->post('/code', 'Utilisateur::entrerCode');
 
 
-//admin
 $routes->get('/admin/activites', 'Activites::listeActivites');
 $routes->get('/admin/activite-insert', 'Activites::showForm');
 $routes->post('/admin/activite-save', 'Activites::save');
@@ -43,9 +44,3 @@ $routes->post('/admin/regime-save', 'Regimes::save');
 $routes->get('/admin/regime-delete/(:num)', 'Regimes::remove/$1');
 $routes->get('/admin/regime-update/(:num)', 'Regimes::showUpdateForm/$1');
 $routes->post('/admin/regime-modify', 'Regimes::update');
-
-// $routes->group('admin', ['filter' => 'role'],
-//     function ($routes) {
-//         $routes->get('/activites', 'Activites::listeActivites');
-//     }
-// );

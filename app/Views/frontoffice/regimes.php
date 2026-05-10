@@ -276,17 +276,14 @@
 </head>
 
 <body>
-    <!-- Navigation -->
     <?php include("navbar/navbar-user.html"); ?>
 
     <div class="container regimes-container">
-        <!-- Header -->
         <div class="regimes-header">
             <h1>🎯 Régimes Personnalisés</h1>
             <p>Trouvez le régime parfait pour atteindre vos objectifs</p>
         </div>
 
-        <!-- Métriques de l'utilisateur -->
         <div class="user-metrics">
             <div class="metric-item">
                 <div class="metric-label">Taille</div>
@@ -310,7 +307,6 @@
             </div>
         </div>
 
-        <!-- Info Objectif -->
         <div class="objectif-info">
             <p>
                 <?php if ($objectifActuel): ?>
@@ -333,12 +329,11 @@
             </p>
         </div>
 
-        <!-- Liste des Régimes -->
         <?php if (!empty($regimes)): ?>
             <div class="regimes-grid">
                 <?php foreach ($regimes as $index => $regime): ?>
-                    <div class="regime-card-wrapper <?= $index === 0 && count($regimes) > 1 ? 'recommended' : '' ?>">
-                        <?php if ($index === 0 && count($regimes) > 1): ?>
+                    <div class="regime-card-wrapper <?= $index === $regimeRecommandeIndex && count($regimes) > 1 ? 'recommended' : '' ?>">
+                        <?php if ($index === $regimeRecommandeIndex && count($regimes) > 1): ?>
                             <div class="recommended-badge">⭐ Recommandé</div>
                         <?php endif; ?>
                         <div class="regime-card">
@@ -405,18 +400,15 @@
         <?php endif; ?>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <p>&copy; 2024 Ré-Gym - Votre guide de nutrition personnalisé</p>
     </footer>
 
     <script>
-        // Animation au chargement
         document.querySelectorAll('.regime-card').forEach((card, index) => {
             card.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s`;
         });
 
-        // Ajouter les styles d'animation globaux
         const style = document.createElement('style');
         style.textContent = `
             @keyframes fadeInUp {

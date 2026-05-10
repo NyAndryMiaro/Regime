@@ -301,13 +301,9 @@ class Utilisateur extends BaseController
             ];
         }
 
-        // Convertir la taille de cm en mètres
         $tailleEnMetres = $taille / 100;
-
-        // Calcul: Poids = IMC × (Taille en m)²
         $poidsIdeal = round($imcCible * ($tailleEnMetres ** 2), 1);
         
-        // Plage saine d'IMC (18.5 à 25)
         $imcMin = 18.5;
         $imcMax = 25;
         
@@ -324,16 +320,11 @@ class Utilisateur extends BaseController
         ];
     }
 
-    /**
-     * Retourne le poids idéal pour un utilisateur via AJAX ou paramètre
-     * Accessible via GET /poids-ideal?taille=170 ou /poids-ideal?id_user=1
-     */
     public function poidsIdeal()
     {
         $taille = $this->request->getGet('taille');
         $userId = $this->request->getGet('id_user');
 
-        // Si l'ID utilisateur est fourni, récupérer sa taille
         if ($userId) {
             $model = new UtilisateurModel();
             $user = $model->find($userId);
@@ -372,7 +363,6 @@ class Utilisateur extends BaseController
         $model = new UtilisateurModel();
         $userData = $model->find($user['id']);
 
-        // Récupérer l'objectif actuel
         $utiliObj = new UtilisateurObjectifModel();
         $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
 
@@ -382,49 +372,48 @@ class Utilisateur extends BaseController
             $objectifActuel = $objectifModel->find($verifier['id_Objectif']);
         }
 
-        // Récupérer tous les régimes
         $regimeModel = new RegimeModel();
         $allRegimes = $regimeModel->findAll();
 
-        // Filtrer les régimes selon l'objectif
+        $poidsIdeal = $this->calculerPoidsIdeal($userData['taille']);
+
         $regimesAffichables = [];
         $infoObjectif = null;
+        $regimeRecommandeIndex = -1;
 
         if ($objectifActuel) {
             $objectifId = $objectifActuel['id_Objectif'];
 
             if ($objectifId == 1) {
-                // Objectif 1: Augmenter son poids
                 $regimesAffichables = array_filter($allRegimes, function ($regime) {
-                    return $regime['id_objectif'] == 1; // Prendre only les regimes augmentant le poids
+                    return $regime['id_objectif'] == 1;
                 });
                 $infoObjectif = 'Augmenter son poids';
+                $regimeRecommandeIndex = $this->trouverRegimeRecommande($regimesAffichables, $userData['poids'], $poidsIdeal['poids_ideal']);
             } elseif ($objectifId == 2) {
-                // Objectif 2: Réduire son poids
                 $regimesAffichables = array_filter($allRegimes, function ($regime) {
-                    return $regime['id_objectif'] == 2; // Prendre only les regimes diminuant le poids
+                    return $regime['id_objectif'] == 2;
                 });
                 $infoObjectif = 'Réduire son poids';
+                $regimeRecommandeIndex = $this->trouverRegimeRecommande($regimesAffichables, $userData['poids'], $poidsIdeal['poids_ideal']);
             } elseif ($objectifId == 3) {
-                // Objectif 3: Atteindre son IMC idéal
-                $poidsIdeal = $this->calculerPoidsIdeal($userData['taille']);
                 $poidsCible = $poidsIdeal['poids_ideal'];
                 $poidsActuel = $userData['poids'];
                 $ecart = $poidsActuel - $poidsCible;
 
                 if ($ecart > 0) {
-                    // Utilisateur doit perdre du poids - Objectif 2
                     $regimesAffichables = array_filter($allRegimes, function ($regime) {
                         return $regime['id_objectif'] == 2;
                     });
                     $infoObjectif = 'Atteindre votre IMC idéal (Perte de poids)';
                 } else {
-                    // Utilisateur doit prendre du poids - Objectif 1
                     $regimesAffichables = array_filter($allRegimes, function ($regime) {
                         return $regime['id_objectif'] == 1;
                     });
                     $infoObjectif = 'Atteindre votre IMC idéal (Augmentation de poids)';
                 }
+
+                $regimeRecommandeIndex = $this->trouverRegimeRecommande($regimesAffichables, $userData['poids'], $poidsIdeal['poids_ideal']);
 
                 return view('frontoffice/regimes', [
                     'user' => $userData,
@@ -432,12 +421,11 @@ class Utilisateur extends BaseController
                     'regimes' => $regimesAffichables,
                     'infoObjectif' => $infoObjectif,
                     'poidsIdeal' => $poidsIdeal,
-                    'ecart' => abs($ecart)
+                    'ecart' => abs($ecart),
+                    'regimeRecommandeIndex' => $regimeRecommandeIndex
                 ]);
             }
         }
-
-        $poidsIdeal = $this->calculerPoidsIdeal($userData['taille']);
 
         return view('frontoffice/regimes', [
             'user' => $userData,
@@ -445,7 +433,129 @@ class Utilisateur extends BaseController
             'regimes' => $regimesAffichables,
             'infoObjectif' => $infoObjectif,
             'poidsIdeal' => $poidsIdeal,
-            'ecart' => 0
+            'ecart' => 0,
+            'regimeRecommandeIndex' => $regimeRecommandeIndex
         ]);
+    }
+
+    private function trouverRegimeRecommande($regimes, $poidsActuel, $poidsIdeal)
+    {
+        $meilleureIndex = -1;
+        $meilleureEcart = PHP_FLOAT_MAX;
+
+        foreach ($regimes as $index => $regime) {
+            $poidsFinal = $poidsActuel + $regime['variation_poids'];
+            $ecart = abs($poidsFinal - $poidsIdeal);
+            
+            if ($ecart < $meilleureEcart) {
+                $meilleureEcart = $ecart;
+                $meilleureIndex = $index;
+            }
+        }
+
+        return $meilleureIndex;
+    }
+
+    public function activites()
+    {
+        $user = session()->get('user');
+        if (!$user) {
+            return redirect()->to('/login');
+        }
+
+        $model = new UtilisateurModel();
+        $userData = $model->find($user['id']);
+
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
+
+        $objectifActuel = null;
+        if ($verifier != null) {
+            $objectifModel = new ObjectifModel();
+            $objectifActuel = $objectifModel->find($verifier['id_Objectif']);
+        }
+
+        $activiteModel = new \App\Models\ActivitesModel();
+        $allActivites = $activiteModel->findAll();
+
+        $poidsIdeal = $this->calculerPoidsIdeal($userData['taille']);
+
+        $activitesAffichables = [];
+        $infoObjectif = null;
+        $activiteRecommandeIndex = -1;
+
+        if ($objectifActuel) {
+            $objectifId = $objectifActuel['id_Objectif'];
+
+            if ($objectifId == 1) {
+                $activitesAffichables = array_filter($allActivites, function ($activite) {
+                    return $activite['id_Objectif'] == 1;
+                });
+                $infoObjectif = 'Augmenter son poids';
+                $activiteRecommandeIndex = $this->trouverActiviteRecommande($activitesAffichables, $userData['poids'], $poidsIdeal['poids_ideal']);
+            } elseif ($objectifId == 2) {
+                $activitesAffichables = array_filter($allActivites, function ($activite) {
+                    return $activite['id_Objectif'] == 2;
+                });
+                $infoObjectif = 'Réduire son poids';
+                $activiteRecommandeIndex = $this->trouverActiviteRecommande($activitesAffichables, $userData['poids'], $poidsIdeal['poids_ideal']);
+            } elseif ($objectifId == 3) {
+                $poidsCible = $poidsIdeal['poids_ideal'];
+                $poidsActuel = $userData['poids'];
+                $ecart = $poidsActuel - $poidsCible;
+
+                if ($ecart > 0) {
+                    $activitesAffichables = array_filter($allActivites, function ($activite) {
+                        return $activite['id_Objectif'] == 2;
+                    });
+                    $infoObjectif = 'Atteindre votre IMC idéal (Perte de poids)';
+                } else {
+                    $activitesAffichables = array_filter($allActivites, function ($activite) {
+                        return $activite['id_Objectif'] == 1;
+                    });
+                    $infoObjectif = 'Atteindre votre IMC idéal (Augmentation de poids)';
+                }
+
+                $activiteRecommandeIndex = $this->trouverActiviteRecommande($activitesAffichables, $userData['poids'], $poidsIdeal['poids_ideal']);
+
+                return view('frontoffice/activites', [
+                    'user' => $userData,
+                    'objectifActuel' => $objectifActuel,
+                    'activites' => $activitesAffichables,
+                    'infoObjectif' => $infoObjectif,
+                    'poidsIdeal' => $poidsIdeal,
+                    'ecart' => abs($ecart),
+                    'activiteRecommandeIndex' => $activiteRecommandeIndex
+                ]);
+            }
+        }
+
+        return view('frontoffice/activites', [
+            'user' => $userData,
+            'objectifActuel' => $objectifActuel,
+            'activites' => $activitesAffichables,
+            'infoObjectif' => $infoObjectif,
+            'poidsIdeal' => $poidsIdeal,
+            'ecart' => 0,
+            'activiteRecommandeIndex' => $activiteRecommandeIndex
+        ]);
+    }
+
+    private function trouverActiviteRecommande($activites, $poidsActuel, $poidsIdeal)
+    {
+        $meilleureIndex = -1;
+        $meilleureEcart = PHP_FLOAT_MAX;
+
+        foreach ($activites as $index => $activite) {
+            $poidsFinal = $poidsActuel + $activite['variation_poids'];
+            $ecart = abs($poidsFinal - $poidsIdeal);
+            
+            if ($ecart < $meilleureEcart) {
+                $meilleureEcart = $ecart;
+                $meilleureIndex = $index;
+            }
+        }
+
+        return $meilleureIndex;
     }
 }
