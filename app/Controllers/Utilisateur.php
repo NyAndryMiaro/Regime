@@ -46,11 +46,40 @@ class Utilisateur extends BaseController
         $objectif = new ObjectifModel();
         $obj = $objectif->findAll();
 
+        $objectif = new ObjectifModel();
+        $obj = $objectif->findAll();
+
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
+
+        $objectifActuel = null;
+        if ($verifier != null) {
+            $objectifActuel = $objectif->find($verifier['id_Objectif']);
+        }
+
+        $regimeModel = new RegimeModel();
+        $regimes = $regimeModel->findAll();
+        
+        $activiteModel = new \App\Models\ActivitesModel();
+        $activites = $activiteModel->findAll();
+
         if ($verifier != null) {
             $but = $objectif->find($verifier['id_Objectif']);
-            return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj, 'objectif' => $but]);
+        return view('frontoffice/accueil', [
+            'user' => $user,
+            'objectifs' => $obj,
+            'objectif' => $objectifActuel,
+            'regimes' => $regimes,
+            'activites' => $activites
+        ]);
         } else {
-            return view('frontoffice/accueil', ['user' => $user, 'objectifs' => $obj]);
+        return view('frontoffice/accueil', [
+            'user' => $user,
+            'objectifs' => $obj,
+            'objectif' => $objectifActuel,
+            'regimes' => $regimes,
+            'activites' => $activites
+        ]);
         }
     }
 
@@ -155,7 +184,6 @@ class Utilisateur extends BaseController
             $objectifActuel = $objectif->find($verifier['id_Objectif']);
         }
 
-        // Load regimes and activites for display
         $regimeModel = new RegimeModel();
         $regimes = $regimeModel->findAll();
         
