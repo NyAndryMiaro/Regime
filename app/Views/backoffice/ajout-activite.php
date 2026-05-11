@@ -55,22 +55,22 @@
                     <div class="form-row">
                         <div>
                             <label for="mois" class="form-label--small">Mois</label>
-                            <input type="number" min="0" id="mois" name="mois" placeholder="0" value="<?= isset($old['mois']) ? esc($old['mois']) : '' ?>">
+                            <input type="number" min="0" id="mois" name="mois" placeholder="0" value="<?= isset($old['mois']) ? esc($old['mois']) : '0' ?>">
                         </div>
                         <div>
                             <label for="jours" class="form-label--small">Jours</label>
-                            <input type="number" min="0" max="31" id="jours" name="jours" placeholder="0" value="<?= isset($old['jours']) ? esc($old['jours']) : '' ?>">
+                            <input type="number" min="0" max="31" id="jours" name="jours" placeholder="0" value="<?= isset($old['jours']) ? esc($old['jours']) : '0' ?>">
                         </div>
                         <div>
                             <label for="heures" class="form-label--small">Heures</label>
-                            <input type="number" min="0" max="23" id="heures" name="heures" placeholder="0" value="<?= isset($old['heures']) ? esc($old['heures']) : '' ?>">
+                            <input type="number" min="0" max="23" id="heures" name="heures" placeholder="0" value="<?= isset($old['heures']) ? esc($old['heures']) : '0' ?>">
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="variation_poids">Variation du poids (kg)</label>
-                    <input type="number" step="0.01" id="variation_poids" name="variation_poids" placeholder="Ex: -0.5" required value="<?= isset($old['variation_poids']) ? esc($old['variation_poids']) : '' ?>">
+                    <input type="number" step="0.01" id="variation_poids" name="variation_poids" placeholder="Ex: -0.5" required value="<?= isset($old['variation_poids']) ? esc($old['variation_poids']) : '0' ?>">
                 </div>
 
                 <div class="form-actions">
