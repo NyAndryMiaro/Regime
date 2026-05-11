@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Ré-Gym</title>
     <link rel="stylesheet" href="/assets/css/admin.css">
+    <script src="/assets/js/main.js" defer></script>
+
 </head>
+
 <body>
     <div class="page-shell stack">
         <section class="hero">
@@ -37,7 +41,7 @@
 
             <form id="signup" action="/showSignUp2" method="post" class="form">
                 <?= csrf_field() ?>
-                
+
                 <div class="form-group">
                     <label for="nom">Nom complet</label>
                     <input type="text" id="nom" name="nom" placeholder="Ex: RABARY" required value="<?= isset($old['nom']) ? esc($old['nom']) : '' ?>">
@@ -68,7 +72,7 @@
                         <div class="password-field">
                             <input id="mdp" type="password" name="password" placeholder="Créez un mot de passe sécurisé" required>
                         </div>
-                        <button id="bouton" type="button" onclick="password_action()" class="btn btn--ghost btn--sm">👁️</button>
+                        <button id="bouton" type="button" class="btn btn--ghost btn--sm">👁️</button>
                     </div>
                 </div>
 
@@ -81,6 +85,6 @@
             </div>
         </section>
     </div>
-    <script src="/assets/js/main.js"></script>
 </body>
+
 </html>

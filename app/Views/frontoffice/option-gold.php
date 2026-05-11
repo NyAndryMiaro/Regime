@@ -53,12 +53,13 @@
                 </p>
             </div>
 
+
             <?php 
                 $user = session()->get('user'); 
                 $id = $user['id'];
                 if ($user != null && $user['estGold']) { 
             ?>
-                <div class="alert alert-success">
+                <div class="alert alert-success" id="gold-success">
                     <div class="alert-icon">✅</div>
                     <div class="alert-content">
                         <strong>Vous êtes déjà un utilisateur Premium Gold !</strong>
@@ -66,9 +67,10 @@
                     </div>
                 </div>
             <?php } else { ?>
-                <a href="/devenir-gold/<?= $id ?>" class="btn btn--primary btn--full gold-cta">
+                <button id="gold-ajax-btn" class="btn btn--primary btn--full gold-cta" data-id="<?= $id ?>">
                     🚀 Devenir Premium Gold Maintenant
-                </a>
+                </button>
+                <div id="gold-ajax-feedback" style="margin-top:1em;"></div>
             <?php } ?>
 
             <p class="gold-bottom-note">
@@ -80,6 +82,42 @@
     <footer class="footer">
         <p>&copy; 2026 Ré-Gym - Votre guide de nutrition personnalisé</p>
     </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('gold-ajax-btn');
+        if (btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                btn.disabled = true;
+                const feedback = document.getElementById('gold-ajax-feedback');
+                feedback.innerHTML = '<span class="loader"></span> Traitement...';
+                fetch('/gold-ajax', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: 'id_Utilisateur=' + encodeURIComponent(btn.dataset.id)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        feedback.innerHTML = '<div class="alert alert-success"><div class="alert-icon">✅</div><div class="alert-content"><strong>' + data.message + '</strong><p>Profitez de tous les avantages exclusifs.</p></div></div>';
+                        btn.style.display = 'none';
+                    } else {
+                        feedback.innerHTML = '<div class="alert alert-danger"><div class="alert-icon">❌</div><div class="alert-content"><strong>' + data.message + '</strong></div></div>';
+                        btn.disabled = false;
+                    }
+                })
+                .catch(() => {
+                    feedback.innerHTML = '<div class="alert alert-danger"><div class="alert-icon">❌</div><div class="alert-content"><strong>Erreur lors de la requête.</strong></div></div>';
+                    btn.disabled = false;
+                });
+            });
+        }
+    });
+    </script>
 </body>
 
 </html>

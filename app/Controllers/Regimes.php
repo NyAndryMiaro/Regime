@@ -94,7 +94,7 @@ class Regimes extends BaseController
         }
 
         $data = [
-            'id_Objectif' => $id_objectif,
+            'id_objectif' => $id_objectif,
             'libelle' => $libelle,
             'duree' => $duree,
             'variation_poids' => $variation_poids,

@@ -33,7 +33,9 @@ $routes->get('/monnaie', 'Utilisateur::porteMonnaie');
 $routes->post('/code', 'Utilisateur::entrerCode');
 
 $routes->get('/show-gold', 'Gold::showGold');
+
 $routes->get('/devenir-gold/(:num)', 'Gold::becomeGold/$1s');
+$routes->post('gold-ajax', 'Gold::becomeGoldAjax');
 
 $routes->get('/admin/activites', 'Activites::listeActivites');
 $routes->get('/admin/activite-insert', 'Activites::showForm');
