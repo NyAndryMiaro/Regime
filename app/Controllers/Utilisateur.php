@@ -7,6 +7,7 @@ use App\Models\ObjectifModel;
 use App\Models\UtilisateurObjectifModel;
 use App\Models\CodeModel;
 use App\Models\RegimeModel;
+use App\Models\GoldModel;
 
 class Utilisateur extends BaseController
 {
@@ -379,6 +380,15 @@ class Utilisateur extends BaseController
 
         $poidsIdeal = $this->calculerPoidsIdeal($userData['taille']);
 
+        $isGold = !empty($userData['estGold']);
+        $remise = 0;
+        if ($isGold) {
+            $gold = (new GoldModel())->first();
+            if ($gold) {
+                $remise = (float) $gold['remise'];
+            }
+        }
+
         $regimesAffichables = [];
         $infoObjectif = null;
         $regimeRecommandeIndex = -1;
@@ -424,7 +434,9 @@ class Utilisateur extends BaseController
                     'infoObjectif' => $infoObjectif,
                     'poidsIdeal' => $poidsIdeal,
                     'ecart' => abs($ecart),
-                    'regimeRecommandeIndex' => $regimeRecommandeIndex
+                    'regimeRecommandeIndex' => $regimeRecommandeIndex,
+                    'isGold' => $isGold,
+                    'remise' => $remise
                 ]);
             }
         }
@@ -436,7 +448,9 @@ class Utilisateur extends BaseController
             'infoObjectif' => $infoObjectif,
             'poidsIdeal' => $poidsIdeal,
             'ecart' => 0,
-            'regimeRecommandeIndex' => $regimeRecommandeIndex
+            'regimeRecommandeIndex' => $regimeRecommandeIndex,
+            'isGold' => $isGold,
+            'remise' => $remise
         ]);
     }
 
