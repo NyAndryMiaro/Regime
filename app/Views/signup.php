@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body>
     <div class="page-shell stack">
@@ -18,7 +18,7 @@
                 <div class="alert-icon">⚠️</div>
                 <div class="alert-content">
                     <strong>Erreurs détectées</strong>
-                    <ul style="margin: 0.5rem 0 0 1rem; padding-left: 1rem;">
+                    <ul class="alert-list">
                         <?php foreach ($errors as $err): ?>
                             <li><?= esc($err) ?></li>
                         <?php endforeach; ?>
@@ -27,7 +27,7 @@
             </div>
         <?php endif; ?>
 
-        <section class="card card--pad" style="max-width: 600px; margin: 0 auto;">
+        <section class="card card--pad auth-card">
             <div class="card-header">
                 <div>
                     <h2 class="card-title">Étape 1 - Informations de base</h2>
@@ -45,12 +45,12 @@
 
                 <div class="form-group">
                     <label>Genre</label>
-                    <div style="display: flex; gap: 2rem; align-items: center;">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 500;">
+                    <div class="radio-group">
+                        <label class="radio-option">
                             <input type="radio" id="male" name="genre" value="M" required <?= (isset($old['genre']) && $old['genre'] === 'M') ? 'checked' : '' ?>>
                             <span>Masculin</span>
                         </label>
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 500;">
+                        <label class="radio-option">
                             <input type="radio" id="femelle" name="genre" value="F" <?= (isset($old['genre']) && $old['genre'] === 'F') ? 'checked' : '' ?>>
                             <span>Féminin</span>
                         </label>
@@ -64,19 +64,19 @@
 
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
-                    <div style="display: flex; gap: 0.75rem; align-items: flex-end;">
-                        <div style="flex: 1;">
-                            <input id="mdp" type="password" name="password" placeholder="Créez un mot de passe sécurisé" required style="margin: 0;">
+                    <div class="password-row">
+                        <div class="password-field">
+                            <input id="mdp" type="password" name="password" placeholder="Créez un mot de passe sécurisé" required>
                         </div>
-                        <button id="bouton" type="button" onclick="password_action()" class="btn btn--ghost btn--sm" style="margin-bottom: 0;">👁️</button>
+                        <button id="bouton" type="button" onclick="password_action()" class="btn btn--ghost btn--sm">👁️</button>
                     </div>
                 </div>
 
                 <button type="submit" class="btn btn--primary btn--full">Suivant →</button>
             </form>
 
-            <div style="text-align: center; padding-top: 1rem; border-top: 1px solid var(--border);">
-                <p style="color: var(--text-secondary); margin-bottom: 0.75rem;">Vous avez déjà un compte ?</p>
+            <div class="auth-switch">
+                <p>Vous avez déjà un compte ?</p>
                 <a href="/" class="btn btn--secondary btn--full">Se connecter</a>
             </div>
         </section>

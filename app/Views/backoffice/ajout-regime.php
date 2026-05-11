@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter un régime - Ré-Gym Admin</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body>
     <div class="page-shell stack">
@@ -15,13 +15,13 @@
             <p>Créez un nouveau régime alimentaire personnalisé.</p>
         </section>
 
-        <section class="card card--pad" style="max-width: 700px;">
+        <section class="card card--pad card--form">
             <?php if (isset($errors) && is_array($errors) && count($errors) > 0): ?>
                 <div class="alert alert-danger">
                     <div class="alert-icon">⚠️</div>
                     <div class="alert-content">
                         <strong>Erreurs détectées</strong>
-                        <ul style="margin: 0.5rem 0 0 1rem; padding-left: 1rem;">
+                        <ul class="alert-list">
                             <?php foreach ($errors as $err): ?>
                                 <li><?= esc($err) ?></li>
                             <?php endforeach; ?>
@@ -67,8 +67,8 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--border);">
-                    <h3 style="margin-bottom: 1rem; color: var(--primary);">🥗 Composition nutritionnelle</h3>
+                <div class="nutrition-block">
+                    <h3 class="nutrition-title">🥗 Composition nutritionnelle</h3>
                     
                     <div class="form-row">
                         <div class="form-group">
@@ -87,14 +87,14 @@
                         </div>
                     </div>
                     
-                    <div style="margin-top: 0.75rem; padding: 1rem; background: rgba(15, 139, 102, 0.08); border-radius: var(--radius-md); font-size: 0.9rem; color: var(--text-secondary);">
+                    <div class="nutrition-hint">
                         💡 <strong>Conseil:</strong> La somme des pourcentages doit être égale à 100%
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn--primary" style="flex: 1;">✅ Ajouter le régime</button>
-                    <a href="/admin/regimes" class="btn btn--secondary" style="flex: 1; text-align: center;">❌ Annuler</a>
+                <div class="form-actions form-actions--spaced">
+                    <button type="submit" class="btn btn--primary">✅ Ajouter le régime</button>
+                    <a href="/admin/regimes" class="btn btn--secondary">❌ Annuler</a>
                 </div>
             </form>
         </section>

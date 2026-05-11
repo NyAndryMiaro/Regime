@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier le régime - Ré-Gym Admin</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 
 <body>
@@ -17,13 +17,13 @@
             <p>Mettez à jour les informations de ce régime alimentaire.</p>
         </section>
 
-        <section class="card card--pad" style="max-width: 700px;">
+        <section class="card card--pad card--form">
             <?php if (isset($errors) && is_array($errors) && count($errors) > 0): ?>
                 <div class="alert alert-danger">
                     <div class="alert-icon">⚠️</div>
                     <div class="alert-content">
                         <strong>Erreurs détectées</strong>
-                        <ul style="margin: 0.5rem 0 0 1rem; padding-left: 1rem;">
+                        <ul class="alert-list">
                             <?php foreach ($errors as $err): ?>
                                 <li><?= esc($err) ?></li>
                             <?php endforeach; ?>
@@ -68,8 +68,8 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--border);">
-                    <h3 style="margin-bottom: 1rem; color: var(--primary);">🥗 Composition nutritionnelle</h3>
+                <div class="nutrition-block">
+                    <h3 class="nutrition-title">🥗 Composition nutritionnelle</h3>
                     
                     <div class="form-row">
                         <div class="form-group">
@@ -91,9 +91,9 @@
 
                 <input type="hidden" name="id_regime" value="<?= $regime['id_Regime'] ?>">
                 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn btn--primary" style="flex: 1;">✅ Modifier ce régime</button>
-                    <a href="/admin/regimes" class="btn btn--secondary" style="flex: 1; text-align: center;">❌ Annuler</a>
+                <div class="form-actions form-actions--spaced">
+                    <button type="submit" class="btn btn--primary">✅ Modifier ce régime</button>
+                    <a href="/admin/regimes" class="btn btn--secondary">❌ Annuler</a>
                 </div>
             </form>
         </section>

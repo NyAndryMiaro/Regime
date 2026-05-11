@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body>
     <div class="page-shell stack">
@@ -23,7 +23,7 @@
             </div>
         <?php endif; ?>
 
-        <section class="card card--pad" style="max-width: 500px; margin: 0 auto;">
+        <section class="card card--pad auth-card auth-card--narrow">
             <div class="card-header">
                 <div>
                     <h2 class="card-title">Se connecter</h2>
@@ -46,8 +46,8 @@
                 <button type="submit" class="btn btn--primary btn--full">Se connecter</button>
             </form>
 
-            <div style="text-align: center; padding-top: 1rem; border-top: 1px solid var(--border);">
-                <p style="color: var(--text-secondary); margin-bottom: 0.75rem;">Pas encore de compte ?</p>
+            <div class="auth-switch">
+                <p>Pas encore de compte ?</p>
                 <a href="/showSignUp1" class="btn btn--secondary btn--full">Créer un nouveau compte</a>
             </div>
         </section>

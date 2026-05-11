@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Porte-monnaie - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
     <script src="/assets/js/wallet.js" defer></script>
 </head>
 
@@ -39,11 +39,11 @@
                 <div class="card-header">
                     <h2 class="card-title">💰 Votre solde</h2>
                 </div>
-                <div style="text-align: center; padding: 2rem 0;">
-                    <div style="font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">
+                <div class="wallet-balance">
+                    <div class="wallet-balance__value">
                         <?= esc($user['argent']) ?>
                     </div>
-                    <p style="color: var(--text-secondary); font-size: 1.05rem;">Ar</p>
+                    <p class="wallet-balance__unit">Ar</p>
                 </div>
             </section>
 
@@ -61,8 +61,8 @@
             </section>
         </div>
 
-        <footer class="footer" style="margin-top: 3rem;">
-            <p>Besoin d'aide ? <a href="/support" style="color: var(--primary); text-decoration: none; font-weight: 600;">Contactez-nous</a></p>
+        <footer class="footer footer--spaced">
+            <p>Besoin d'aide ? <a href="/support" class="inline-link">Contactez-nous</a></p>
         </footer>
     </div>
 </body>

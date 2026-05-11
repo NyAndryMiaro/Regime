@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
     <title>Gestion des Activités - Ré-Gym Admin</title>
 </head>
 
@@ -18,11 +18,11 @@
         </section>
     
         <?php if (empty($liste)) { ?>
-            <section class="card card--pad" style="text-align: center;">
-                <div style="padding: 2rem;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
-                    <p style="color: var(--text-secondary); font-size: 1.1rem;">Aucune activité présente pour le moment</p>
-                    <a href="/admin/activite-insert" class="btn btn--primary" style="margin-top: 1.5rem;">➕ Ajouter une activité</a>
+            <section class="card card--pad empty-panel">
+                <div class="empty-content">
+                    <div class="empty-icon">📭</div>
+                    <p class="empty-text">Aucune activité présente pour le moment</p>
+                    <a href="/admin/activite-insert" class="btn btn--primary">➕ Ajouter une activité</a>
                 </div>
             </section>
         <?php } else { ?>

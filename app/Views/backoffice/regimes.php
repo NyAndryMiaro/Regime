@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
     <title>Gestion des Régimes - Ré-Gym Admin</title>
 </head>
 
@@ -18,11 +18,11 @@
         </section>
 
         <?php if (empty($liste)) { ?>
-            <section class="card card--pad" style="text-align: center;">
-                <div style="padding: 2rem;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
-                    <p style="color: var(--text-secondary); font-size: 1.1rem;">Aucun régime présent pour le moment</p>
-                    <a href="/admin/regime-insert" class="btn btn--primary" style="margin-top: 1.5rem;">➕ Ajouter un régime</a>
+            <section class="card card--pad empty-panel">
+                <div class="empty-content">
+                    <div class="empty-icon">📭</div>
+                    <p class="empty-text">Aucun régime présent pour le moment</p>
+                    <a href="/admin/regime-insert" class="btn btn--primary">➕ Ajouter un régime</a>
                 </div>
             </section>
         <?php } else { ?>
@@ -54,7 +54,7 @@
                                 <td><strong><?= $regime["variation_poids"] ?> kg</strong></td>
                                 <td><strong><?= $regime["prix_unitaire"] ?> €</strong></td>
                                 <td>
-                                    <div style="font-size: 0.9rem;">
+                                    <div class="composition-text">
                                         🥩 <?= $regime["pourcentage_viande"] ?>% | 
                                         🐟 <?= $regime["pourcentage_poisson"] ?>% | 
                                         🥬 <?= $regime["pourcentage_legume"] ?>%

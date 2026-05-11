@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Gestion des Utilisateurs - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -108,7 +108,7 @@
                             <?php foreach ($users as $user):
                                 $imc = $user['poids'] / (($user['taille'] / 100) ** 2);
                                 $statut = $user['estAdmin'] ? 'Admin' : 'Utilisateur';
-                                $couleur = $user['estAdmin'] ? 'style="color: #f59e0b;"' : '';
+                                $couleur = $user['estAdmin'] ? 'badge-role badge-role--admin' : 'badge-role';
                             ?>
                                 <tr>
                                     <td><?= $user['id_Utilisateur'] ?></td>
@@ -118,7 +118,7 @@
                                     <td><?= $user['taille'] ?></td>
                                     <td><?= $user['poids'] ?></td>
                                     <td><?= number_format($imc, 1) ?></td>
-                                    <td><span <?= $couleur ?>><?= $statut ?></span></td>
+                                    <td><span class="<?= $couleur ?>"><?= $statut ?></span></td>
                                     <td>
                                         <button class="btn btn-primary btn-sm">✏️</button>
                                         <button class="btn btn-logout btn-sm">🗑️</button>
@@ -127,7 +127,7 @@
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="9" class="text-center" style="padding: 2rem;">Aucun utilisateur trouvé</td>
+                                <td colspan="9" class="text-center table-empty">Aucun utilisateur trouvé</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
@@ -135,60 +135,10 @@
             </div>
         </div>
 
-        <!-- Statistiques Détaillées -->
-        <div class="section-title mt-4" id="statistiques">📉 Statistiques Détaillées</div>
-        <div class="grid-2">
-            <div class="card">
-                <h3>📋 Résumé</h3>
-                <div style="margin-top: 1.5rem;">
-                    <p class="mb-2"><strong>Total d'utilisateurs:</strong> <span class="text-green"><?= count($users) ?? 0 ?></span></p>
-                    <p class="mb-2"><strong>Administrateurs:</strong> <span class="text-green"><?= count(array_filter($users ?? [], fn($u) => $u['estAdmin'])) ?></span></p>
-                    <p class="mb-2"><strong>Utilisateurs normaux:</strong> <span class="text-green"><?= count(array_filter($users ?? [], fn($u) => !$u['estAdmin'])) ?></span></p>
-                </div>
-                <div class="mt-3">
-                    <button class="btn btn-primary" style="width: 100%;">📥 Exporter les données</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>⚙️ Paramètres</h3>
-                <div style="margin-top: 1.5rem;">
-                    <div class="alert alert-info">
-                        <div class="alert-icon">ℹ️</div>
-                        <div class="alert-content">
-                            <strong>Maintenance du système</strong>
-                            <p>Tous les systèmes fonctionnent correctement.</p>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">🔧 Paramètres système</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Alertes Administrateur -->
-        <div class="section-title mt-4">🚨 Alertes et Notifications</div>
-        <div class="card">
-            <div class="alert alert-success">
-                <div class="alert-icon">✅</div>
-                <div class="alert-content">
-                    <strong>Système opérationnel</strong>
-                    <p>Tous les services fonctionnent normalement.</p>
-                </div>
-            </div>
-
-            <div class="alert alert-info">
-                <div class="alert-icon">ℹ️</div>
-                <div class="alert-content">
-                    <strong>Mise à jour disponible</strong>
-                    <p>Une nouvelle version du système est disponible. <?= count($users) > 10 ? 'Veuillez envisager une mise à jour.' : '' ?></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+        
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2024 MonRégime - Panneau d'administration</p>
+        <p>&copy; 2026 MonRégime - Panneau d'administration</p>
     </footer>
 
     <script>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gérer mon Objectif - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
     
 </head>
 
@@ -35,7 +35,7 @@
 
         <!-- Statistiques de l'utilisateur -->
         <div class="user-stats">
-            <h3 style="margin-top: 0;">Vos Informations</h3>
+            <h3 class="stats-title">Vos Informations</h3>
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-label">Taille</div>
@@ -62,7 +62,7 @@
                 <p><?= esc($objectifActuel['libelle']) ?></p>
             </div>
         <?php else: ?>
-            <div class="objectif-current" style="background-color: #ffc107; color: #333;">
+            <div class="objectif-current objectif-current--warning">
                 <h3>⚠️ Aucun objectif défini</h3>
                 <p>Commencez par choisir un objectif ci-dessous</p>
             </div>
@@ -114,7 +114,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2024 Ré-Gym - Votre guide de nutrition personnalisé</p>
+        <p>&copy; 2026 Ré-Gym - Votre guide de nutrition personnalisé</p>
     </footer>
 
     <script>

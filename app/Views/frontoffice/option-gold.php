@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Offre Premium Gold - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
             <p>Déverrouillez toutes les fonctionnalités premium avec Ré-Gym Gold</p>
         </section>
 
-        <section class="card card--pad" style="max-width: 700px; margin: 2rem auto;">
+        <section class="card card--pad gold-card">
             <div class="card-header">
                 <div>
                     <h2 class="card-title">🏆 Ré-Gym Premium Gold</h2>
@@ -25,31 +25,31 @@
                 </div>
             </div>
 
-            <div style="margin: 2rem 0; padding: 2rem; background: linear-gradient(135deg, rgba(15, 139, 102, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%); border-radius: var(--radius-md); border: 2px solid rgba(15, 139, 102, 0.2);">
-                <div style="text-align: center;">
-                    <div style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Remise exclusive</div>
-                    <div style="font-size: 3.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem;">
+            <div class="gold-offer-box">
+                <div class="gold-offer-center">
+                    <div class="gold-offer-label">Remise exclusive</div>
+                    <div class="gold-offer-value">
                         <?= $parametre["remise"] * 100 ?>%
                     </div>
-                    <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;">sur tous vos achats</p>
+                    <p class="gold-offer-note">sur tous vos achats</p>
                 </div>
             </div>
 
-            <div style="margin: 2rem 0; padding: 1.5rem; background: rgba(15, 139, 102, 0.05); border-radius: var(--radius-md); border-left: 4px solid var(--primary);">
-                <h3 style="margin-top: 0; color: var(--primary);">✅ Avantages inclus :</h3>
-                <ul style="margin: 1rem 0; padding-left: 1.5rem; color: var(--text-secondary);">
+            <div class="gold-benefits-box">
+                <h3 class="gold-benefits-title">✅ Avantages inclus :</h3>
+                <ul class="gold-benefits-list">
                     <li>Accès illimité aux régimes premium</li>
                     <li>Suivi nutritionnel avancé</li>
                     <li>Coach personnel virtuel</li>
-                    <li>Remise {{$parametre["remise"] * 100}}% sur tous les achats</li>
+                    <li>Remise <?= $parametre["remise"] * 100 ?>% sur tous les achats</li>
                     <li>Priorité support client</li>
                     <li>Validité illimitée</li>
                 </ul>
             </div>
 
-            <div style="margin: 2rem 0; text-align: center;">
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                    <strong>Prix :</strong> <span style="font-size: 1.35rem; color: var(--text-primary); font-weight: 700;"><?= $parametre["prix"] ?> Ar</span>
+            <div class="gold-price-wrap">
+                <p class="gold-price-line">
+                    <strong>Prix :</strong> <span class="gold-price-value"><?= $parametre["prix"] ?> Ar</span>
                 </p>
             </div>
 
@@ -66,19 +66,19 @@
                     </div>
                 </div>
             <?php } else { ?>
-                <a href="/devenir-gold/<?= $id ?>" class="btn btn--primary btn--full" style="font-size: 1.05rem; padding: 1rem;">
+                <a href="/devenir-gold/<?= $id ?>" class="btn btn--primary btn--full gold-cta">
                     🚀 Devenir Premium Gold Maintenant
                 </a>
             <?php } ?>
 
-            <p style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-top: 1.5rem;">
+            <p class="gold-bottom-note">
                 Achat unique, avantages illimités
             </p>
         </section>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2024 Ré-Gym - Votre guide de nutrition personnalisé</p>
+        <p>&copy; 2026 Ré-Gym - Votre guide de nutrition personnalisé</p>
     </footer>
 </body>
 

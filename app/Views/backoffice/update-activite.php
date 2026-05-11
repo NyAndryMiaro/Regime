@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier l'activité - Ré-Gym Admin</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 
 <body>
@@ -17,13 +17,13 @@
             <p>Mettez à jour les informations de cette activité sportive.</p>
         </section>
 
-        <section class="card card--pad" style="max-width: 700px;">
+        <section class="card card--pad card--form">
             <?php if (isset($errors) && is_array($errors) && count($errors) > 0): ?>
                 <div class="alert alert-danger">
                     <div class="alert-icon">⚠️</div>
                     <div class="alert-content">
                         <strong>Erreurs détectées</strong>
-                        <ul style="margin: 0.5rem 0 0 1rem; padding-left: 1rem;">
+                        <ul class="alert-list">
                             <?php foreach ($errors as $err): ?>
                                 <li><?= esc($err) ?></li>
                             <?php endforeach; ?>
@@ -73,15 +73,15 @@
                             }
                         ?>
                         <div>
-                            <label for="mois" style="font-weight: 600; font-size: 0.9rem;">Mois</label>
+                            <label for="mois" class="form-label--small">Mois</label>
                             <input type="number" min="0" id="mois" name="mois" placeholder="0" value="<?= isset($old['mois']) ? esc($old['mois']) : $mois ?>">
                         </div>
                         <div>
-                            <label for="jours" style="font-weight: 600; font-size: 0.9rem;">Jours</label>
+                            <label for="jours" class="form-label--small">Jours</label>
                             <input type="number" min="0" max="31" id="jours" name="jours" placeholder="0" value="<?= isset($old['jours']) ? esc($old['jours']) : $jours ?>">
                         </div>
                         <div>
-                            <label for="heures" style="font-weight: 600; font-size: 0.9rem;">Heures</label>
+                            <label for="heures" class="form-label--small">Heures</label>
                             <input type="number" min="0" max="23" id="heures" name="heures" placeholder="0" value="<?= isset($old['heures']) ? esc($old['heures']) : $heures ?>">
                         </div>
                     </div>
@@ -94,9 +94,9 @@
 
                 <input type="hidden" name="id_activite" value="<?= $activite['id_Activite'] ?>">
                 
-                <div style="display: flex; gap: 1rem;">
-                    <button type="submit" class="btn btn--primary" style="flex: 1;">✅ Modifier cette activité</button>
-                    <a href="/admin/activites" class="btn btn--secondary" style="flex: 1; text-align: center;">❌ Annuler</a>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">✅ Modifier cette activité</button>
+                    <a href="/admin/activites" class="btn btn--secondary">❌ Annuler</a>
                 </div>
             </form>
         </section>

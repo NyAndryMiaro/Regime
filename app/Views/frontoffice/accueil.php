@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de Bord - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 
 <body>
@@ -59,7 +59,7 @@
                 <div class="stat-value">2200</div>
                 <div class="stat-unit">kcal/jour</div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 65%"></div>
+                    <div class="progress-fill progress-fill--65"></div>
                 </div>
                 <p class="text-gray small">1430 / 2200 kcal aujourd'hui</p>
             </div>
@@ -69,7 +69,7 @@
                 <div class="stat-value">65g</div>
                 <div class="stat-unit">sur 110g</div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 59%"></div>
+                    <div class="progress-fill progress-fill--59"></div>
                 </div>
                 <button class="btn btn-primary btn-sm btn-full mt-2">+ Ajouter</button>
             </div>
@@ -79,7 +79,7 @@
                 <div class="stat-value">2.1L</div>
                 <div class="stat-unit">sur 2.5L</div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 84%"></div>
+                    <div class="progress-fill progress-fill--84"></div>
                 </div>
                 <button class="btn btn-primary btn-sm btn-full mt-2">💧 Boire</button>
             </div>
@@ -88,9 +88,9 @@
         <!-- Régimes Recommandés -->
         <div class="section-title" id="regimes">🎯 Régimes Recommandés</div>
         <div class="card">
-            <div style="text-align: center; padding: 2rem;">
-                <p style="color: #666; margin-bottom: 1.5rem; font-size: 1.1rem;">Découvrez nos régimes personnalisés adaptés à vos objectifs</p>
-                <a href="/regimes" class="btn btn-primary" style="display: inline-block; padding: 0.75rem 2rem; text-decoration: none; border-radius: 6px;">
+            <div class="cta-panel">
+                <p class="cta-text">Découvrez nos régimes personnalisés adaptés à vos objectifs</p>
+                <a href="/regimes" class="btn btn--primary">
                     Voir tous les régimes →
                 </a>
             </div>
@@ -174,7 +174,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2024 MonRégime - Votre guide de nutrition personnalisé</p>
+        <p>&copy; 2026 MonRégime - Votre guide de nutrition personnalisé</p>
     </footer>
 
     <!-- Loader Overlay for AJAX -->

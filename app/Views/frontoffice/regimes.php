@@ -5,274 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Régimes - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <style>
-        .regimes-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .regimes-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .regimes-header h1 {
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 1rem;
-        }
-
-        .user-metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 12px;
-        }
-
-        .metric-item {
-            text-align: center;
-        }
-
-        .metric-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-bottom: 0.5rem;
-        }
-
-        .metric-value {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 0.25rem;
-        }
-
-        .metric-unit {
-            font-size: 0.85rem;
-            opacity: 0.8;
-        }
-
-        .objectif-info {
-            background: #f0f4ff;
-            border-left: 4px solid #667eea;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
-
-        .objectif-info p {
-            margin: 0;
-            color: #333;
-            font-size: 1.1rem;
-        }
-
-        .regimes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .regime-card {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .regime-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .regime-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
-        }
-
-        .regime-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #333;
-            flex: 1;
-        }
-
-        .regime-badge {
-            background: #667eea;
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        .regime-badge.positive {
-            background: #10b981;
-        }
-
-        .regime-badge.negative {
-            background: #ef4444;
-        }
-
-        .regime-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            padding: 1.5rem 0;
-            border-top: 1px solid #e5e7eb;
-            border-bottom: 1px solid #e5e7eb;
-            flex-grow: 1;
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-label {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .info-value {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .regime-composition {
-            display: flex;
-            gap: 1rem;
-            margin: 1rem 0;
-            flex-wrap: wrap;
-        }
-
-        .composition-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: #f3f4f6;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            color: #1f2937;
-            font-weight: 500;
-        }
-
-        .composition-box {
-            width: 16px;
-            height: 16px;
-            border-radius: 3px;
-        }
-
-        .viande {
-            background: #ef4444;
-        }
-
-        .poisson {
-            background: #3b82f6;
-        }
-
-        .legume {
-            background: #10b981;
-        }
-
-        .regime-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: auto;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .btn-primary {
-            background-color: #667eea;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #5568d3;
-        }
-
-        .btn-secondary {
-            background-color: #e5e7eb;
-            color: #333;
-        }
-
-        .btn-secondary:hover {
-            background-color: #d1d5db;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            background: #f9fafb;
-            border-radius: 12px;
-            margin-top: 2rem;
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .empty-state h3 {
-            color: #666;
-            margin-bottom: 0.5rem;
-        }
-
-        .empty-state p {
-            color: #999;
-            margin-bottom: 1.5rem;
-        }
-
-        .recommended-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #fbbf24;
-            color: #92400e;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
-
-        .regime-card-wrapper {
-            position: relative;
-        }
-
-        .regime-card-wrapper.recommended {
-            border: 2px solid #fbbf24;
-        }
-
-        .regime-card-wrapper.recommended .regime-card {
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 
 <body>
@@ -282,9 +15,7 @@
         <div class="regimes-header">
             <h1>🎯 Régimes Personnalisés</h1>
             <p>Trouvez le régime parfait pour atteindre vos objectifs</p>
-            <a href="/plan" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: bold; transition: all 0.3s ease;" 
-               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(102, 126, 234, 0.4)'"
-               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+            <a href="/plan" class="btn btn--primary front-link-btn">
                 📋 Voir mon plan complet
             </a>
         </div>
@@ -329,7 +60,7 @@
                     <?php endif; ?>
                 <?php else: ?>
                     <strong>⚠️</strong> Veuillez d'abord choisir un objectif pour voir les régimes recommandés.
-                    <a href="/objectif" style="margin-left: 1rem; color: #667eea; text-decoration: none; font-weight: bold;">Choisir un objectif →</a>
+                    <a href="/objectif" class="inline-link">Choisir un objectif →</a>
                 <?php endif; ?>
             </p>
         </div>
@@ -373,7 +104,7 @@
                             </div>
 
                             <div>
-                                <div style="font-weight: bold; color: #666; margin-bottom: 0.8rem; font-size: 0.9rem;">Composition:</div>
+                                <div class="composition-heading">Composition:</div>
                                 <div class="regime-composition">
                                     <div class="composition-item">
                                         <div class="composition-box viande"></div>
@@ -400,35 +131,15 @@
                 <div class="empty-state-icon">📋</div>
                 <h3>Aucun régime disponible</h3>
                 <p>Veuillez d'abord choisir un objectif pour voir les régimes disponibles.</p>
-                <a href="/objectif" class="btn btn-primary" style="display: inline-block; width: auto;">Choisir un objectif</a>
+                <a href="/objectif" class="btn btn--primary">Choisir un objectif</a>
             </div>
         <?php endif; ?>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2024 Ré-Gym - Votre guide de nutrition personnalisé</p>
+        <p>&copy; 2026 Ré-Gym - Votre guide de nutrition personnalisé</p>
     </footer>
 
-    <script>
-        document.querySelectorAll('.regime-card').forEach((card, index) => {
-            card.style.animation = `fadeInUp 0.5s ease ${index * 0.1}s`;
-        });
-
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
 </body>
 
 </html>

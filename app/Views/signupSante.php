@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Étape 2 - Informations Santé - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body>
     <div class="page-shell stack">
@@ -23,7 +23,7 @@
             </div>
         <?php endif; ?>
 
-        <section class="card card--pad" style="max-width: 600px; margin: 0 auto;">
+        <section class="card card--pad auth-card auth-card--narrow">
             <div class="card-header">
                 <div>
                     <h2 class="card-title">Finalisez votre inscription</h2>
@@ -49,8 +49,8 @@
                     </div>
                 </div>
 
-                <div style="padding: 1rem; background: rgba(15, 139, 102, 0.08); border-radius: var(--radius-md); margin: 1.5rem 0;">
-                    <p style="margin: 0; color: var(--text-secondary); font-size: 0.95rem;">
+                <div class="auth-tip">
+                    <p>
                         💡 <strong>Conseil:</strong> Avec ces informations, nous calculerons votre IMC (Indice de Masse Corporelle) pour vous proposer un régime personnalisé.
                     </p>
                 </div>
@@ -58,8 +58,8 @@
                 <button type="submit" class="btn btn--primary btn--full">✅ Compléter l'inscription</button>
             </form>
 
-            <div style="text-align: center; padding-top: 1rem; border-top: 1px solid var(--border);">
-                <p style="color: var(--text-secondary); margin-bottom: 0.75rem; font-size: 0.9rem;">Besoin d'aide ?</p>
+            <div class="auth-switch">
+                <p>Besoin d'aide ?</p>
                 <a href="/" class="btn btn--ghost btn--full">← Retour</a>
             </div>
         </section>
