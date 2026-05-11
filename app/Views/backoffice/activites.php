@@ -16,7 +16,7 @@
             <h1>🏃 Gestion des Activités</h1>
             <p>Gérez tous les exercices et activités sportives disponibles.</p>
         </section>
-
+    
         <?php if (empty($liste)) { ?>
             <section class="card card--pad" style="text-align: center;">
                 <div style="padding: 2rem;">
