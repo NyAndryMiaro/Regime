@@ -12,6 +12,8 @@
     <!-- Navigation -->
     <?php include("navbar/navbar-user.html"); ?>
 
+
+    <div class="container page-continue">
         <!-- Header Section -->
         <div class="header-section" id="accueil">
             <div class="tableau">
@@ -40,7 +42,7 @@
 
                     </div>
 
-                <?php } else{ ?>
+                <?php } else { ?>
                     <div class="objectif-section objectif-header">
                         <p class="objectif-selected"> Votre objectif : <?= esc($objectif['libelle']) ?> </p>
                     </div>
@@ -48,7 +50,6 @@
             </div>
         </div>
 
-    <div class="container page-continue">
         <!-- objectif moved into header for immediate visibility -->
 
         <!-- Statistiques Principales -->
@@ -143,62 +144,33 @@
                 </div>
             </div>
         </div>
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 MonRégime - Votre guide de nutrition personnalisé</p>
+        </footer>
 
-        <!-- Recommandations -->
-        <div class="section-title mt-4">💡 Recommandations</div>
-        <div class="card mb-4">
-            <div class="alert alert-success">
-                <div class="alert-icon">✅</div>
-                <div class="alert-content">
-                    <strong>Excellente hydratation!</strong>
-                    <p>Gardez ce rythme, c'est parfait pour votre santé.</p>
-                </div>
-            </div>
-
-            <div class="alert alert-warning">
-                <div class="alert-icon">⚠️</div>
-                <div class="alert-content">
-                    <strong>Protéines insuffisantes</strong>
-                    <p>Ajoutez du poulet, du poisson ou des œufs à votre prochain repas.</p>
-                </div>
-            </div>
-
-            <div class="alert alert-info">
-                <div class="alert-icon">📌</div>
-                <div class="alert-content">
-                    <strong>Conseil du jour</strong>
-                    <p>Prenez votre petit-déjeuner 1-2h après votre réveil pour booster votre métabolisme.</p>
-                </div>
+        <!-- Loader Overlay for AJAX -->
+        <div class="loader-overlay" id="loaderOverlay">
+            <div class="loader-container">
+                <img src="/assets/img/Loading_icon.gif" alt="Chargement..." class="loader-gif">
+                <p class="loader-text">Mise à jour en cours...</p>
             </div>
         </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2026 MonRégime - Votre guide de nutrition personnalisé</p>
-    </footer>
-
-    <!-- Loader Overlay for AJAX -->
-    <div class="loader-overlay" id="loaderOverlay">
-        <div class="loader-container">
-            <img src="/assets/img/Loading_icon.gif" alt="Chargement..." class="loader-gif">
-            <p class="loader-text">Mise à jour en cours...</p>
-        </div>
-    </div>
-
-    <script>
-        window.__dashboardData = {
-            weightLabels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'],
-            weightValues: [68, 67.5, 67, 66.5, 66, 65.5, 65],
-            caloriesLabels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-            caloriesValues: [2150, 2300, 2100, 2250, 2200, 2400, 2100],
-            nutritionLabels: ['Glucides', 'Protéines', 'Lipides'],
-            nutritionValues: [50, 30, 20],
-            nutritionColors: ['#10b981', '#059669', '#d1fae5'],
-            hydrationLabels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-            hydrationValues: [2.2, 2.5, 2.1, 2.4, 2.6, 2.3, 2.1]
-        };
-    </script>
-    <script src="/assets/js/dashboard.js"></script>
+        <script>
+            window.__dashboardData = {
+                weightLabels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'],
+                weightValues: [68, 67.5, 67, 66.5, 66, 65.5, 65],
+                caloriesLabels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                caloriesValues: [2150, 2300, 2100, 2250, 2200, 2400, 2100],
+                nutritionLabels: ['Glucides', 'Protéines', 'Lipides'],
+                nutritionValues: [50, 30, 20],
+                nutritionColors: ['#10b981', '#059669', '#d1fae5'],
+                hydrationLabels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                hydrationValues: [2.2, 2.5, 2.1, 2.4, 2.6, 2.3, 2.1]
+            };
+        </script>
+        <script src="/assets/js/dashboard.js"></script>
 </body>
 
 </html>

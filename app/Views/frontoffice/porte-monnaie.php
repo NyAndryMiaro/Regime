@@ -61,9 +61,6 @@
             </section>
         </div>
 
-        <footer class="footer footer--spaced">
-            <p>Besoin d'aide ? <a href="/support" class="inline-link">Contactez-nous</a></p>
-        </footer>
     </div>
 </body>
 
