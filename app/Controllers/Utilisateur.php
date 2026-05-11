@@ -46,7 +46,7 @@ class Utilisateur extends BaseController
         $objectif = new ObjectifModel();
         $obj = $objectif->findAll();
 
-                $objectif = new ObjectifModel();
+        $objectif = new ObjectifModel();
         $obj = $objectif->findAll();
 
         $utiliObj = new UtilisateurObjectifModel();

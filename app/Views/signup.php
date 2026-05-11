@@ -1,76 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription</title>
-    <link rel="stylesheet" href="/assets/css/app.css">
+    <title>Inscription - Ré-Gym</title>
+    <link rel="stylesheet" href="/assets/css/admin.css">
+    <script src="/assets/js/main.js" defer></script>
+
 </head>
+
 <body>
     <div class="page-shell stack">
         <section class="hero">
-            <h1>Inscription</h1>
-            <p>Créez un compte pour accéder à la gestion de régime.</p>
+            <h1>🚀 Rejoignez Ré-Gym</h1>
+            <p>Créez votre compte pour commencer votre parcours fitness et nutrition.</p>
         </section>
 
-
-        <?php if (isset(
-            $errors) && is_array($errors) && count($errors) > 0): ?>
-            <section class="error-section">
-                <ul style="color: red;">
-                    <?php foreach ($errors as $err): ?>
-                        <li><?= esc($err) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </section>
+        <?php if (isset($errors) && is_array($errors) && count($errors) > 0): ?>
+            <div class="alert alert-danger">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <strong>Erreurs détectées</strong>
+                    <ul class="alert-list">
+                        <?php foreach ($errors as $err): ?>
+                            <li><?= esc($err) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
         <?php endif; ?>
 
-        <section class="card card--pad">
-            <form id="signup" action="/showSignUp2" method="post" class="form stack">
-                <?= csrf_field() ?>
-                <div class="form-group">
-                    <label for="nom">Nom</label>
-                    <input type="text" id="nom" name="nom" placeholder="RABARY" required value="<?= isset(
-                        $old['nom']) ? esc($old['nom']) : '' ?>">
+        <section class="card card--pad auth-card">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">Étape 1 - Informations de base</h2>
+                    <p class="card-subtitle">Remplissez vos informations personnelles</p>
                 </div>
+            </div>
+
+            <form id="signup" action="/showSignUp2" method="post" class="form">
+                <?= csrf_field() ?>
+
                 <div class="form-group">
-                    <label for="genre">Genre</label>
-                    <div style="display: flex; gap: 16px; align-items: center;">
-                        <input type="radio" id="male" name="genre" value="M" required <?= (isset($old['genre']) && $old['genre'] === 'M') ? 'checked' : '' ?>>
-                        <label for="male" style="margin-right: 8px;">Male</label>
-                        <input type="radio" id="femelle" name="genre" value="F" <?= (isset($old['genre']) && $old['genre'] === 'F') ? 'checked' : '' ?>>
-                        <label for="femelle">Femelle</label>
+                    <label for="nom">Nom complet</label>
+                    <input type="text" id="nom" name="nom" placeholder="Ex: RABARY" required value="<?= isset($old['nom']) ? esc($old['nom']) : '' ?>">
+                </div>
+
+                <div class="form-group">
+                    <label>Genre</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" id="male" name="genre" value="M" required <?= (isset($old['genre']) && $old['genre'] === 'M') ? 'checked' : '' ?>>
+                            <span>Masculin</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" id="femelle" name="genre" value="F" <?= (isset($old['genre']) && $old['genre'] === 'F') ? 'checked' : '' ?>>
+                            <span>Féminin</span>
+                        </label>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="example@mg" required value="<?= isset($old['email']) ? esc($old['email']) : '' ?>">
+                    <label for="email">Adresse email</label>
+                    <input type="email" id="email" name="email" placeholder="exemple@domaine.com" required value="<?= isset($old['email']) ? esc($old['email']) : '' ?>">
                 </div>
+
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <input id="mdp" type="password" name="password" placeholder="mot de passe" required>
-                        <button id="bouton" type="button" onclick="password_action()">Afficher</button>
+                    <div class="password-row">
+                        <div class="password-field">
+                            <input id="mdp" type="password" name="password" placeholder="Créez un mot de passe sécurisé" required>
+                        </div>
+                        <button id="bouton" type="button" class="btn btn--ghost btn--sm">👁️</button>
                     </div>
                 </div>
-                <button type="submit" class="btn btn--primary">Suivant</button>
+
+                <button type="submit" class="btn btn--primary btn--full">Suivant →</button>
             </form>
-            <a href="/">Déjà un compte ? Se connecter</a>
+
+            <div class="auth-switch">
+                <p>Vous avez déjà un compte ?</p>
+                <a href="/" class="btn btn--secondary btn--full">Se connecter</a>
+            </div>
         </section>
     </div>
-    <script>
-        function password_action() {
-            let pass = document.getElementById("mdp");
-            let bouton = document.getElementById("bouton");
-            let etat = pass.type;
-            if (etat === "text") {
-                pass.type = "password";
-                bouton.textContent = "Afficher";
-            } else {
-                pass.type = "text";
-                bouton.textContent = "Masquer";
-            }
-        }
-    </script>
 </body>
+
 </html>
