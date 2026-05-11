@@ -26,10 +26,53 @@ class Utilisateur extends BaseController
             'nom' => $user['nom'],
             'email' => $user['email'],
         ]);
+<<<<<<< Updated upstream
         
         // return redirect()->to('/list');
         if($user['estAdmin'] == TRUE){
         return view('loggedAdmin');
+=======
+
+        if ($user['estAdmin'] == 1) {
+            $users = $model->findAll();
+            return view('/backoffice/accueil-admin', ['users' => $users]);
+        }
+
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id_Utilisateur'])->first();
+
+        $objectif = new ObjectifModel();
+        $obj = $objectif->findAll();
+
+        $objectifActuel = null;
+        if ($verifier != null) {
+            $objectifActuel = $objectif->find($verifier['id_Objectif']);
+        }
+
+        $regimeModel = new RegimeModel();
+        $regimes = $regimeModel->findAll();
+        
+        $activiteModel = new \App\Models\ActivitesModel();
+        $activites = $activiteModel->findAll();
+
+        if ($verifier != null) {
+            $but = $objectif->find($verifier['id_Objectif']);
+        return view('frontoffice/accueil', [
+            'user' => $user,
+            'objectifs' => $obj,
+            'objectif' => $objectifActuel,
+            'regimes' => $regimes,
+            'activites' => $activites
+        ]);
+        } else {
+        return view('frontoffice/accueil', [
+            'user' => $user,
+            'objectifs' => $obj,
+            'objectif' => $objectifActuel,
+            'regimes' => $regimes,
+            'activites' => $activites
+        ]);
+>>>>>>> Stashed changes
         }
         return view('logged');
     }
@@ -104,6 +147,40 @@ class Utilisateur extends BaseController
         } else{
             return redirect()->to('/');
         }
+<<<<<<< Updated upstream
+=======
+    }
+
+    public function logout()
+    {
+        session()->destroy();
+        return redirect()->to('/login');
+    }
+
+    public function accueil()
+    {
+        $user = session()->get('user');
+        if (!$user) {
+            return redirect()->to('/login');
+        }
+
+        $model = new UtilisateurModel();
+        $userData = $model->find($user['id']);
+
+        $objectif = new ObjectifModel();
+        $obj = $objectif->findAll();
+
+        $utiliObj = new UtilisateurObjectifModel();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
+
+        $objectifActuel = null;
+        if ($verifier != null) {
+            $objectifActuel = $objectif->find($verifier['id_Objectif']);
+        }
+
+        $regimeModel = new RegimeModel();
+        $regimes = $regimeModel->findAll();
+>>>>>>> Stashed changes
         
     }
 }
