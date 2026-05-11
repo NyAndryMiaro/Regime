@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/admin.css">
     <title>Gestion des Régimes - Ré-Gym Admin</title>
 </head>
-
 <body>
     <div class="page-shell stack">
         <?php include("navbar/navbar-admin.html"); ?>
@@ -22,15 +20,15 @@
                 <div class="empty-content">
                     <div class="empty-icon">📭</div>
                     <p class="empty-text">Aucun régime présent pour le moment</p>
-                    <a href="/admin/regime-insert" class="btn btn--primary">➕ Ajouter un régime</a>
+                    <a href="/admin/regime-insert" class="btn btn-primary">➕ Ajouter un régime</a>
                 </div>
             </section>
         <?php } else { ?>
             <section class="toolbar">
-                <a href="/admin/regime-insert" class="btn btn--primary">➕ Ajouter un régime</a>
+                <a href="/admin/regime-insert" class="btn btn-primary">➕ Ajouter un régime</a>
             </section>
 
-            <section class="card table-wrap">
+            <section class="table-container">
                 <table>
                     <thead>
                         <tr>
@@ -62,8 +60,8 @@
                                 </td>
                                 <td>
                                     <div class="actions">
-                                        <a class="btn btn--ghost btn--sm" href="/admin/regime-update/<?= $regime["id_Regime"] ?>">✏️ Modifier</a>
-                                        <a class="btn btn--danger btn--sm" href="/admin/regime-delete/<?= $regime["id_Regime"] ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce régime ?');">🗑️ Supprimer</a>
+                                        <a class="btn btn-ghost btn-sm" href="/admin/regime-update/<?= $regime["id_Regime"] ?>">✏️ Modifier</a>
+                                        <a class="btn btn-logout btn-sm" href="/admin/regime-delete/<?= $regime["id_Regime"] ?>" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce régime ?');">🗑️ Supprimer</a>
                                     </div>
                                 </td>
                             </tr>
@@ -74,5 +72,4 @@
         <?php } ?>
     </div>
 </body>
-
 </html>

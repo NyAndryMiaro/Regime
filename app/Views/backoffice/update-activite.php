@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier l'activité - Ré-Gym Admin</title>
     <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
-
 <body>
     <div class="page-shell stack">
         <?php include("navbar/navbar-admin.html"); ?>
@@ -95,12 +93,11 @@
                 <input type="hidden" name="id_activite" value="<?= $activite['id_Activite'] ?>">
                 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--primary">✅ Modifier cette activité</button>
-                    <a href="/admin/activites" class="btn btn--secondary">❌ Annuler</a>
+                    <button type="submit" class="btn btn-primary">✅ Modifier cette activité</button>
+                    <a href="/admin/activites" class="btn btn-logout">❌ Annuler</a>
                 </div>
             </form>
         </section>
     </div>
 </body>
-
 </html>

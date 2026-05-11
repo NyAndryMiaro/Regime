@@ -4,90 +4,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Gestion des Utilisateurs - Ré-Gym</title>
+    <title>Admin - Ré-Gym</title>
     <link rel="stylesheet" href="/assets/css/admin.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <!-- Navigation -->
-    <?php include("navbar/navbar-admin.html"); ?>
+    <div class="page-shell stack">
+        <?php include("navbar/navbar-admin.html"); ?>
 
-    <div class="container">
-        <!-- Header Section -->
-        <div class="header-section" id="dashboard">
-            <h1>🛡️ Tableau de Bord Administrateur</h1>
-            <p>Gérez les utilisateurs et consultez les statistiques du système</p>
-            <div class="user-info">
-                <p><strong>Vous êtes connecté en tant qu'administrateur</strong></p>
-                <p>Vous avez accès à la gestion complète du système</p>
-            </div>
-        </div>
+        <?php
+        $users = $users ?? [];
+        $codesEnAttente = $codesEnAttente ?? [];
+        ?>
 
-        <!-- Statistiques Rapides -->
-        <div class="section-title">📊 Statistiques du Système</div>
-        <div class="grid">
-            <div class="card stat-card">
-                <div class="stat-label">Total Utilisateurs</div>
-                <div class="stat-value"><?= count($users) ?? 5 ?></div>
-                <div class="stat-unit">utilisateurs actifs</div>
-            </div>
-
-            <div class="card stat-card">
-                <div class="stat-label">Utilisateurs Hommes</div>
-                <div class="stat-value"><?= count(array_filter($users ?? [], fn($u) => $u['genre'] == 'M')) ?></div>
-                <div class="stat-unit">M</div>
-            </div>
-
-            <div class="card stat-card">
-                <div class="stat-label">Utilisateurs Femmes</div>
-                <div class="stat-value"><?= count(array_filter($users ?? [], fn($u) => $u['genre'] == 'F')) ?></div>
-                <div class="stat-unit">F</div>
-            </div>
-
-            <div class="card stat-card">
-                <div class="stat-label">Poids Moyen</div>
-                <div class="stat-value">
-                    <?php
-                    $poids = array_filter($users ?? [], fn($u) => $u['poids'] ?? 0);
-                    echo $poids ? number_format(array_sum(array_column($poids, 'poids')) / count($poids), 1) : '0';
-                    ?>
+        <?php if (session()->getFlashdata('success')): ?>
+            <div class="alert alert-success">
+                <div class="alert-icon">✅</div>
+                <div class="alert-content">
+                    <strong>Opération réussie</strong>
+                    <p><?= session()->getFlashdata('success') ?></p>
                 </div>
-                <div class="stat-unit">kg</div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (session()->getFlashdata('error')): ?>
+            <div class="alert alert-danger">
+                <div class="alert-icon">❌</div>
+                <div class="alert-content">
+                    <strong>Erreur détectée</strong>
+                    <p><?= session()->getFlashdata('error') ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <header class="hero">
+            <h1>🛡️ Tableau de bord administrateur</h1>
+            <p>Vue globale pour gérer les utilisateurs et traiter les codes de recharge en attente.</p>
+        </header>
+
+        <h2 class="section-title mt-4">📊 Statistiques du système</h2>
+        <div class="user-metrics">
+            <div class="metric-item">
+                <div class="metric-label">Total utilisateurs</div>
+                <div class="metric-value">
+                    <?= count($users) ?> <span class="metric-unit">comptes</span>
+                </div>
+            </div>
+
+            <div class="metric-item">
+                <div class="metric-label">Codes en attente</div>
+                <div class="metric-value" style="color: #b7791f;">
+                    <?= count($codesEnAttente) ?> <span class="metric-unit">à valider</span>
+                </div>
             </div>
         </div>
 
-        <!-- Graphiques d'Administration -->
-        <div class="section-title mt-4">📈 Analyse des Données</div>
-        <div class="charts-container">
-            <div class="chart-card">
-                <h3>👥 Distribution par Genre</h3>
-                <canvas id="genderChart"></canvas>
+        <h2 class="section-title mt-4" id="codes">🎟️ Demandes de codes</h2>
+        <section class="card card--pad">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Montant</th>
+                            <th>Utilisateur</th>
+                            <th>Email</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($codesEnAttente)): ?>
+                            <?php foreach ($codesEnAttente as $code): ?>
+                                <tr>
+                                    <td><strong><?= esc($code['code'] ?? '') ?></strong></td>
+                                    <td><strong><?= number_format($code['montant'] ?? 0, 0, ',', ' ') ?> Ar</strong></td>
+                                    <td><?= esc($code['nom_utilisateur'] ?? '') ?></td>
+                                    <td><?= esc($code['email_utilisateur'] ?? '') ?></td>
+                                    <td><span class="badge-role badge-role--admin">En attente</span></td>
+                                    <td>
+                                        <div class="actions">
+                                            <form action="/admin/code-accept/<?= $code['idCode'] ?>" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn--primary btn--sm">✅ Accepter</button>
+                                            </form>
+                                            <form action="/admin/code-reject/<?= $code['idCode'] ?>" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-logout btn--sm">❌ Refuser</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" class="text-center table-empty">Aucune demande de code en attente</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
+        </section>
 
-            <div class="chart-card">
-                <h3>⚖️ Distribution du Poids</h3>
-                <canvas id="weightDistributionChart"></canvas>
-            </div>
-
-            <div class="chart-card">
-                <h3>📏 Distribution de la Taille</h3>
-                <canvas id="heightDistributionChart"></canvas>
-            </div>
-
-            <div class="chart-card">
-                <h3>📊 IMC des Utilisateurs</h3>
-                <canvas id="imcChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Gestion des Utilisateurs -->
-        <div class="section-title mt-4" id="utilisateurs">👥 Gestion des Utilisateurs</div>
-        <div class="card mb-4">
-            <div class="flex-between mb-2">
-                <h3>Liste de tous les utilisateurs</h3>
-                <button class="btn btn-primary">+ Ajouter un utilisateur</button>
-            </div>
+        <h2 class="section-title mt-4" id="utilisateurs">👥 Utilisateurs enregistrés</h2>
+        <section class="card card--pad">
             <div class="table-container">
                 <table>
                     <thead>
@@ -96,55 +114,47 @@
                             <th>Nom</th>
                             <th>Email</th>
                             <th>Genre</th>
-                            <th>Taille (cm)</th>
-                            <th>Poids (kg)</th>
+                            <th>Taille</th>
+                            <th>Poids</th>
                             <th>IMC</th>
                             <th>Statut</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (!empty($users)): ?>
                             <?php foreach ($users as $user):
-                                $imc = $user['poids'] / (($user['taille'] / 100) ** 2);
-                                $statut = $user['estAdmin'] ? 'Admin' : 'Utilisateur';
-                                $couleur = $user['estAdmin'] ? 'badge-role badge-role--admin' : 'badge-role';
+                                $tailleM = ($user['taille'] ?? 170) / 100;
+                                $poids = $user['poids'] ?? 0;
+                                $imc = $tailleM > 0 ? ($poids / ($tailleM ** 2)) : 0;
+                                $isAdmin = !empty($user['estAdmin']) && $user['estAdmin'];
+                                $statut = $isAdmin ? 'Admin' : 'Membre';
+                                $couleurBadge = $isAdmin ? 'badge-role badge-role--admin' : 'badge-role';
                             ?>
                                 <tr>
-                                    <td><?= $user['id_Utilisateur'] ?></td>
-                                    <td><strong><?= esc($user['nom']) ?></strong></td>
-                                    <td><?= esc($user['email']) ?></td>
-                                    <td><?= $user['genre'] == 'M' ? '👨 Homme' : '👩 Femme' ?></td>
-                                    <td><?= $user['taille'] ?></td>
-                                    <td><?= $user['poids'] ?></td>
-                                    <td><?= number_format($imc, 1) ?></td>
-                                    <td><span class="<?= $couleur ?>"><?= $statut ?></span></td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm">✏️</button>
-                                        <button class="btn btn-logout btn-sm">🗑️</button>
-                                    </td>
+                                    <td><?= esc($user['id_Utilisateur'] ?? '') ?></td>
+                                    <td><strong><?= esc($user['nom'] ?? '') ?></strong></td>
+                                    <td><?= esc($user['email'] ?? '') ?></td>
+                                    <td><?= ($user['genre'] ?? 'M') == 'M' ? '👨 Homme' : '👩 Femme' ?></td>
+                                    <td><?= esc($user['taille'] ?? '') ?> cm</td>
+                                    <td><?= esc($user['poids'] ?? '') ?> kg</td>
+                                    <td><strong><?= number_format($imc, 1) ?></strong></td>
+                                    <td><span class="<?= $couleurBadge ?>"><?= $statut ?></span></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="9" class="text-center table-empty">Aucun utilisateur trouvé</td>
+                                <td colspan="8" class="text-center table-empty">Aucun utilisateur trouvé dans la base</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </div>
-        </div>
+        </section>
 
-        
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2026 MonRégime - Panneau d'administration</p>
-    </footer>
-
-    <script>
-        window.__users = <?= json_encode($users ?? []) ?>;
-    </script>
-    <script src="/assets/js/accueilAdmin.js"></script>
+        <footer class="footer footer--spaced">
+            <p>&copy; 2026 Ré-Gym - Espace Admin</p>
+        </footer>
+    </div>
 </body>
 
 </html>

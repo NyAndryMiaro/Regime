@@ -150,12 +150,25 @@ class Utilisateur extends BaseController
         $utiliObj = new UtilisateurObjectifModel();
         $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
 
+        $objectifActuel = null;
         if ($verifier != null) {
-            $but = $objectif->find($verifier['id_Objectif']);
-            return view('frontoffice/accueil', ['user' => $userData, 'objectifs' => $obj, 'objectif' => $but]);
-        } else {
-            return view('frontoffice/accueil', ['user' => $userData, 'objectifs' => $obj]);
+            $objectifActuel = $objectif->find($verifier['id_Objectif']);
         }
+
+        // Load regimes and activites for display
+        $regimeModel = new RegimeModel();
+        $regimes = $regimeModel->findAll();
+        
+        $activiteModel = new \App\Models\ActivitesModel();
+        $activites = $activiteModel->findAll();
+
+        return view('frontoffice/accueil', [
+            'user' => $userData,
+            'objectifs' => $obj,
+            'objectif' => $objectifActuel,
+            'regimes' => $regimes,
+            'activites' => $activites
+        ]);
     }
 
     public function accueilAdmin()
@@ -165,10 +178,24 @@ class Utilisateur extends BaseController
             return redirect()->to('/login');
         }
 
-        $model = new UtilisateurModel();
-        $users = $model->findAll();
+        $userModel = new UtilisateurModel();
+        $codeModel = new CodeModel();
 
-        return view('backoffice/accueil-admin', ['users' => $users]);
+        $users = $userModel->findAll();
+        $codesEnAttente = $codeModel->where('utilise', 1)->findAll();
+
+        foreach ($codesEnAttente as &$code) {
+            $owner = !empty($code['id_Utilisateur']) ? $userModel->find($code['id_Utilisateur']) : null;
+            $code['nom_utilisateur'] = $owner['nom'] ?? 'Utilisateur inconnu';
+            $code['email_utilisateur'] = $owner['email'] ?? '—';
+        }
+        unset($code);
+
+        return view('backoffice/accueil-admin', [
+            'users' => $users,
+            'codesEnAttente' => $codesEnAttente,
+            'nbCodesEnAttente' => count($codesEnAttente),
+        ]);
     }
 
     public function objectif()
@@ -204,13 +231,13 @@ class Utilisateur extends BaseController
         $user = session()->get('user');
 
         if (!$user) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Non authentifié']);
+            return redirect()->to('/login');
         }
 
         $objectifId = $this->request->getPost('objectif');
 
         if (!$objectifId) {
-            return $this->response->setJSON(['success' => false, 'message' => 'Objectif manquant']);
+            return redirect()->back()->with('error', 'Veuillez sélectionner un objectif.');
         }
 
         $utiliObj = new UtilisateurObjectifModel();
@@ -231,16 +258,9 @@ class Utilisateur extends BaseController
                 $utiliObj->insert($infos);
             }
 
-            if ($this->request->isAJAX()) {
-                return $this->response->setJSON(['success' => true, 'message' => 'Objectif mis à jour']);
-            } else {
-                $successMsg = 'Objectif modifié avec succès! Vous avez maintenant pour objectif: ' . esc($objectif['libelle']);
-                return redirect()->to('/objectif')->with('success', $successMsg);
-            }
+            $successMsg = 'Objectif modifié avec succès ! Vous avez maintenant pour objectif : ' . ($objectif['libelle'] ?? '');
+            return redirect()->to('/accueil')->with('success', $successMsg);
         } catch (\Exception $e) {
-            if ($this->request->isAJAX()) {
-                return $this->response->setJSON(['success' => false, 'message' => 'Erreur: ' . $e->getMessage()]);
-            }
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -248,6 +268,10 @@ class Utilisateur extends BaseController
     public function porteMonnaie()
     {
         $user = session()->get('user');
+
+        if (!$user) {
+            return redirect()->to('/login');
+        }
 
         $util = new UtilisateurModel();
         $utilisateur = $util->find($user['id']);
@@ -259,32 +283,96 @@ class Utilisateur extends BaseController
     {
         $user = session()->get('user');
 
-        $util = new UtilisateurModel();
-        $utilisateur = $util->find($user['id']);
+        if (!$user) {
+            return redirect()->to('/login');
+        }
 
-        $code = $this->request->getPost('codeArgent');
+        $code = trim((string) $this->request->getPost('codeArgent'));
+
+        if ($code === '') {
+            return redirect()->to('/monnaie')->with('error', 'Veuillez saisir un code.');
+        }
 
         $codemodel = new CodeModel();
         $argent = $codemodel->where('code', $code)->first();
 
-        $data = [
-            'argent' => $user['argent'] + $argent['montant']
-        ];
-
-        $data2 = [
-            'utilise' => 1
-        ];
-
-
-        if ($argent['utilise'] == 0) {
-
-            $codemodel->update($argent['idCode'], $data2);
-            $util->update($user['id'], $data);
-
-            return redirect()->to('/monnaie')->with('success', "L'argent a été ajouté sur votre compte !");
-        } else {
-            return redirect()->to('/monnaie')->with('error', "Le code n'est plus disponible");
+        if (!$argent) {
+            return redirect()->to('/monnaie')->with('error', 'Le code inscrit n’est pas disponible.');
         }
+
+        $statut = (int) ($argent['utilise'] ?? 0);
+
+        if ($statut === 2) {
+            return redirect()->to('/monnaie')->with('error', 'Ce code a déjà été utilisé.');
+        }
+
+        if ($statut === 1) {
+            return redirect()->to('/monnaie')->with('error', 'Ce code est déjà en attente de validation.');
+        }
+
+        $codemodel->update($argent['idCode'], [
+            'utilise' => 1,
+            'id_Utilisateur' => $user['id'],
+        ]);
+
+        return redirect()->to('/monnaie')->with('success', 'Votre code a été envoyé à l’administration. En attente de réponse.');
+    }
+
+    public function accepterCode($idCode)
+    {
+        $user = session()->get('user');
+        if (!$user || !$user['estAdmin']) {
+            return redirect()->to('/login');
+        }
+
+        $codeModel = new CodeModel();
+        $userModel = new UtilisateurModel();
+        $code = $codeModel->find($idCode);
+
+        if (!$code || (int) ($code['utilise'] ?? 0) !== 1) {
+            return redirect()->to('/accueilAdmin')->with('error', 'Ce code n’est pas en attente de validation.');
+        }
+
+        $idUtilisateur = (int) ($code['id_Utilisateur'] ?? 0);
+        $utilisateur = $userModel->find($idUtilisateur);
+
+        if (!$utilisateur) {
+            return redirect()->to('/accueilAdmin')->with('error', 'Utilisateur introuvable pour ce code.');
+        }
+
+        $nouvelArgent = (float) ($utilisateur['argent'] ?? 0) + (float) ($code['montant'] ?? 0);
+
+        $userModel->update($idUtilisateur, [
+            'argent' => $nouvelArgent,
+        ]);
+
+        $codeModel->update($idCode, [
+            'utilise' => 2,
+        ]);
+
+        return redirect()->to('/accueilAdmin')->with('success', 'Code accepté et crédit ajouté.');
+    }
+
+    public function rejeterCode($idCode)
+    {
+        $user = session()->get('user');
+        if (!$user || !$user['estAdmin']) {
+            return redirect()->to('/login');
+        }
+
+        $codeModel = new CodeModel();
+        $code = $codeModel->find($idCode);
+
+        if (!$code || (int) ($code['utilise'] ?? 0) !== 1) {
+            return redirect()->to('/accueilAdmin')->with('error', 'Ce code n’est pas en attente de validation.');
+        }
+
+        $codeModel->update($idCode, [
+            'utilise' => 0,
+            'id_Utilisateur' => null,
+        ]);
+
+        return redirect()->to('/accueilAdmin')->with('success', 'Code refusé et remis disponible.');
     }
 
 
@@ -334,26 +422,17 @@ class Utilisateur extends BaseController
             if ($user) {
                 $taille = $user['taille'];
             } else {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Utilisateur non trouvé'
-                ]);
+                return redirect()->to('/accueil')->with('error', 'Utilisateur non trouvé.');
             }
         }
 
         if (!$taille) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Taille requise'
-            ]);
+            return redirect()->to('/accueil')->with('error', 'Taille requise.');
         }
 
-        $resultat = $this->calculerPoidsIdeal((float)$taille);
+        $resultat = $this->calculerPoidsIdeal((float) $taille);
 
-        return $this->response->setJSON([
-            'success' => true,
-            'data' => $resultat
-        ]);
+        return redirect()->to('/accueil')->with('poidsIdeal', $resultat);
     }
 
     public function regimes()

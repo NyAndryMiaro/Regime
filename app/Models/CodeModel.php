@@ -8,6 +8,6 @@ class CodeModel extends Model
 {
     protected $table = 'Codes';
     protected $primaryKey = 'idCode';
-    protected $allowedFields = ['idCode', 'code', 'montant', 'utilise'];
+    protected $allowedFields = ['idCode', 'code', 'montant', 'utilise', 'id_Utilisateur'];
 }
 

@@ -4,201 +4,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord - Ré-Gym</title>
-    <link rel="stylesheet" href="/assets/css/admin.css">
+    <title>Accueil - Ré-Gym</title>
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <script src="/assets/js/dashboard.js" defer></script>
 </head>
 
 <body>
-    <!-- Navigation -->
     <?php include("navbar/navbar-user.html"); ?>
 
-        <!-- Header Section -->
-        <div class="header-section" id="accueil">
-            <div class="tableau">
-                <h1>👋 Bienvenue sur Ré-Gym</h1>
-                <p>Suivez votre progression vers vos <span class="objectif"> objectifs nutritionnels </span></p>
+    <?php
+    $user      = $user      ?? [];
+    $objectifs = $objectifs ?? [];
+    $objectif  = $objectif  ?? null;
+    $regimes   = $regimes   ?? [];
+    $activites = $activites ?? [];
+    ?>
+
+    <div class="container page-shell">
+        <div class="stack">
+
+            <!-- ── Hero ──────────────────────────────────────────────── -->
+            <div class="card card--hero">
+                <p class="card--hero__eyebrow">Tableau de bord</p>
+                <h1 class="card--hero__title">
+                    Bonjour, <span class="card--hero__name"><?= esc($user['nom'] ?? 'Champion') ?></span> 👋<br>
+                    Bienvenue sur Ré-Gym
+                </h1>
+                <p class="card--hero__subtitle">
+                    Votre parcours vers un mode de vie plus sain continue aujourd'hui.
+                    Chaque effort compte — continuez sur votre lancée.
+                </p>
+                <div class="card--hero__pills">
+                    <span class="card--hero__pill">🥗 Régimes disponibles</span>
+                    <span class="card--hero__pill">🏃 Activités à explorer</span>
+                    <span class="card--hero__pill">🎯 Objectif en cours</span>
+                </div>
             </div>
 
-            <div class="user-info">
-                <p><strong>Vos informations:</strong></p>
-                <p>Taille: <?= $user['taille'] ?? '165' ?> cm | Poids: <?= $user['poids'] ?? '65' ?> kg</p>
-                <p>IMC: <?= number_format(($user['poids'] ?? 65) / (($user['taille'] ?? 165) ** 2 / 10000), 1) ?></p>
-
-                <!-- Objectif (grouped in header for immediate visibility) -->
-                <?php if (empty($objectif)) { ?>
-                    <div class="objectif-section objectif-header">
-                        <h2>Commencez par choisir un objectif</h2>
-
-                        <form action="/objectif" method="post" id="choixObj">
-                            <?php if (!empty($objectifs)) {
-                                foreach ($objectifs as $obj) { ?>
-                                    <p class="objectif-option"> <?= $obj["libelle"] ?> <input type="radio" name="objectif" value="<?= $obj["id_Objectif"] ?>" class="objectif-radio"></p>
-                            <?php }
-                            } ?>
-                            <button type="submit" class="btn btn-primary btn-full">Valider</button>
-                        </form>
-
+            <!-- ── Informations utilisateur ──────────────────────────── -->
+            <section class="card card--pad">
+                <div class="card-header">
+                    <h2 class="card-title">📋 Vos informations</h2>
+                </div>
+                <div class="user-stats">
+                    <div class="stat">
+                        <div class="stat-label">Taille</div>
+                        <div class="stat-value"><?= (string) ($user['taille'] ?? '165') ?> <small>cm</small></div>
                     </div>
-
-                <?php } else{ ?>
-                    <div class="objectif-section objectif-header">
-                        <p class="objectif-selected"> Votre objectif : <?= esc($objectif['libelle']) ?> </p>
+                    <div class="stat">
+                        <div class="stat-label">Poids</div>
+                        <div class="stat-value"><?= (string) ($user['poids'] ?? '65') ?> <small>kg</small></div>
                     </div>
-                <?php } ?>
-            </div>
-        </div>
-
-    <div class="container page-continue">
-        <!-- objectif moved into header for immediate visibility -->
-
-        <!-- Statistiques Principales -->
-        <div class="section-title">📊 Vos Statistiques</div>
-        <div class="grid">
-            <div class="card stat-card">
-                <div class="stat-label">Objectif Calorique</div>
-                <div class="stat-value">2200</div>
-                <div class="stat-unit">kcal/jour</div>
-                <div class="progress-bar">
-                    <div class="progress-fill progress-fill--65"></div>
+                    <div class="stat">
+                        <div class="stat-label">IMC</div>
+                        <div class="stat-value"><?= number_format(($user['poids'] ?? 65) / (($user['taille'] ?? 165) ** 2 / 10000), 1) ?></div>
+                    </div>
                 </div>
-                <p class="text-gray small">1430 / 2200 kcal aujourd'hui</p>
-            </div>
+            </section>
 
-            <div class="card stat-card">
-                <div class="stat-label">Protéines</div>
-                <div class="stat-value">65g</div>
-                <div class="stat-unit">sur 110g</div>
-                <div class="progress-bar">
-                    <div class="progress-fill progress-fill--59"></div>
+            <!-- ── Objectif ───────────────────────────────────────────── -->
+            <?php if (empty($objectif)): ?>
+            <section class="card card--pad">
+                <div class="card-header">
+                    <h2 class="card-title">🎯 Choisir un objectif</h2>
                 </div>
-                <button class="btn btn-primary btn-sm btn-full mt-2">+ Ajouter</button>
-            </div>
-
-            <div class="card stat-card">
-                <div class="stat-label">Hydratation</div>
-                <div class="stat-value">2.1L</div>
-                <div class="stat-unit">sur 2.5L</div>
-                <div class="progress-bar">
-                    <div class="progress-fill progress-fill--84"></div>
+                <p class="text-muted">Sélectionnez votre objectif pour personnaliser votre parcours.</p>
+                <form action="/objectif" method="post" id="choixObj" class="form-objectif-compact">
+                    <div class="objectif-list">
+                        <?php foreach ($objectifs as $obj): ?>
+                        <label class="objectif-item">
+                            <input type="radio" name="objectif" value="<?= (string) ($obj['id_Objectif'] ?? '') ?>">
+                            <span class="objectif-label"><?= (string) ($obj['libelle'] ?? '') ?></span>
+                        </label>
+                        <?php endforeach; ?>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Valider mon objectif</button>
+                </form>
+            </section>
+            <?php else: ?>
+            <section class="card card--pad">
+                <div class="card-header">
+                    <h2 class="card-title">🎯 Votre objectif</h2>
                 </div>
-                <button class="btn btn-primary btn-sm btn-full mt-2">💧 Boire</button>
-            </div>
-        </div>
+                <p class="objectif-current-text"><?= (string) ($objectif['libelle'] ?? '') ?></p>
+            </section>
+            <?php endif; ?>
 
-        <!-- Régimes Recommandés -->
-        <div class="section-title" id="regimes">🎯 Régimes Recommandés</div>
-        <div class="card">
-            <div class="cta-panel">
-                <p class="cta-text">Découvrez nos régimes personnalisés adaptés à vos objectifs</p>
-                <a href="/regimes" class="btn btn--primary">
-                    Voir tous les régimes →
-                </a>
-            </div>
-        </div>
-
-        <!-- Graphiques -->
-        <div class="section-title mt-4">📈 Votre Progression</div>
-        <div class="charts-container">
-            <div class="chart-card">
-                <h3>📊 Évolution du Poids (30j)</h3>
-                <p class="card-subtitle">Votre poids passe progressivement de 68 kg à 65 kg. Objectif: stabilisation autour de 64 kg.</p>
-                <canvas id="weightChart"></canvas>
-                <div class="mini-metrics">
-                    <span>Départ: 68 kg</span>
-                    <span>Actuel: 65 kg</span>
-                    <span>Objectif: 64 kg</span>
+            <!-- ── Régimes ────────────────────────────────────────────── -->
+            <?php if (!empty($regimes)): ?>
+            <section class="card card--pad">
+                <div class="card-header card-header--tight">
+                    <h2 class="card-title">🥗 Régimes disponibles</h2>
+                    <a class="btn btn-primary btn-sm" href="/regimes">Voir les régimes</a>
                 </div>
-            </div>
-
-            <div class="chart-card">
-                <h3>🥗 Répartition Nutritionnelle</h3>
-                <p class="card-subtitle">Votre journée idéale: 50% glucides, 30% protéines, 20% lipides.</p>
-                <canvas id="nutritionChart"></canvas>
-                <div class="mini-metrics">
-                    <span>Glucides: 50%</span>
-                    <span>Protéines: 30%</span>
-                    <span>Lipides: 20%</span>
+                <div class="regimes-grid">
+                    <?php foreach (array_slice($regimes, 0, 3) as $regime): ?>
+                    <?php $variation = (float) ($regime['variation_poids'] ?? 0); ?>
+                    <div class="regime-card-wrapper">
+                        <div class="regime-card">
+                            <div class="regime-card-header">
+                                <div class="regime-title"><?= esc((string) ($regime['libelle'] ?? $regime['nom'] ?? 'Régime')) ?></div>
+                                <span class="regime-badge <?= $variation >= 0 ? 'positive' : 'negative' ?>">
+                                    <?= $variation >= 0 ? '+' : '' ?><?= esc((string) $variation) ?> kg
+                                </span>
+                            </div>
+                            <div class="regime-info">
+                                <div class="detail-item">
+                                    <div class="detail-label">Durée</div>
+                                    <div class="detail-value"><?= esc((string) ($regime['duree'] ?? 0)) ?> jours</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Prix</div>
+                                    <div class="detail-value"><?= esc((string) ($regime['prix_unitaire'] ?? 0)) ?> Ar</div>
+                                </div>
+                            </div>
+                            <div class="regime-composition">
+                                <span class="composition-item">
+                                    <span class="composition-box viande"></span>
+                                    <?= esc((string) ($regime['pourcentage_viande'] ?? 0)) ?>% viande
+                                </span>
+                                <span class="composition-item">
+                                    <span class="composition-box legume"></span>
+                                    <?= esc((string) ($regime['pourcentage_legume'] ?? 0)) ?>% légumes
+                                </span>
+                                <span class="composition-item">
+                                    <span class="composition-box poisson"></span>
+                                    <?= esc((string) ($regime['pourcentage_poisson'] ?? 0)) ?>% poisson
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
-            </div>
+            </section>
+            <?php endif; ?>
 
-            <div class="chart-card">
-                <h3>📉 Calories Cette Semaine</h3>
-                <p class="card-subtitle">Vous êtes légèrement au-dessus de la cible les mardi, samedi et jeudi.</p>
-                <canvas id="caloriesChart"></canvas>
-                <div class="mini-metrics">
-                    <span>Cible: 2200 kcal</span>
-                    <span>Moyenne: 2229 kcal</span>
-                    <span>Max: 2400 kcal</span>
+            <!-- ── Activités ──────────────────────────────────────────── -->
+            <?php if (!empty($activites)): ?>
+            <section class="card card--pad">
+                <div class="card-header card-header--tight">
+                    <h2 class="card-title">🏃 Activités disponibles</h2>
+                    <button type="button" class="btn btn-primary btn-sm"
+                            id="toggleActivitiesButton"
+                            aria-controls="extraActivities"
+                            aria-expanded="false">Voir plus</button>
                 </div>
-            </div>
-
-            <div class="chart-card">
-                <h3>💧 Hydratation</h3>
-                <p class="card-subtitle">Votre hydratation reste proche de l'objectif de 2.5 L par jour.</p>
-                <canvas id="hydrationChart"></canvas>
-                <div class="mini-metrics">
-                    <span>Moyenne: 2.3 L</span>
-                    <span>Objectif: 2.5 L</span>
-                    <span>Meilleur jour: 2.6 L</span>
+                <div class="activites-grid">
+                    <?php foreach (array_slice($activites, 0, 3) as $activite): ?>
+                    <?php $variation = (float) ($activite['variation_poids'] ?? 0); ?>
+                    <div class="activite-card-wrapper">
+                        <div class="activite-card">
+                            <div class="activite-card-header">
+                                <div class="activite-title"><?= esc((string) ($activite['libelle'] ?? $activite['nom'] ?? 'Activité')) ?></div>
+                                <span class="activite-badge <?= $variation >= 0 ? 'positive' : 'negative' ?>">
+                                    <?= $variation >= 0 ? '+' : '' ?><?= esc((string) $variation) ?> kg
+                                </span>
+                            </div>
+                            <div class="activite-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Durée</div>
+                                    <div class="detail-value"><?= esc((string) ($activite['duree'] ?? 0)) ?> min</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Statut</div>
+                                    <div class="detail-value">Disponible</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
-            </div>
-        </div>
 
-        <!-- Recommandations -->
-        <div class="section-title mt-4">💡 Recommandations</div>
-        <div class="card mb-4">
-            <div class="alert alert-success">
-                <div class="alert-icon">✅</div>
-                <div class="alert-content">
-                    <strong>Excellente hydratation!</strong>
-                    <p>Gardez ce rythme, c'est parfait pour votre santé.</p>
+                <?php if (count($activites) > 3): ?>
+                <div class="extra-activities is-hidden" id="extraActivities">
+                    <p class="section-subtitle">Autres activités</p>
+                    <div class="activites-grid">
+                        <?php foreach (array_slice($activites, 3) as $activite): ?>
+                        <?php $variation = (float) ($activite['variation_poids'] ?? 0); ?>
+                        <div class="activite-card-wrapper">
+                            <div class="activite-card">
+                                <div class="activite-card-header">
+                                    <div class="activite-title"><?= esc((string) ($activite['libelle'] ?? $activite['nom'] ?? 'Activité')) ?></div>
+                                    <span class="activite-badge <?= $variation >= 0 ? 'positive' : 'negative' ?>">
+                                        <?= $variation >= 0 ? '+' : '' ?><?= esc((string) $variation) ?> kg
+                                    </span>
+                                </div>
+                                <div class="activite-details">
+                                    <div class="detail-item">
+                                        <div class="detail-label">Durée</div>
+                                        <div class="detail-value"><?= esc((string) ($activite['duree'] ?? 0)) ?> min</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">Statut</div>
+                                        <div class="detail-value">Disponible</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-            </div>
+                <?php endif; ?>
+            </section>
+            <?php endif; ?>
 
-            <div class="alert alert-warning">
-                <div class="alert-icon">⚠️</div>
-                <div class="alert-content">
-                    <strong>Protéines insuffisantes</strong>
-                    <p>Ajoutez du poulet, du poisson ou des œufs à votre prochain repas.</p>
-                </div>
-            </div>
+        </div><!-- /.stack -->
+    </div><!-- /.container -->
 
-            <div class="alert alert-info">
-                <div class="alert-icon">📌</div>
-                <div class="alert-content">
-                    <strong>Conseil du jour</strong>
-                    <p>Prenez votre petit-déjeuner 1-2h après votre réveil pour booster votre métabolisme.</p>
-                </div>
-            </div>
-        </div>
-
-    <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2026 MonRégime - Votre guide de nutrition personnalisé</p>
+        <p>&copy; 2026 Ré-Gym</p>
     </footer>
 
-    <!-- Loader Overlay for AJAX -->
     <div class="loader-overlay" id="loaderOverlay">
         <div class="loader-container">
             <img src="/assets/img/Loading_icon.gif" alt="Chargement..." class="loader-gif">
             <p class="loader-text">Mise à jour en cours...</p>
         </div>
     </div>
-
-    <script>
-        window.__dashboardData = {
-            weightLabels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'],
-            weightValues: [68, 67.5, 67, 66.5, 66, 65.5, 65],
-            caloriesLabels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-            caloriesValues: [2150, 2300, 2100, 2250, 2200, 2400, 2100],
-            nutritionLabels: ['Glucides', 'Protéines', 'Lipides'],
-            nutritionValues: [50, 30, 20],
-            nutritionColors: ['#10b981', '#059669', '#d1fae5'],
-            hydrationLabels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-            hydrationValues: [2.2, 2.5, 2.1, 2.4, 2.6, 2.3, 2.1]
-        };
-    </script>
-    <script src="/assets/js/dashboard.js"></script>
 </body>
 
 </html>

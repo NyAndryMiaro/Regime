@@ -74,8 +74,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn--primary">✅ Ajouter l'activité</button>
-                    <a href="/admin/activites" class="btn btn--secondary">❌ Annuler</a>
+                    <button type="submit" class="btn btn-primary">✅ Ajouter l'activité</button>
+                    <a href="/admin/activites" class="btn btn-logout">❌ Annuler</a>
                 </div>
             </form>
         </section>

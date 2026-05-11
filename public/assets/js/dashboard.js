@@ -2,6 +2,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   initCharts();
   initObjectifAjax();
+  initActivitiesToggle();
 });
 
 // AJAX for objectif choice
@@ -9,105 +10,32 @@ function initObjectifAjax() {
   const form = document.getElementById('choixObj');
   if (!form) return;
 
+  // Simple non-AJAX handler: validate then let the browser submit normally.
   form.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    // Get selected objectif value
+    // Ensure an objectif is selected; if not, prevent submit and alert.
     const selectedRadio = document.querySelector('input[name="objectif"]:checked');
     if (!selectedRadio) {
+      e.preventDefault();
       alert('Veuillez sélectionner un objectif');
       return;
     }
 
-    const objectifId = selectedRadio.value;
+    // Show loader overlay (optional) and allow normal form submit/navigation.
     const loaderOverlay = document.getElementById('loaderOverlay');
+    if (loaderOverlay) loaderOverlay.classList.add('active');
+    // Do not call e.preventDefault() - let the form POST to the server.
+  });
+}
 
-    // Show loader
-    if (loaderOverlay) {
-      loaderOverlay.classList.add('active');
-    }
+function initActivitiesToggle() {
+  const button = document.getElementById('toggleActivitiesButton');
+  const extraActivities = document.getElementById('extraActivities');
+  if (!button || !extraActivities) return;
 
-    // Create XMLHttpRequest
-    var xhr;
-    try {
-      xhr = new ActiveXObject('Msxml2.XMLHTTP');
-    } catch (e) {
-      try {
-        xhr = new ActiveXObject('Microsoft.XMLHTTP');
-      } catch (e2) {
-        try {
-          xhr = new XMLHttpRequest();
-        } catch (e3) {
-          xhr = false;
-        }
-      }
-    }
-
-    if (!xhr) {
-      alert('Impossible de créer XMLHttpRequest');
-      if (loaderOverlay) {
-        loaderOverlay.classList.remove('active');
-      }
-      return;
-    }
-
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4) {
-        console.log('Response Status:', xhr.status);
-        console.log('Response Text:', xhr.responseText);
-
-        if (xhr.status == 200) {
-          try {
-            var retour = JSON.parse(xhr.responseText);
-            console.log('Parsed Response:', retour);
-            
-            if (retour.success) {
-              console.log('Succès! Reloading page...');
-              // Keep loader visible for 4 seconds, then reload
-              setTimeout(function() {
-                if (loaderOverlay) {
-                  loaderOverlay.classList.remove('active');
-                }
-                window.location.reload();
-              }, 4000);
-            } else {
-              // Hide loader on error
-              if (loaderOverlay) {
-                loaderOverlay.classList.remove('active');
-              }
-              alert('Erreur: ' + (retour.message || 'Impossible de mettre à jour l\'objectif'));
-            }
-          } catch (parseError) {
-            if (loaderOverlay) {
-              loaderOverlay.classList.remove('active');
-            }
-            console.error('Parse Error:', parseError);
-            console.error('Response was:', xhr.responseText);
-            alert('Erreur lors du traitement de la réponse');
-          }
-        } else {
-          if (loaderOverlay) {
-            loaderOverlay.classList.remove('active');
-          }
-          console.error('HTTP Error:', xhr.status, xhr.statusText);
-          alert('Erreur serveur: ' + xhr.status + ' ' + xhr.statusText);
-        }
-      }
-    };
-
-    xhr.onerror = function() {
-      console.error('XHR Error occurred');
-      if (loaderOverlay) {
-        loaderOverlay.classList.remove('active');
-      }
-      alert('Erreur de connexion');
-    };
-
-    console.log('Sending AJAX request with objectif:', objectifId);
-    xhr.open('POST', '/objectif', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.send('objectif=' + encodeURIComponent(objectifId));
+  button.addEventListener('click', function () {
+    const isHidden = extraActivities.classList.toggle('is-hidden');
+    button.textContent = isHidden ? 'Voir plus' : 'Voir moins';
+    button.setAttribute('aria-expanded', String(!isHidden));
   });
 }
 

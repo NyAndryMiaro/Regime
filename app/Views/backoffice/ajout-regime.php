@@ -92,9 +92,9 @@
                     </div>
                 </div>
 
-                <div class="form-actions form-actions--spaced">
-                    <button type="submit" class="btn btn--primary">✅ Ajouter le régime</button>
-                    <a href="/admin/regimes" class="btn btn--secondary">❌ Annuler</a>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">✅ Ajouter le régime</button>
+                    <a href="/admin/regimes" class="btn btn-logout">❌ Annuler</a>
                 </div>
             </form>
         </section>

@@ -59,7 +59,8 @@ CREATE OR REPLACE TABLE Codes(
     idCode int primary key auto_increment,
     code varchar(100),
     montant double,
-    utilise boolean default 0
+    utilise tinyint default 0,
+    id_Utilisateur int null references Utilisateur (id_Utilisateur)
 );
 
 create or replace table Gold(

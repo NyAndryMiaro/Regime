@@ -48,3 +48,6 @@ $routes->post('/admin/regime-save', 'Regimes::save');
 $routes->get('/admin/regime-delete/(:num)', 'Regimes::remove/$1');
 $routes->get('/admin/regime-update/(:num)', 'Regimes::showUpdateForm/$1');
 $routes->post('/admin/regime-modify', 'Regimes::update');
+
+$routes->post('/admin/code-accept/(:num)', 'Utilisateur::accepterCode/$1');
+$routes->post('/admin/code-reject/(:num)', 'Utilisateur::rejeterCode/$1');
