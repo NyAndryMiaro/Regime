@@ -72,7 +72,7 @@
                         <div class="password-field">
                             <input id="mdp" type="password" name="password" placeholder="Créez un mot de passe sécurisé" required>
                         </div>
-                        <button id="bouton" type="button" onclick="password_action()" class="btn btn--ghost btn--sm">👁️</button>
+                        <button id="bouton" type="button" class="btn btn--ghost btn--sm">👁️</button>
                     </div>
                 </div>
 
