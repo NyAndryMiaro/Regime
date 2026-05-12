@@ -65,7 +65,7 @@
                                             🎯 <?= esc($activite['objectif_libelle'] ?? 'Tous objectifs') ?>
                                         </span>
                                     </td>
-                                    <td><strong><?= esc($activite['duree'] ?? '0') ?></strong> min</td>
+                                    <td><strong><?= esc($activite['duree'] ?? '0') ?></strong> h</td>
                                     <td>
                                         <?php 
                                             $val = $activite['variation_poids'] ?? 0;

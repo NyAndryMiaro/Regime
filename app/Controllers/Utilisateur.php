@@ -50,7 +50,7 @@ class Utilisateur extends BaseController
         $obj = $objectif->findAll();
 
         $utiliObj = new UtilisateurObjectifModel();
-        $verifier = $utiliObj->where('id_Utilisateur', $user['id'])->first();
+        $verifier = $utiliObj->where('id_Utilisateur', $user['id_Utilisateur'])->first();
 
         $objectifActuel = null;
         if ($verifier != null) {
